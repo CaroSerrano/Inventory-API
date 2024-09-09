@@ -3,6 +3,8 @@ import User from "./user.model.js";
 import Product from "./product.model.js";
 import Role from "./role.model.js";
 import Permission from "./permissions.model.js";
+import Category from "./category.model.js";
+import Supplier from "./supplier.model.js";
 
 export default class Dao {
   // Primero, creamos el constructor que manejará la conexión a la base de datos.
@@ -27,6 +29,8 @@ export default class Dao {
       [Product.model]: Product.initModel(this.sequelize),
       [Role.model]: Role.initModel(this.sequelize),
       [Permission.model]: Permission.initModel(this.sequelize),
+      [Category.model]: Category.initModel(this.sequelize),
+      [Supplier.model]: Supplier.initModel(this.sequelize),
     };
   }
   async initialize() {
