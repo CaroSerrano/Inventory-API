@@ -17,10 +17,6 @@ export default class Role {
       name: {
         type: DataTypes.ENUM('admin', 'manager', 'employee', 'basic_user'),
         allowNull: false,
-      },
-      permissions_ids: {
-        type: DataTypes.INTEGER,
-        allowNull:false
       }
     }, {
       timestamps: true,
