@@ -29,7 +29,7 @@ export default class User {
       },
       password: {
         type: DataTypes.STRING,
-        required: true
+        allowNull: false
       },
       status: {
         type: DataTypes.BOOLEAN,

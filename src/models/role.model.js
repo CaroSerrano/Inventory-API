@@ -1,41 +1,27 @@
 import { DataTypes } from "sequelize";
 
-export default class Product {
+export default class Role {
   constructor(data) {
     this.data = data;
   }
   static get model() {
-    return "Products";
+    return "Roles";
   }
   static initModel(sequelize) {
-    return sequelize.define("Product", {
+    return sequelize.define("Role", {
       id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
       },
       name: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM('admin', 'manager', 'employee', 'basic_user'),
         allowNull: false,
       },
-      description: {
-        type: DataTypes.STRING,
-      },
-      unit_price: {
-        type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
-      units_in_stock: {
-        type: DataTypes.INTEGER,
-      },
-      category_id: {
+      permissions_ids: {
         type: DataTypes.INTEGER,
         allowNull:false
-      },
-      supplier_id: {
-        type: DataTypes.INTEGER,
-        allowNull:false
-      },
+      }
     }, {
       timestamps: true,
       createdAt: "created_at",

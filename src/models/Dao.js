@@ -1,7 +1,8 @@
 import { Sequelize } from "sequelize";
 // import  db  from "../config/config.js";
 import User from "./user.model.js";
-import Product from "./product.model.js"
+import Product from "./product.model.js";
+import Role from "./role.model.js";
 export default class Dao {
   // Primero, creamos el constructor que manejará la conexión a la base de datos.
   constructor(sequelizeConfig) {
@@ -13,9 +14,9 @@ export default class Dao {
     });
 
     this.sequelize.authenticate().then(() => {
-      console.log('Conexión establecida correctamente.');
+      console.log('Connection established succesfully.');
     }).catch(error => {
-      console.error('Error al conectar con la base de datos:', error);
+      console.error('Error connecting to database:', error);
       process.exit(1);
     });
 
@@ -23,6 +24,7 @@ export default class Dao {
     this.models = {
       [User.model]: User.initModel(this.sequelize),
       [Product.model]: Product.initModel(this.sequelize),
+      [Role.model]: Role.initModel(this.sequelize),
     };
   }
   async initialize() {
