@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 // import  db  from "../config/config.js";
 import User from "./user.model.js";
+import Product from "./product.model.js"
 export default class Dao {
   // Primero, creamos el constructor que manejará la conexión a la base de datos.
   constructor(sequelizeConfig) {
@@ -11,7 +12,6 @@ export default class Dao {
       logging: false, // Deshabilita el logging de SQL para evitar ruido
     });
 
-    // Sincronizar con la base de datos (opcional, puedes quitar el force: true en producción)
     this.sequelize.authenticate().then(() => {
       console.log('Conexión establecida correctamente.');
     }).catch(error => {
@@ -22,20 +22,18 @@ export default class Dao {
     // Definir los modelos utilizando Sequelize
     this.models = {
       [User.model]: User.initModel(this.sequelize),
+      [Product.model]: Product.initModel(this.sequelize),
     };
   }
   async initialize() {
     await this.syncModels(); // Sincroniza los modelos al inicializar el DAO
   }
-    // Función opcional para sincronizar todos los modelos con la base de datos
+    // Función para sincronizar todos los modelos con la base de datos
     async syncModels() {
-    await this.sequelize.sync({ force: false }); // `force: true` recrea las tablas, usar con precaución
+    await this.sequelize.sync({ force: false }); // `force: true` recrea las tablas
     }
 
   // Método para encontrar un único documento que coincida con los criterios especificados.
-  // La función recibe dos parámetros:
-  // - "options": los criterios de búsqueda, como email, nombre, etc.
-  // - "entity": el modelo que se utilizará para buscar en la base de datos.
   findOne = async (options, entity) => {
     if (!this.models[entity]) throw new Error(`Entity ${entity} not in dao schemas`);
     try {
@@ -66,7 +64,7 @@ export default class Dao {
   save = async (document, entity) => {
     if (!this.models[entity]) throw new Error("Entity not found in models");
     try {
-      let result = await this.models[entity].create(document);  // `create` en Sequelize crea una instancia y la guarda
+      let result = await this.models[entity].create(document);
       return result.get({ plain: true });
     } catch (error) {
       console.error("Error saving document:", error);
@@ -79,7 +77,7 @@ export default class Dao {
   saveMany = async (documents, entity) => {
     if (!this.models[entity]) throw new Error("Entity not found in models");
     try {
-      let results = await this.models[entity].bulkCreate(documents);  // `bulkCreate` inserta múltiples registros
+      let results = await this.models[entity].bulkCreate(documents);
       return results.map((result) => result.get({ plain: true }));
     } catch (error) {
       console.error("Error saving documents:", error);
@@ -91,8 +89,8 @@ export default class Dao {
   // Método para actualizar un documento existente en la base de datos.
   update = async (document, entity) => {
     if (!this.models[entity]) throw new Error(`Entity ${entity} not in dao schemas`);
-    let id = document._id;
-    delete document._id;
+    let id = document.id;
+    delete document.id;
     try {
       // `update` en Sequelize actualiza registros, pero no devuelve el registro actualizado directamente
       await this.models[entity].update(document, { where: { id } });
@@ -109,7 +107,6 @@ export default class Dao {
   delete = async (id, entity) => {
     if (!this.models[entity]) throw new Error(`Entity ${entity} not in dao schemas`);
     try {
-      // `destroy` elimina el registro
       let result = await this.models[entity].destroy({ where: { id } });
       return result ? { message: 'Deleted successfully' } : null;
     } catch (error) {

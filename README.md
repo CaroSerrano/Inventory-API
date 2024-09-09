@@ -2,6 +2,7 @@
 - [Project description](#project-description)
 - [Used technologies](#used-technologies)
 - [Relational model](#relational-model)
+- [Dev information](#dev-information)
 
 ## Project description
 
@@ -44,3 +45,37 @@ Cannot add, edit, or delete any records.
 ## Relational model
 
 ![Relational Model](img\inventory_api_relational_model.png)
+
+## Dev information
+
+*Example for request body to delete many products:*
+
+```json
+{
+  "filter": {
+    "category_id": 1
+  }
+}
+```
+
+*Example for request body to update a product:*
+
+```json
+{
+  "data": {
+    "unit_price": 10000
+  }
+}
+```
+
+*Example for request body to create a product:*
+
+```json
+{
+  "category_id": 1,
+  "supplier_id": 3,
+  "name": "Notebook",
+  "description": "Optional description of the product",
+  "unit_price": 950000
+}
+```

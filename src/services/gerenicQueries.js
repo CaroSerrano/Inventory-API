@@ -23,7 +23,9 @@ export default class GenericQueries {
 
     update = async (id, document) => {
         // Asigna el ID al documento para que el DAO sepa qué documento actualizar.
-        document._id = id;
+        console.log("id en generic queries: ", id);
+        
+        document.id = id;
         // Llama al método `update` del DAO, pasando el documento actualizado y el modelo.
         return this.dao.update(document, this.model);
     };

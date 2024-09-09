@@ -15,12 +15,13 @@ const getUsers = async (req, res, next) => {
 
 const insertUser = async (req, res, next) => {
   try {
-    const { first_name, last_name, email, password } = req.body;
+    const { first_name, last_name, email, password, role_id } = req.body;
     const result = await userService.insert({
       first_name,
       last_name,
       email,
       password,
+      role_id
     });
     if(!result) throw new ClientError("Check the inserted data")
     response(res, 201, result);

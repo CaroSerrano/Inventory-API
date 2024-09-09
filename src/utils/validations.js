@@ -39,10 +39,10 @@ export const validateCreateUser = () => {
       .exists()
       .notEmpty()
       .withMessage("El campo password no puede estar vacío"),
-    // check("role")
+    // check("role_id")
     //   .exists()
     //   .notEmpty()
-    //   .withMessage("El campo role no puede estar vacío"),
+    //   .withMessage("El campo role_id no puede estar vacío"),
 
     (req, res, next) => {
       const errors = validationResult(req);
@@ -67,6 +67,38 @@ export const validateSignin = () => {
       .exists()
       .notEmpty()
       .withMessage("El campo password no puede estar vacío"),
+
+    (req, res, next) => {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        const checkError = errors.array().map((error) => error.msg);
+        resErrors(res, 400, checkError);
+        return;
+      }
+      next();
+    },
+  ];
+};
+
+export const validateCreateProduct = () => {
+  return [
+    check("name")
+      .exists()
+      .notEmpty()
+      .withMessage("El campo Name no puede estar vacío"),
+    check("unit_price")
+      .exists()
+      .isNumeric()
+      .withMessage("El campo unit_price no puede estar vacío"),
+    check("category_id")
+      .exists()
+      .isNumeric()
+      .withMessage("El campo category_id no puede estar vacío"),
+    check("supplier_id")
+      .exists()
+      .isNumeric()
+      .withMessage("El campo supplier_id no puede estar vacío"),
 
     (req, res, next) => {
       const errors = validationResult(req);
