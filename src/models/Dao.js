@@ -1,8 +1,9 @@
 import { Sequelize } from "sequelize";
-// import  db  from "../config/config.js";
 import User from "./user.model.js";
 import Product from "./product.model.js";
 import Role from "./role.model.js";
+import Permission from "./permissions.model.js";
+
 export default class Dao {
   // Primero, creamos el constructor que manejará la conexión a la base de datos.
   constructor(sequelizeConfig) {
@@ -10,7 +11,7 @@ export default class Dao {
     this.sequelize = new Sequelize(sequelizeConfig.DB_NAME, sequelizeConfig.DB_USER, sequelizeConfig.DB_PASS, {
       host: sequelizeConfig.DB_HOST,
       dialect: sequelizeConfig.dialect,
-      logging: false, // Deshabilita el logging de SQL para evitar ruido
+      logging: false,
     });
 
     this.sequelize.authenticate().then(() => {
@@ -25,6 +26,7 @@ export default class Dao {
       [User.model]: User.initModel(this.sequelize),
       [Product.model]: Product.initModel(this.sequelize),
       [Role.model]: Role.initModel(this.sequelize),
+      [Permission.model]: Permission.initModel(this.sequelize),
     };
   }
   async initialize() {

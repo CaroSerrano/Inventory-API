@@ -44,7 +44,7 @@ Cannot add, edit, or delete any records.
 
 ## Relational model
 
-![Relational Model](img\inventory_api_relational_model.png)
+![Relational Model](./img/inventory_api_relational_model.png)
 
 ## Dev information
 
