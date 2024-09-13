@@ -4,9 +4,10 @@ import { resErrors } from '../src/utils/resErrors.js';
 import morgan from 'morgan';
 import helmet from 'helmet';
 import apiRouter from './routes/index.js';
+import config from './config/config.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = config.PORT;
 
 // Configuración de middlewares
 app.use(

@@ -1,12 +1,12 @@
 import { check, body, validationResult } from "express-validator";
-import { resErrors } from "./resErrors.js";
+import { resErrors } from "../resErrors.js";
 
 export const validateRole = () => {
   return [
-    check("roleName")
+    check("name")
       .exists()
       .notEmpty()
-      .withMessage("El campo roleName no puede estar vacío"),
+      .withMessage("'name' property required."),
 
     (req, res, next) => {
       const errors = validationResult(req);
@@ -21,32 +21,32 @@ export const validateRole = () => {
   ];
 };
 
-export const validateCreateUser = () => {
+export const validateCreateUser = () => {  
   return [
     check("first_name")
       .exists()
       .notEmpty()
-      .withMessage("El campo firstName no puede estar vacío"),
+      .withMessage("'first_name' property required."),
     check("last_name")
       .exists()
       .notEmpty()
-      .withMessage("El campo lastName no puede estar vacío"),
+      .withMessage("'last_name' property required."),
     check("email")
       .exists()
       .notEmpty()
-      .withMessage("El campo email no puede estar vacío"),
+      .withMessage("'email' property required."),
     check("password")
       .exists()
       .notEmpty()
-      .withMessage("El campo password no puede estar vacío"),
-    // check("role_id")
-    //   .exists()
-    //   .notEmpty()
-    //   .withMessage("El campo role_id no puede estar vacío"),
+      .withMessage("'password' property required."),
+    check("role_id")
+      .exists()
+      .withMessage("'role_id' property required."),
 
     (req, res, next) => {
       const errors = validationResult(req);
-
+      console.log("errors de validate: ", errors);
+      
       if (!errors.isEmpty()) {
         const checkError = errors.array().map((error) => error.msg);
         resErrors(res, 400, checkError);
@@ -62,11 +62,11 @@ export const validateSignin = () => {
     check("email")
       .exists()
       .notEmpty()
-      .withMessage("El campo email no puede estar vacío"),
+      .withMessage("'email' property required."),
     check("password")
       .exists()
       .notEmpty()
-      .withMessage("El campo password no puede estar vacío"),
+      .withMessage("'password' property required."),
 
     (req, res, next) => {
       const errors = validationResult(req);
@@ -86,19 +86,19 @@ export const validateCreateProduct = () => {
     check("name")
       .exists()
       .notEmpty()
-      .withMessage("El campo Name no puede estar vacío"),
+      .withMessage("'name' property required."),
     check("unit_price")
       .exists()
       .isNumeric()
-      .withMessage("El campo unit_price no puede estar vacío"),
+      .withMessage("'unit_price' property required."),
     check("category_id")
       .exists()
       .isNumeric()
-      .withMessage("El campo category_id no puede estar vacío"),
+      .withMessage("'category_id' property required."),
     check("supplier_id")
       .exists()
       .isNumeric()
-      .withMessage("El campo supplier_id no puede estar vacío"),
+      .withMessage("'supplier_id' property required."),
 
     (req, res, next) => {
       const errors = validationResult(req);
@@ -118,7 +118,7 @@ export const validateCreateSupplierAndCategory = () => {
     check("name")
       .exists()
       .notEmpty()
-      .withMessage("The 'Name' field can not be empty."),
+      .withMessage("'name' property required."),
 
     (req, res, next) => {
       const errors = validationResult(req);

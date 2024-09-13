@@ -1,6 +1,6 @@
 import express from "express";
 import categoryController from "../controllers/category.controller.js";
-import { validateCreateSupplierAndCategory } from "../utils/validations.js";
+import { validateCreateSupplierAndCategory } from "../utils/middlewares/validations.js";
 
 const router = express.Router();
 

@@ -44,7 +44,7 @@ export default class Dao {
     // Establecer las asociaciones entre los modelos
     setupAssociations(this.models);
   }
-  async initialize() {
+  async initialize() {    
     await this.syncModels(); // Sincroniza los modelos al inicializar el DAO
     await this.initPermissions();
     await this.initRoles();
@@ -127,7 +127,7 @@ export default class Dao {
   }
   // Función para sincronizar todos los modelos con la base de datos
   async syncModels() {
-    await this.sequelize.sync({ alter: true }); // `force: true` recrea las tablas
+    await this.sequelize.sync({ alter: false }); // `force: true` recrea las tablas
   }
 
   // Método para encontrar un único documento que coincida con los criterios especificados.
@@ -221,7 +221,7 @@ export default class Dao {
     if (!this.models[entity]) throw new Error("Entity not found in models");
     try {
       let result = await this.models[entity].create(document);
-      return result.get({ plain: true });
+      return result//.get({ plain: true });
     } catch (error) {
       console.error("Error saving document:", error);
       return null;

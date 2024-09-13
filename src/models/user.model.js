@@ -35,6 +35,10 @@ export default class User {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
+      role_id: {
+        type: DataTypes.INTEGER,
+        allowNull:false
+      }
     }, {
       timestamps: true,
       createdAt: "created_at",
