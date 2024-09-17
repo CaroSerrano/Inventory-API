@@ -1,4 +1,4 @@
-import { Sequelize, Op } from "sequelize";
+import { Sequelize } from "sequelize";
 import User from "./user.model.js";
 import Product from "./product.model.js";
 import Role from "./role.model.js";
@@ -6,6 +6,7 @@ import Permission from "./permissions.model.js";
 import Category from "./category.model.js";
 import Supplier from "./supplier.model.js";
 import setupAssociations from "./associations.js";
+import initialSetup from "../utils/initialSetup.js";
 
 export default class Dao {
   // Primero, creamos el constructor que manejará la conexión a la base de datos.
@@ -44,90 +45,15 @@ export default class Dao {
     // Establecer las asociaciones entre los modelos
     setupAssociations(this.models);
   }
-  async initialize() {    
+  async initialize() {
     await this.syncModels(); // Sincroniza los modelos al inicializar el DAO
-    await this.initPermissions();
-    await this.initRoles();
-  }
-  // Método para inicializar permisos
-  async initPermissions() {
-    const initialPermissions = [
-      { name: "read:roles" },
-      { name: "create:users" },
-      { name: "update:users" },
-      { name: "delete:users" },
-      { name: "read:users" },
-      { name: "create:products" },
-      { name: "update:products" },
-      { name: "delete:products" },
-      { name: "read:products" },
-      { name: "create:categories" },
-      { name: "update:categories" },
-      { name: "delete:categories" },
-      { name: "read:categories" },
-      { name: "create:suppliers" },
-      { name: "update:suppliers" },
-      { name: "delete:suppliers" },
-      { name: "read:suppliers" },
-    ];
-
-    try {
-      // Verificar si ya existen permisos
-      const existingPermissions = await this.models.Permissions.findAll();
-      if (existingPermissions.length === 0) {
-        // Si no hay permisos, crear los permisos iniciales
-        await this.models.Permissions.bulkCreate(initialPermissions);
-        console.log("Permissions initialized successfully.");
-      } else {
-        console.log("Permissions already exist.");
-      }
-    } catch (error) {
-      console.error("Error initializing permissions:", error);
-    }
-  }
-
-  async initRoles() {
-    try {
-      const existingRoles = await this.models.Roles.findAll();
-      if (existingRoles.length === 0) {
-        const adminPermissions = await this.models.Permissions.findAll();
-        const admin = await this.models.Roles.create({ name: "admin" });
-
-        const managerRegex = "\\b(products|suppliers|categories)\\b";
-        const managerPermissions = await this.models.Permissions.findAll({
-          where: { name: { [Op.regexp]: managerRegex } },
-        });
-        const manager = await this.models.Roles.create({ name: "manager" });
-
-        const employeeRegex = "^(create|update|read):products$";
-        const employeePermissions = await this.models.Permissions.findAll({
-          where: { name: { [Op.regexp]: employeeRegex } },
-        });
-        const employee = await this.models.Roles.create({ name: "employee" });
-
-        const userRegex = "^read:products$";
-        const userPermissions = await this.models.Permissions.findAll({
-          where: { name: { [Op.regexp]: userRegex } },
-        });
-        const basic_user = await this.models.Roles.create({
-          name: "basic_user",
-        });
-
-        await admin.addPermissions(adminPermissions);
-        await manager.addPermissions(managerPermissions);
-        await employee.addPermissions(employeePermissions);
-        await basic_user.addPermissions(userPermissions);
-        console.log("Roles initialized successfully.");
-      } else {
-        console.log("Roles already exist.");
-      }
-    } catch (error) {
-      console.error("Error initializing roles: ", error);
-    }
+    await initialSetup.initPermissions(this.models);
+    await initialSetup.initRoles(this.models);
+    await initialSetup.createSuperAdmin(this.models);
   }
   // Función para sincronizar todos los modelos con la base de datos
   async syncModels() {
-    await this.sequelize.sync({ alter: false }); // `force: true` recrea las tablas
+    await this.sequelize.sync({ alter: true }); // `force: true` recrea las tablas
   }
 
   // Método para encontrar un único documento que coincida con los criterios especificados.
@@ -163,10 +89,21 @@ export default class Dao {
             },
           ],
         });
+      } else if (entity === "Roles") {
+        result = await this.models[entity].findOne({
+          where: options,
+          include: [
+            {
+              model: this.models.Permissions,
+              as: "permissions",
+              attributes: ["name"],
+            },
+          ],
+        });
       } else {
         result = await this.models[entity].findOne({ where: options });
       }
-      return result ? result.get({ plain: true }) : null; // Convierte el resultado en un objeto plano
+      return result; // Convierte el resultado en un objeto plano
     } catch (error) {
       console.error("Error finding document:", error);
       return null;
@@ -209,7 +146,7 @@ export default class Dao {
       } else {
         results = await this.models[entity].findAll({ where: options });
       }
-      return results.map((result) => result.get({ plain: true }));
+      return results;
     } catch (error) {
       console.error("Error finding documents:", error);
       return [];
@@ -221,7 +158,7 @@ export default class Dao {
     if (!this.models[entity]) throw new Error("Entity not found in models");
     try {
       let result = await this.models[entity].create(document);
-      return result//.get({ plain: true });
+      return result; //.get({ plain: true });
     } catch (error) {
       console.error("Error saving document:", error);
       return null;
@@ -233,7 +170,7 @@ export default class Dao {
     if (!this.models[entity]) throw new Error("Entity not found in models");
     try {
       let results = await this.models[entity].bulkCreate(documents);
-      return results.map((result) => result.get({ plain: true }));
+      return results;
     } catch (error) {
       console.error("Error saving documents:", error);
       return null;
@@ -280,7 +217,7 @@ export default class Dao {
       } else {
         result = await this.models[entity].findByPk(id);
       }
-      return result ? result.get({ plain: true }) : null;
+      return result ? result : null;
     } catch (error) {
       console.error("Error updating document:", error);
       return null;

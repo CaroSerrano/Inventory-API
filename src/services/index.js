@@ -4,6 +4,7 @@ import ProductService from "./product.service.js";
 import CategoryService from "./category.service.js";
 import SupplierService from "./supplier.service.js";
 import PermissionService from "./permission.service.js";
+import RoleService from "./role.service.js";
 import config from "../config/config.js";
 
 // Crea una nueva instancia Dao utilizando la configuración de conexión a la base de datos.
@@ -17,3 +18,4 @@ export const productService = new ProductService(dao);
 export const categoryService = new CategoryService(dao);
 export const supplierService = new SupplierService(dao);
 export const permissionService = new PermissionService(dao);
+export const roleService = new RoleService(dao);

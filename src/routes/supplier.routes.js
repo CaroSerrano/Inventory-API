@@ -1,20 +1,14 @@
 import express from "express";
 import supplierController from "../controllers/supplier.controller.js";
 import { validateCreateSupplierAndCategory } from "../utils/middlewares/validations.js";
+import { checkPermissions } from "../utils/middlewares/checkPermissions.js";
 
 const router = express.Router();
 
-router.use(function(req, res, next) {
-    res.header(
-      "Access-Control-Allow-Headers",
-      "x-access-token, Origin, Content-Type, Accept"
-    );
-    next();
-  })
-router.get("/", supplierController.getSuppliers);
-router.post("/", validateCreateSupplierAndCategory(), supplierController.insertSupplier);
-router.get("/:id", supplierController.getSupplierById);
-router.patch("/:id", supplierController.updateSupplier);
-router.delete("/:id", supplierController.deleteSupplier);
+router.get("/", checkPermissions("read:suppliers"), supplierController.getSuppliers);
+router.post("/", [checkPermissions("create:suppliers"), validateCreateSupplierAndCategory()], supplierController.insertSupplier);
+router.get("/:id", checkPermissions("read:suppliers"), supplierController.getSupplierById);
+router.patch("/:id", checkPermissions("update:suppliers"), supplierController.updateSupplier);
+router.delete("/:id", checkPermissions("delete:suppliers"), supplierController.deleteSupplier);
 
 export default router;

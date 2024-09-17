@@ -8,20 +8,45 @@ export default class Permission {
     return "Permissions";
   }
   static initModel(sequelize) {
-    return sequelize.define("Permission", {
-      id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
+    return sequelize.define(
+      "Permission",
+      {
+        id: {
+          type: DataTypes.INTEGER,
+          autoIncrement: true,
+          primaryKey: true,
+        },
+        name: {
+          type: DataTypes.ENUM(
+            "read:roles",
+            "create:roles",
+            "update:roles",
+            "delete:roles",
+            "create:users",
+            "update:users",
+            "delete:users",
+            "read:users",
+            "create:products",
+            "update:products",
+            "delete:products",
+            "read:products",
+            "create:categories",
+            "update:categories",
+            "delete:categories",
+            "read:categories",
+            "create:suppliers",
+            "update:suppliers",
+            "delete:suppliers",
+            "read:suppliers"
+          ),
+          allowNull: false,
+        },
       },
-      name: {
-        type: DataTypes.ENUM('read:roles', 'create:users', 'update:users', 'delete:users', 'read:users', 'create:products', 'update:products', 'delete:products', 'read:products', 'create:categories', 'update:categories', 'delete:categories', 'read:categories', 'create:suppliers', 'update:suppliers', 'delete:suppliers', 'read:suppliers'),
-        allowNull: false,
+      {
+        timestamps: true,
+        createdAt: "created_at",
+        updatedAt: "updated_at",
       }
-    }, {
-      timestamps: true,
-      createdAt: "created_at",
-      updatedAt: "updated_at",
-    });
+    );
   }
 }

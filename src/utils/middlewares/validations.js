@@ -132,3 +132,23 @@ export const validateCreateSupplierAndCategory = () => {
     },
   ];
 };
+
+export const validateCreateRole = () => {
+  return [
+    check("name")
+      .exists()
+      .notEmpty()
+      .withMessage("'name' property required."),
+
+    (req, res, next) => {
+      const errors = validationResult(req);
+
+      if (!errors.isEmpty()) {
+        const checkError = errors.array().map((error) => error.msg);
+        resErrors(res, 400, checkError);
+        return;
+      }
+      next();
+    },
+  ];
+};
