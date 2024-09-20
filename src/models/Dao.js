@@ -5,6 +5,7 @@ import Role from "./role.model.js";
 import Permission from "./permissions.model.js";
 import Category from "./category.model.js";
 import Supplier from "./supplier.model.js";
+import Session from "./sessions.model.js";
 import setupAssociations from "./associations.js";
 import initialSetup from "../utils/initialSetup.js";
 
@@ -41,6 +42,7 @@ export default class Dao {
       [Permission.model]: Permission.initModel(this.sequelize),
       [Category.model]: Category.initModel(this.sequelize),
       [Supplier.model]: Supplier.initModel(this.sequelize),
+      [Session.model]: Session.initModel(this.sequelize),
     };
     // Establecer las asociaciones entre los modelos
     setupAssociations(this.models);
@@ -49,61 +51,20 @@ export default class Dao {
     await this.syncModels(); // Sincroniza los modelos al inicializar el DAO
     await initialSetup.initPermissions(this.models);
     await initialSetup.initRoles(this.models);
-    await initialSetup.createSuperAdmin(this.models);
   }
   // Función para sincronizar todos los modelos con la base de datos
   async syncModels() {
-    await this.sequelize.sync({ alter: true }); // `force: true` recrea las tablas
+    await this.sequelize.sync({ alter: false }); // `force: true` recrea las tablas
   }
 
   // Método para encontrar un único documento que coincida con los criterios especificados.
   findOne = async (options, entity) => {
     if (!this.models[entity])
       throw new Error(`Entity ${entity} not in dao schemas`);
-    let result;
+
     try {
-      if (entity === "Products") {
-        result = await this.models[entity].findOne({
-          where: options,
-          include: [
-            {
-              model: this.models.Categories,
-              as: "category",
-              attributes: ["name"],
-            },
-            {
-              model: this.models.Suppliers,
-              as: "supplier",
-              attributes: ["name"],
-            },
-          ],
-        });
-      } else if (entity === "Users") {
-        result = await this.models[entity].findOne({
-          where: options,
-          include: [
-            {
-              model: this.models.Roles,
-              as: "role",
-              attributes: ["name"],
-            },
-          ],
-        });
-      } else if (entity === "Roles") {
-        result = await this.models[entity].findOne({
-          where: options,
-          include: [
-            {
-              model: this.models.Permissions,
-              as: "permissions",
-              attributes: ["name"],
-            },
-          ],
-        });
-      } else {
-        result = await this.models[entity].findOne({ where: options });
-      }
-      return result; // Convierte el resultado en un objeto plano
+      let result = await this.models[entity].findOne({ where: options });
+      return result;
     } catch (error) {
       console.error("Error finding document:", error);
       return null;
@@ -114,38 +75,9 @@ export default class Dao {
   getAll = async (options, entity) => {
     if (!this.models[entity])
       throw new Error(`Entity ${entity} not in dao schemas`);
-    let results;
+
     try {
-      if (entity === "Products") {
-        results = await this.models[entity].findAll({
-          where: options,
-          include: [
-            {
-              model: this.models.Categories,
-              as: "category",
-              attributes: ["name"],
-            },
-            {
-              model: this.models.Suppliers,
-              as: "supplier",
-              attributes: ["name"],
-            },
-          ],
-        });
-      } else if (entity === "Users") {
-        results = await this.models[entity].findAll({
-          where: options,
-          include: [
-            {
-              model: this.models.Roles,
-              as: "role",
-              attributes: ["name"],
-            },
-          ],
-        });
-      } else {
-        results = await this.models[entity].findAll({ where: options });
-      }
+      let results = await this.models[entity].findAll({ where: options });
       return results;
     } catch (error) {
       console.error("Error finding documents:", error);
@@ -183,40 +115,11 @@ export default class Dao {
       throw new Error(`Entity ${entity} not in dao schemas`);
     let id = document.id;
     delete document.id;
-    let result;
+
     try {
       // `update` en Sequelize actualiza registros, pero no devuelve el registro actualizado directamente
       await this.models[entity].update(document, { where: { id } });
-      if (entity === "Products") {
-        result = await this.models[entity].findByPk({
-          id,
-          include: [
-            {
-              model: this.models.Categories,
-              as: "category",
-              attributes: ["name"],
-            },
-            {
-              model: this.models.Suppliers,
-              as: "supplier",
-              attributes: ["name"],
-            },
-          ],
-        });
-      } else if (entity === "Users") {
-        result = await this.models[entity].findByPk({
-          id,
-          include: [
-            {
-              model: this.models.Roles,
-              as: "role",
-              attributes: ["name"],
-            },
-          ],
-        });
-      } else {
-        result = await this.models[entity].findByPk(id);
-      }
+      let result = await this.models[entity].findByPk(id);
       return result ? result : null;
     } catch (error) {
       console.error("Error updating document:", error);

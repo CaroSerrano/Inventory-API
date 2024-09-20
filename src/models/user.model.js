@@ -20,7 +20,7 @@ export default class User {
       },
       last_name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
       },
       email: {
         type: DataTypes.STRING,
@@ -29,7 +29,7 @@ export default class User {
       },
       password: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       status: {
         type: DataTypes.BOOLEAN,
@@ -37,7 +37,8 @@ export default class User {
       },
       role_id: {
         type: DataTypes.INTEGER,
-        allowNull:false
+        allowNull:false,
+
       }
     }, {
       timestamps: true,
@@ -45,4 +46,6 @@ export default class User {
       updatedAt: "updated_at",
     });
   }
+
 }
+

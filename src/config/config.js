@@ -13,7 +13,9 @@ export default {
     dialect:'mysql'
   },
   auth: {
-    secret: process.env.SECRET_KEY || "mi-clave-secreta"
+    secret: process.env.SECRET_KEY || "mi-clave-secreta",
+    superadmin_email: process.env.SUPERADMIN_EMAIL,
+    superadmin_password: process.env.SUPERADMIN_PASSWORD
   }
   
 };

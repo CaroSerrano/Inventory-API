@@ -5,6 +5,7 @@ import supplierRouter from "./supplier.routes.js";
 import categoryRouter from "./category.routes.js";
 import permissionRouter from "./permission.routes.js";
 import roleRouter from "./role.router.js"
+import sessionRouter from "./session.router.js"
 import { resErrors } from "../utils/resErrors.js";
 import { verifytoken } from "../utils/middlewares/authJwt.js";
 const app = express();
@@ -25,12 +26,13 @@ const apiRouter = (app) => {
     );
     next();
   })
-  router.use("/api/users", userRouter);
+  router.use("/api/users", verifytoken, userRouter);
   router.use("/api/products", verifytoken, productRouter);
   router.use("/api/suppliers", verifytoken, supplierRouter);
   router.use("/api/categories", verifytoken, categoryRouter);
   router.use("/api/permissions", verifytoken, permissionRouter);
   router.use("/api/roles", verifytoken, roleRouter);
+  router.use("/api/sessions", sessionRouter);
 
   router.use("/api", (req, res) => {
     res.status(200).send("Welcome to Inventory-API")

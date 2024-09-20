@@ -1,89 +1,49 @@
 import { userService } from "../services/index.js";
-import {response} from "../utils/response.js"
-import ClientError from "../utils/errors.js"
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import config from "../config/config.js";
+import { response } from "../utils/response.js";
+import ClientError from "../utils/errors.js";
+import { createHash } from "../utils/authUtils.js";
 
 const getUsers = async (req, res, next) => {
   try {
-    let results = await userService.getAll();
-    response(res, 200, results);
+    let results = await userService.getAllWithInclude();
+    if (!results) throw new ClientError("Error geting users");
+    const users = results.map(({ dataValues }) => {
+      const { password, ...userResponse } = dataValues;
+      return userResponse;
+    });
+    response(res, 200, users);
   } catch (error) {
-    console.log(error);
-    next(error);    
+    next(error);
   }
 };
 
-const signUp = async (req, res, next) => {  
+const createUser = async (req, res, next) => {
   try {
     const { first_name, last_name, email, password, role_id } = req.body;
-    console.log(req.body);
-    
-    const hashedPass = bcrypt.hashSync(password);
+
+    const hashedPass = await createHash(password);
     const result = await userService.insert({
       first_name,
       last_name,
       email,
       password: hashedPass,
-      role_id
+      role_id,
     });
-    if(!result) throw new ClientError("Check the inserted data")
-    response(res, 201, result);
+    if (!result) throw new ClientError("Check the inserted data");
+    const { password: _, ...userResponse } = result.dataValues;
+    response(res, 201, userResponse);
   } catch (error) {
-    console.log(error);
-    next(error)
+    next(error);
   }
 };
-
-const signIn = async (req, res, next) => {
-  console.log("en signin controlador");
-  
-  try {
-    const email = req.body.email;
-    console.log("email: ", email);
-    
-    const user = await userService.getBy({email})
-    console.log("User: ",user);
-    
-    const password = req.body.password;
-    console.log("password: ", password);
-    
-    if (!user){
-      throw new ClientError ("User not found", 404);
-    }
-    let comparePasswords = bcrypt.compareSync(password, user.password);
-    console.log("comparedPAsswords: ",comparePasswords);
-    
-    if(!comparePasswords){
-      throw new ClientError ("Invalid password.", 401);
-    }
-    let token = jwt.sign({id: user.id, role_id: user.role_id}, config.auth.secret, {
-      expiresIn: 86400 //24 horas
-    })
-    console.log("token: ",token);
-    
-    const savedUser = {
-      id: user.id,
-      name: user.first_name.concat(' ', user.last_name),
-      email: user.email,
-      role: user.role_id,
-      accessToken: token
-    }
-    response(res, 201, savedUser)
-  } catch (error) {
-    next(error)
-  }
-
-}
 
 const getUserById = async (req, res, next) => {
   const id = req.params.id;
   try {
-    const user = await userService.getBy( {id: id} );
+    const user = await userService.getByWithInclude({ id: id });
+    if (!user) throw new ClientError("User not found");
     response(res, 200, user);
   } catch (error) {
-    console.log(error);
     next(error);
   }
 };
@@ -91,31 +51,30 @@ const getUserById = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const { data } = req.body;
-    const result = await userService.update(id, data);
+    const data = req.body;
+    const result = await userService.updateWithInclude(data, id);
+    if (!result) throw new ClientError("Error updating user");
     response(res, 200, result);
   } catch (error) {
-    next(error)
+    next(error);
   }
-}
+};
 
 const deleteUser = async (req, res, next) => {
   const id = req.params.id;
   try {
     const result = await userService.delete(id);
-    if(!result) throw new ClientError("El usuario especificado no existe")
+    if (!result) throw new ClientError("Error deleting user");
     res.status(204).end();
   } catch (error) {
-    console.log(error);
-    next(error); 
+    next(error);
   }
-}
+};
 
 export default {
   getUsers,
-  signUp,
-  signIn,
+  createUser,
   getUserById,
   updateUser,
-  deleteUser
+  deleteUser,
 };
