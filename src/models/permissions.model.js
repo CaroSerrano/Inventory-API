@@ -37,7 +37,11 @@ export default class Permission {
             "create:suppliers",
             "update:suppliers",
             "delete:suppliers",
-            "read:suppliers"
+            "read:suppliers",
+            "create:stores",
+            "update:stores",
+            "delete:stores",
+            "read:stores"
           ),
           allowNull: false,
         },

@@ -6,6 +6,9 @@ import Permission from "./permissions.model.js";
 import Category from "./category.model.js";
 import Supplier from "./supplier.model.js";
 import Session from "./sessions.model.js";
+import Employee from "./employee.model.js";
+import Manager from "./manager.model.js";
+import Store from "./store.model.js";
 import setupAssociations from "./associations.js";
 import initialSetup from "../utils/initialSetup.js";
 
@@ -43,6 +46,9 @@ export default class Dao {
       [Category.model]: Category.initModel(this.sequelize),
       [Supplier.model]: Supplier.initModel(this.sequelize),
       [Session.model]: Session.initModel(this.sequelize),
+      [Employee.model]: Employee.initModel(this.sequelize),
+      [Manager.model]: Manager.initModel(this.sequelize),
+      [Store.model]: Store.initModel(this.sequelize),
     };
     // Establecer las asociaciones entre los modelos
     setupAssociations(this.models);
@@ -54,7 +60,7 @@ export default class Dao {
   }
   // Función para sincronizar todos los modelos con la base de datos
   async syncModels() {
-    await this.sequelize.sync({ alter: false }); // `force: true` recrea las tablas
+    await this.sequelize.sync({ force: false }); // `force: true` recrea las tablas
   }
 
   // Método para encontrar un único documento que coincida con los criterios especificados.

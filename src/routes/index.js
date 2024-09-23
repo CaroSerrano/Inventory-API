@@ -1,11 +1,14 @@
 import express from "express";
 import userRouter from "./user.routes.js";
+import employeeRouter from "./employee.routes.js";
+import managerRouter from "./manager.routes.js";
+import storeRouter from "./store.routes.js";
 import productRouter from "./product.routes.js";
 import supplierRouter from "./supplier.routes.js";
 import categoryRouter from "./category.routes.js";
 import permissionRouter from "./permission.routes.js";
-import roleRouter from "./role.router.js"
-import sessionRouter from "./session.router.js"
+import roleRouter from "./role.router.js";
+import sessionRouter from "./session.router.js";
 import { resErrors } from "../utils/resErrors.js";
 import { verifytoken } from "../utils/middlewares/authJwt.js";
 const app = express();
@@ -27,6 +30,9 @@ const apiRouter = (app) => {
     next();
   })
   router.use("/api/users", verifytoken, userRouter);
+  router.use("/api/employees", verifytoken, employeeRouter);
+  router.use("/api/managers", verifytoken, managerRouter);  
+  router.use("/api/stores", verifytoken, storeRouter);    
   router.use("/api/products", verifytoken, productRouter);
   router.use("/api/suppliers", verifytoken, supplierRouter);
   router.use("/api/categories", verifytoken, categoryRouter);

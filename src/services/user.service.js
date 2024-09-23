@@ -1,4 +1,5 @@
 import User from "../models/user.model.js";
+import ClientError from "../utils/errors.js";
 import GenericQueries from "./gerenicQueries.js";
 
 export default class UserService extends GenericQueries {
@@ -39,7 +40,7 @@ export default class UserService extends GenericQueries {
         let result = await this.getByWithInclude({ id });
         return result;
       } else {
-        throw new Error("User not found or no changes made");
+        throw new ClientError("User not found or no changes made");
       }
     } catch (error) {
       console.error("Error updating user", error);

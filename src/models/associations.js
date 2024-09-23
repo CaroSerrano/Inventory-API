@@ -13,6 +13,22 @@ export default function setupAssociations(models) {
     otherKey: "role_id",
     as: "roles",
   });
+  models.Managers.hasMany(models.Employees, {
+    foreignKey: "manager_id",
+    as: "employees",
+  });
+  models.Employees.belongsTo(models.Managers, {
+    foreignKey: "manager_id",
+    as: "manager",
+  });
+  models.Managers.hasMany(models.Stores, {
+    foreignKey: "manager_id",
+    as: "stores"
+  });
+  models.Stores.belongsTo(models.Managers, {
+    foreignKey: "manager_id",
+    as: "manager"
+  })
   models.Categories.hasMany(models.Products, {
     foreignKey: "category_id",
     as: "products",

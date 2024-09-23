@@ -24,6 +24,10 @@ async function initPermissions(models) {
     { name: "update:roles" },
     { name: "delete:roles" },
     { name: "read:roles" },
+    { name: "create:stores" },
+    { name: "update:stores" },
+    { name: "delete:stores" },
+    { name: "read:stores" },
   ];
 
   try {
