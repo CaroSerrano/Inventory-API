@@ -49,7 +49,6 @@ export default class ManagerService extends GenericQueries {
         throw new ClientError("Manager not found or no changes made");
       }
     } catch (error) {
-      console.error("Error updating Manager", error);
       throw error
     }
   };

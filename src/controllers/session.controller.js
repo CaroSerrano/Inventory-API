@@ -22,7 +22,6 @@ export const logout = async (req, res, next) => {
     throw new ClientError("Token not provided", 401);
   }
   try {
-    // Pasamos el token como un objeto de filtro
     const session = await sessionService.getBy({ token });
     if (!session) {
       throw new ClientError("Session not found or already logged out", 404);

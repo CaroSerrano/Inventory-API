@@ -33,7 +33,7 @@ export default class StoreService extends GenericQueries {
       where: options,
       include: this.include,
     });
-    return results;
+    return results ? results : null;
   };
 
   updateWithInclude = async (data, id) => {

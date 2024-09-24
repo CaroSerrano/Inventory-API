@@ -6,7 +6,7 @@ import { createHash } from "../utils/authUtils.js";
 const getEmployees = async (req, res, next) => {
   try {
     let results = await employeeService.getAllWithInclude();
-    if (!results) throw new ClientError("Error geting employees");
+    if (!results) throw new ClientError("Error geting employees.");
     const users = results.map(({ dataValues }) => {
       const { password, ...userResponse } = dataValues;
       return userResponse;
@@ -47,7 +47,7 @@ const createEmployee = async (req, res, next) => {
       manager_id,
       store_id
     });
-    if (!result) throw new ClientError("Check the inserted data");
+    if (!result) throw new ClientError("Check the inserted data.");
     const { password: _, ...userResponse } = result.dataValues;
     response(res, 201, userResponse);
   } catch (error) {
@@ -59,7 +59,7 @@ const getEmployeeById = async (req, res, next) => {
   const id = req.params.id;
   try {
     const user = await employeeService.getByWithInclude({ id: id });
-    if (!user) throw new ClientError("Employee not found");
+    if (!user) throw new ClientError("Error geting employee.");
     response(res, 200, user);
   } catch (error) {
     next(error);
@@ -71,7 +71,7 @@ const updateEmployee = async (req, res, next) => {
     const id = req.params.id;
     const data = req.body;
     const result = await employeeService.updateWithInclude(data, id);
-    if (!result) throw new ClientError("Error updating employee");
+    if (!result) throw new ClientError("Error updating employee.");
     response(res, 200, result);
   } catch (error) {
     next(error);
@@ -82,7 +82,7 @@ const deleteEmployee = async (req, res, next) => {
   const id = req.params.id;
   try {
     const result = await employeeService.delete(id);
-    if (!result) throw new ClientError("Error deleting employee");
+    if (!result) throw new ClientError("Error deleting employee.");
     res.status(204).end();
   } catch (error) {
     next(error);

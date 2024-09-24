@@ -96,7 +96,7 @@ export default class Dao {
     if (!this.models[entity]) throw new Error("Entity not found in models");
     try {
       let result = await this.models[entity].create(document);
-      return result; //.get({ plain: true });
+      return result;
     } catch (error) {
       console.error("Error saving document:", error);
       return null;

@@ -4,17 +4,22 @@ import {
   categoryService,
   supplierService,
   storeService,
+  roleService
 } from "../../services/index.js";
 import { resErrors } from "../resErrors.js";
 import ClientError from "../errors.js";
 
-export const validateRole = () => {
+export const validateCreateRole = () => {
   return [
-    check("name").exists().notEmpty().withMessage("'name' property required."),
-
+    check("name").exists().notEmpty().withMessage("'name' property required.").bail()
+    .custom(async (value) => {
+      const role = await roleService.getBy({ name: value });
+      if (role) {
+        throw new ClientError(`Role ${value} already exists.`)
+      }
+    }),
     (req, res, next) => {
       const errors = validationResult(req);
-
       if (!errors.isEmpty()) {
         const checkError = errors.array().map((error) => error.msg);
         resErrors(res, 400, checkError);
@@ -54,7 +59,13 @@ export const validateCreateUser = () => {
       .exists()
       .withMessage("'role_id' property required.")
       .isInt()
-      .withMessage("'role_id' must be an integer"),
+      .withMessage("'role_id' must be an integer")
+      .custom(async (value) => {
+        const role = await roleService.getBy({ id: value });
+        if (!role) {
+          throw new ClientError("Role not found.");
+        }
+      }),
     check("management_level")
       .optional()
       .isIn(["Lower-level", "Middle-level", "Top-level"])
@@ -82,7 +93,7 @@ export const validateCreateUser = () => {
       .custom(async (value) => {
         const manager = await managerService.getBy({ id: value });
         if (!manager) {
-          throw new ClientError("Manager not found");
+          throw new ClientError("Manager not found.");
         }
       }),
     check("store_id")
@@ -90,7 +101,7 @@ export const validateCreateUser = () => {
       .custom(async (value) => {
         const store = await storeService.getBy({ id: value });
         if (!store) {
-          throw new ClientError("Store not found");
+          throw new ClientError("Store not found.");
         }
       }),
 
@@ -159,7 +170,7 @@ export const validateCreateProduct = () => {
       .custom(async (value) => {
         const category = await categoryService.getBy({ id: value });
         if (!category) {
-          throw new ClientError("Category not found");
+          throw new ClientError("Category not found.");
         }
       })
       .bail(),
@@ -171,7 +182,7 @@ export const validateCreateProduct = () => {
       .custom(async (value) => {
         const supplier = await supplierService.getBy({ id: value });
         if (!supplier) {
-          throw new ClientError("Supplier not found");
+          throw new ClientError("Supplier not found.");
         }
       }),
 
@@ -214,28 +225,6 @@ export const validateCreateSupplierAndCategory = () => {
   ];
 };
 
-export const validateCreateRole = () => {
-  return [
-    check("name")
-      .exists()
-      .notEmpty()
-      .withMessage("'name' property required.")
-      .bail(),
-    check("role_id").exists().isInt().withMessage("role_id must be an integer"),
-
-    (req, res, next) => {
-      const errors = validationResult(req);
-
-      if (!errors.isEmpty()) {
-        const checkError = errors.array().map((error) => error.msg);
-        resErrors(res, 400, checkError);
-        return;
-      }
-      next();
-    },
-  ];
-};
-
 export const validateCreateStore = () => {
   return [
     check("adress")
@@ -251,7 +240,7 @@ export const validateCreateStore = () => {
       .custom(async (value) => {
         const manager = await managerService.getBy({ id: value });
         if (!manager) {
-          throw new ClientError("Manager not found");
+          throw new ClientError("Manager not found.");
         }
       }),
 

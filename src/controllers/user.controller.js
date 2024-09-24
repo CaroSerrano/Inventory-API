@@ -6,7 +6,7 @@ import { createHash } from "../utils/authUtils.js";
 const getUsers = async (req, res, next) => {
   try {
     let results = await userService.getAllWithInclude();
-    if (!results) throw new ClientError("Error geting users");
+    if (!results) throw new ClientError("Error geting users.");
     const users = results.map(({ dataValues }) => {
       const { password, ...userResponse } = dataValues;
       return userResponse;
@@ -41,7 +41,7 @@ const getUserById = async (req, res, next) => {
   const id = req.params.id;
   try {
     const user = await userService.getByWithInclude({ id: id });
-    if (!user) throw new ClientError("User not found");
+    if (!user) throw new ClientError("Error geting user.");
     response(res, 200, user);
   } catch (error) {
     next(error);
@@ -53,7 +53,7 @@ const updateUser = async (req, res, next) => {
     const id = req.params.id;
     const data = req.body;
     const result = await userService.updateWithInclude(data, id);
-    if (!result) throw new ClientError("Error updating user");
+    if (!result) throw new ClientError("Error updating user.");
     response(res, 200, result);
   } catch (error) {
     next(error);
@@ -64,7 +64,7 @@ const deleteUser = async (req, res, next) => {
   const id = req.params.id;
   try {
     const result = await userService.delete(id);
-    if (!result) throw new ClientError("Error deleting user");
+    if (!result) throw new ClientError("Error deleting user.");
     res.status(204).end();
   } catch (error) {
     next(error);

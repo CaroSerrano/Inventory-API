@@ -6,7 +6,7 @@ import { createHash } from "../utils/authUtils.js";
 const getManagers = async (req, res, next) => {
   try {
     let results = await managerService.getAllWithInclude();
-    if (!results) throw new ClientError("Error geting managers");
+    if (!results) throw new ClientError("Error geting managers.");
     const users = results.map(({ dataValues }) => {
       const { password, ...userResponse } = dataValues;
       return userResponse;
@@ -39,7 +39,7 @@ const createManager = async (req, res, next) => {
       management_level,
       hire_date,
     });
-    if (!result) throw new ClientError("Check the inserted data");
+    if (!result) throw new ClientError("Check the inserted data.");
     const { password: _, ...userResponse } = result.dataValues;
     response(res, 201, userResponse);
   } catch (error) {
@@ -51,7 +51,7 @@ const getManagerById = async (req, res, next) => {
   const id = req.params.id;
   try {
     const user = await managerService.getByWithInclude({ id: id });
-    if (!user) throw new ClientError("Manager not found");
+    if (!user) throw new ClientError("Error geting manager.");
     response(res, 200, user);
   } catch (error) {
     next(error);
@@ -63,7 +63,7 @@ const updateManager = async (req, res, next) => {
     const id = req.params.id;
     const data = req.body;
     const result = await managerService.updateWithInclude(data, id);
-    if (!result) throw new ClientError("Error updating Manager");
+    if (!result) throw new ClientError("Error updating Manager.");
     response(res, 200, result);
   } catch (error) {
     next(error);
@@ -74,7 +74,7 @@ const deleteManager = async (req, res, next) => {
   const id = req.params.id;
   try {
     const result = await managerService.delete(id);
-    if (!result) throw new ClientError("Error deleting Manager");
+    if (!result) throw new ClientError("Error deleting Manager.");
     res.status(204).end();
   } catch (error) {
     next(error);

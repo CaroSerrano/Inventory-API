@@ -43,7 +43,6 @@ export default class EmployeeService extends GenericQueries {
         throw new ClientError("Employee not found or no changes made");
       }
     } catch (error) {
-      console.error("Error updating Employee", error);
       throw error
     }
   };

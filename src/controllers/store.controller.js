@@ -6,11 +6,11 @@ const getStores = async (req, res, next) => {
   try {
     let results = await storeService.getAllWithInclude();
     if (!results) throw new ClientError("Error geting stores");
-    const users = results.map(({ dataValues }) => {
-      const { password, ...userResponse } = dataValues;
-      return userResponse;
+    const stores = results.map(({ dataValues }) => {
+      const { password, ...storeResponse } = dataValues;
+      return storeResponse;
     });
-    response(res, 200, users);
+    response(res, 200, stores);
   } catch (error) {
     next(error);
   }
@@ -18,10 +18,7 @@ const getStores = async (req, res, next) => {
 
 const createStore = async (req, res, next) => {
   try {
-    const {
-      adress,
-      manager_id,
-    } = req.body;
+    const { adress, manager_id } = req.body;
 
     const result = await storeService.insert({
       adress,

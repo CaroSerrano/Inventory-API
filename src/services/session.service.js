@@ -1,9 +1,10 @@
 import Session from "../models/sessions.model.js";
 import GenericQueries from "./gerenicQueries.js";
-import { userService, roleService } from "../services/index.js";
+import { userService, roleService, employeeService, managerService } from "../services/index.js";
 import jwt from "jsonwebtoken";
 import config from "../config/config.js";
 import { isValidPassword } from "../utils/authUtils.js";
+import ClientError from "../utils/errors.js";
 
 const secret = config.auth.secret;
 
@@ -22,19 +23,21 @@ export default class SessionService extends GenericQueries {
 
       return await this.insert(session);
     } catch (error) {
-      throw new Error("Failed to create session");
+      throw new ClientError("Failed to create session");
     }
   }
 
   async getUser(email) {
     const user = await userService.getByWithInclude({ email });
-    if (!user) throw new Error("User not found");
+    const manager = await managerService.getByWithInclude({ email });
+    const employee = await employeeService.getByWithInclude({ email });
+    if (!user && !manager && !employee) throw new ClientError("User not found.");
     return user;
   }
 
   async checkRol(name) {
     const role = await roleService.getBy({ name: name });
-    if (!role) throw new Error(`Role not found`);
+    if (!role) throw new ClientError(`Role not found.`);
     return role;
   }
 
@@ -57,7 +60,7 @@ export default class SessionService extends GenericQueries {
       role.name !== "superadmin" &&
       !(await isValidPassword(user, password))
     ) {
-      throw new Error("Invalid password");
+      throw new ClientError("Invalid password.");
     }
 
     //Create token
@@ -76,7 +79,7 @@ export default class SessionService extends GenericQueries {
     if (user) {
       await this.createSession(user.email, role.name, token);
     } else {
-      throw new Error("Incomplete session data");
+      throw new ClientError("Incomplete session data.");
     }
 
     return { token, user: userResponse };

@@ -26,7 +26,7 @@ const getRoleById = async (req, res, next) => {
 
 const createRole = async (req, res, next) => {
   try {
-    const {data} = req.body;
+    const data = req.body;
     const result = await roleService.insert(data);
     response(res, 201, result);
   } catch (error) {
@@ -39,7 +39,7 @@ const createRole = async (req, res, next) => {
 const updateRole = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const { data } = req.body;
+    const data = req.body;
     const role = await roleService.update(id, data);
     if (!role) throw new ClientError("The specified role does not exists.");
     response(res, 200, role);

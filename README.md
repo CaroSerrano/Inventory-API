@@ -52,20 +52,18 @@ Cannot add, edit, or delete any records.
 
 ```json
 {
-  "filter": {
-    "category_id": 1
-  }
+  "category_id": 1
 }
+
 ```
 
 *Example for request body to update a product:*
 
 ```json
 {
-  "data": {
-    "unit_price": 10000
-  }
+  "unit_price": 10000
 }
+
 ```
 
 *Example for request body to create a product:*
