@@ -1,11 +1,11 @@
 import { productService } from "../services/index.js";
 import { response } from "../utils/response.js";
-import ClientError from "../utils/errors.js";
+import { ClientError, NotFoundError } from "../utils/errors.js";
 
 const getProducts = async (req, res, next) => {
   try {
     let results = await productService.getAllWithInclude();
-    if (!results) throw new ClientError("Error geting products.");
+    if (!results) throw new NotFoundError("Error geting products.");
     response(res, 200, results);
   } catch (error) {
     next(error);
@@ -41,7 +41,7 @@ const getProductById = async (req, res, next) => {
   try {
     const id = req.params.id;
     const product = await productService.getByWithInclude({ id: id });
-    if (!product) throw new ClientError("Error geting product.");
+    if (!product) throw new NotFoundError("Error geting product.");
     response(res, 200, product);
   } catch (error) {
     next(error);
@@ -53,7 +53,7 @@ const updateProduct = async (req, res, next) => {
     const id = req.params.id;
     const data = req.body;
     const product = await productService.updateWithInclude(data, id);
-    if (!product) throw new ClientError("Error updating product.");
+    if (!product) throw new NotFoundError("Error updating product.");
     response(res, 200, product);
   } catch (error) {
     next(error);
@@ -64,7 +64,7 @@ const deleteProduct = async (req, res, next) => {
   try {
     const id = req.params.id;
     const result = await productService.delete(id);
-    if (!result) throw new ClientError("Error deleting product.");
+    if (!result) throw new NotFoundError("Error deleting product.");
     res.status(204).end();
   } catch (error) {
     next(error);
@@ -75,7 +75,7 @@ const deleteManyProducts = async (req, res, next) => {
   try {
     const filter = req.body;
     const result = await productService.deleteMany(filter);
-    if (!result) throw new ClientError("Error deleting products.");
+    if (!result) throw new NotFoundError("Error deleting products.");
     res.status(204).end();
   } catch (error) {
     next(error);

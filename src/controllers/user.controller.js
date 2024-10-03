@@ -1,15 +1,15 @@
 import { userService } from "../services/index.js";
 import { response } from "../utils/response.js";
-import ClientError from "../utils/errors.js";
+import { ClientError, NotFoundError } from "../utils/errors.js";
 import { createHash } from "../utils/authUtils.js";
 
 const getUsers = async (req, res, next) => {
   try {
     let results = await userService.getAllWithInclude();
-    if (!results) throw new ClientError("Error geting users.");
-    const users = results.map(({ dataValues }) => {
-      const { password, ...userResponse } = dataValues;
-      return userResponse;
+    if (!results) throw new NotFoundError("Error geting users.");
+    const users = results.map((user) => {
+      const { password, ...safeData } = user;
+      return safeData;
     });
     response(res, 200, users);
   } catch (error) {
@@ -30,7 +30,7 @@ const createUser = async (req, res, next) => {
       role_id,
     });
     if (!result) throw new ClientError("Check the inserted data");
-    const { password: _, ...userResponse } = result.dataValues;
+    const { password: _, ...userResponse } = result;
     response(res, 201, userResponse);
   } catch (error) {
     next(error);
@@ -41,8 +41,9 @@ const getUserById = async (req, res, next) => {
   const id = req.params.id;
   try {
     const user = await userService.getByWithInclude({ id: id });
-    if (!user) throw new ClientError("Error geting user.");
-    response(res, 200, user);
+    if (!user) throw new NotFoundError("Error geting user.");
+    const { password: _, ...userResponse } = user;
+    response(res, 200, userResponse);
   } catch (error) {
     next(error);
   }
@@ -53,8 +54,9 @@ const updateUser = async (req, res, next) => {
     const id = req.params.id;
     const data = req.body;
     const result = await userService.updateWithInclude(data, id);
-    if (!result) throw new ClientError("Error updating user.");
-    response(res, 200, result);
+    if (!result) throw new NotFoundError("Error updating user.");
+    const { password: _, ...userResponse } = result;
+    response(res, 200, userResponse);
   } catch (error) {
     next(error);
   }
@@ -64,7 +66,7 @@ const deleteUser = async (req, res, next) => {
   const id = req.params.id;
   try {
     const result = await userService.delete(id);
-    if (!result) throw new ClientError("Error deleting user.");
+    if (!result) throw new NotFoundError("Error deleting user.");
     res.status(204).end();
   } catch (error) {
     next(error);

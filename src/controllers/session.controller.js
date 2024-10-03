@@ -1,5 +1,9 @@
 import { sessionService } from "../services/index.js";
-import ClientError from "../utils/errors.js";
+import {
+  AuthorizationError,
+  ClientError,
+  NotFoundError,
+} from "../utils/errors.js";
 import { response } from "../utils/response.js";
 
 const signIn = async (req, res, next) => {
@@ -17,14 +21,13 @@ export const logout = async (req, res, next) => {
   if (token.startsWith("Bearer ")) {
     token = token.split(" ")[1];
   }
-  console.log(token);
   if (!token) {
-    throw new ClientError("Token not provided", 401);
+    throw new AuthorizationError("Token not provided");
   }
   try {
     const session = await sessionService.getBy({ token });
     if (!session) {
-      throw new ClientError("Session not found or already logged out", 404);
+      throw new NotFoundError("Session not found or already logged out");
     }
     await sessionService.delete({ token });
     response(res, 200, "Successfully logged out");

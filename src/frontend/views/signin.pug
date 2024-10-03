@@ -1,0 +1,18 @@
+doctype html
+html(lang="en")
+    include ./head.pug
+    body 
+        header
+            div.logo
+                a(href="..")
+                    img(src="/static/gato-negro.png", alt="Inventory API logo")
+                h1.titulo Inventory-API
+        form#signinForm(action="/api/sessions/signin", method ="post") 
+            label(for="emailField") Email 
+            input#emailField(type="email", required)
+            label(for="passwordField") Password 
+            input#passwordField(type="password", required)
+            button(type="submit", class= "button") Sign in
+        script(src= "/static/signinScript.js", type= "module")
+    include ./footer.pug
+    

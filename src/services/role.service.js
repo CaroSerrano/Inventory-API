@@ -13,20 +13,29 @@ export default class RoleService extends GenericQueries {
           attributes: [],
         },
       },
-    ]
+    ];
   }
   getAllWithInclude = async (options) => {
-    const results = await this.dao.models[Role.model].findAll({
-      where: options,
-      include: this.include
-    });
-    return results? results : null;
+    try {
+      const results = await this.dao.models[Role.model].findAll({
+        where: options,
+        include: this.include,
+      });
+      let mappedResults = results.map((result) => result.get({ plain: true }));
+      return mappedResults ? mappedResults : null;
+    } catch (error) {
+      throw error;
+    }
   };
   getByWithInclude = async (options) => {
-    const result = await this.dao.models[Role.model].findOne({
-      where: options,
-      include: this.include
-    });
-    return result? result : null;
+    try {
+      const result = await this.dao.models[Role.model].findOne({
+        where: options,
+        include: this.include,
+      });
+      return result ? result.dataValues : null;
+    } catch (error) {
+      throw error;
+    }
   };
 }

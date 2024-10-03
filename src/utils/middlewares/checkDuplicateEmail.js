@@ -1,5 +1,5 @@
 import { userService } from "../../services/index.js";
-import ClientError from "../errors.js";
+import {ClientError} from "../errors.js";
 
 export const checkDuplicateEmail = async (req, res, next) => {
   console.log("En checkDuplicateEmail");
@@ -12,7 +12,8 @@ export const checkDuplicateEmail = async (req, res, next) => {
     console.log("Email válido");
     
     next();
-  } catch (error) {   
+  } catch (error) {
+    console.error(error.message);
     next(error);
   }
 };

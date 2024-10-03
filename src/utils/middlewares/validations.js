@@ -7,7 +7,7 @@ import {
   roleService
 } from "../../services/index.js";
 import { resErrors } from "../resErrors.js";
-import ClientError from "../errors.js";
+import {ClientError, NotFoundError} from "../errors.js";
 
 export const validateCreateRole = () => {
   return [
@@ -63,14 +63,14 @@ export const validateCreateUser = () => {
       .custom(async (value) => {
         const role = await roleService.getBy({ id: value });
         if (!role) {
-          throw new ClientError("Role not found.");
+          throw new NotFoundError("Role not found.");
         }
       }),
     check("management_level")
       .optional()
       .isIn(["Lower-level", "Middle-level", "Top-level"])
       .withMessage(
-        'Allowed management_level values are "Lower-level", "Middle-level" and "Top-level"'
+        'Allowed management_level values are Lower-level, Middle-level and Top-level'
       ),
     check("hire_date")
       .optional()
@@ -93,7 +93,7 @@ export const validateCreateUser = () => {
       .custom(async (value) => {
         const manager = await managerService.getBy({ id: value });
         if (!manager) {
-          throw new ClientError("Manager not found.");
+          throw new NotFoundError("Manager not found.");
         }
       }),
     check("store_id")
@@ -101,7 +101,7 @@ export const validateCreateUser = () => {
       .custom(async (value) => {
         const store = await storeService.getBy({ id: value });
         if (!store) {
-          throw new ClientError("Store not found.");
+          throw new NotFoundError("Store not found.");
         }
       }),
 
@@ -170,7 +170,7 @@ export const validateCreateProduct = () => {
       .custom(async (value) => {
         const category = await categoryService.getBy({ id: value });
         if (!category) {
-          throw new ClientError("Category not found.");
+          throw new NotFoundError("Category not found.");
         }
       })
       .bail(),
@@ -182,7 +182,7 @@ export const validateCreateProduct = () => {
       .custom(async (value) => {
         const supplier = await supplierService.getBy({ id: value });
         if (!supplier) {
-          throw new ClientError("Supplier not found.");
+          throw new NotFoundError("Supplier not found.");
         }
       }),
 
@@ -240,7 +240,7 @@ export const validateCreateStore = () => {
       .custom(async (value) => {
         const manager = await managerService.getBy({ id: value });
         if (!manager) {
-          throw new ClientError("Manager not found.");
+          throw new NotFoundError("Manager not found.");
         }
       }),
 

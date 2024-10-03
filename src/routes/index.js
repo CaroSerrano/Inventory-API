@@ -38,11 +38,15 @@ const apiRouter = (app) => {
   router.use("/api/categories", verifytoken, categoryRouter);
   router.use("/api/permissions", verifytoken, permissionRouter);
   router.use("/api/roles", verifytoken, roleRouter);
+  router.use("/api/sessions/login", (req, res) => {
+    res.status(200).render("signin")
+  });
   router.use("/api/sessions", sessionRouter);
 
   router.use("/api", (req, res) => {
-    res.status(200).send("Welcome to Inventory-API")
+    res.status(200).render("index")
   });
+
   router.use("*", (req, res) => {
     resErrors(res, 404, "Non-existent route");
   });

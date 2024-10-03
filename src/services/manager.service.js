@@ -1,7 +1,6 @@
 import Manager from "../models/manager.model.js";
 import GenericQueries from "./gerenicQueries.js";
-import ClientError from "../utils/errors.js";
-import { employeeService } from "./index.js";
+import { NotFoundError } from "../utils/errors.js";
 
 export default class ManagerService extends GenericQueries {
   constructor(dao) {
@@ -16,24 +15,28 @@ export default class ManagerService extends GenericQueries {
   }
 
   getByWithInclude = async (options) => {
-    const manager = await this.dao.models[Manager.model].findOne({
-      where: options,
-      include: this.include,
-    });
-    const number_of_employees = await employeeService.findAll({manager_id: manager.id}).length();
-    const result = {
-      manager,
-      number_of_employees: number_of_employees
+    try {
+      const result = await this.dao.models[Manager.model].findOne({
+        where: options,
+        include: this.include,
+      });
+      return result ? result.dataValues : null;
+    } catch (error) {
+      throw error;
     }
-    return result? result : null;
   };
 
   getAllWithInclude = async (options) => {
-    let results = await this.dao.models[Manager.model].findAll({
-      where: options,
-      include: this.include,
-    });
-    return results;
+    try {
+      let results = await this.dao.models[Manager.model].findAll({
+        where: options,
+        include: this.include,
+      });
+      let mappedResults = results.map((result) => result.get({ plain: true }));
+      return mappedResults ? mappedResults : null;
+    } catch (error) {
+      throw error;
+    }
   };
 
   updateWithInclude = async (data, id) => {
@@ -46,10 +49,10 @@ export default class ManagerService extends GenericQueries {
         let result = await this.getByWithInclude({ id });
         return result;
       } else {
-        throw new ClientError("Manager not found or no changes made");
+        throw new NotFoundError("Manager not found or no changes made");
       }
     } catch (error) {
-      throw error
+      throw error;
     }
   };
 }

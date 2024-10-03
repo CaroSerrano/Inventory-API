@@ -3,11 +3,20 @@ import cors from 'cors';
 import { resErrors } from '../src/utils/resErrors.js';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import path from 'path';
 import apiRouter from './routes/index.js';
 import config from './config/config.js';
 
+const dirname = import.meta.dirname
 const app = express();
 const PORT = config.PORT;
+
+//Importación del motor de plantillas
+app.set('view engine', 'pug');
+app.set('views', path.join(dirname, 'frontend/views'))
+
+app.use('/static', express.static(path.join(dirname, 'frontend/public')));
+
 
 // Configuración de middlewares
 app.use(

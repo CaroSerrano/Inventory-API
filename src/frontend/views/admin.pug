@@ -1,0 +1,16 @@
+doctype html
+html(lang="en")
+    include ./head.pug
+    body 
+        header
+            div.logo
+                a(href="../index.pug")
+                    img(src="/static/gato-negro.png", alt="Inventory API logo")
+                h1.titulo Inventory-API
+                a(type="button", class= "button", href= "../index.pug") Products
+                a(type="button", class= "button", href= "../index.pug") Users
+                a(type="button", class= "button", href= "../index.pug") Stores
+                a(type="button", class= "button", href= "../index.pug") Suppliers
+                a(type="button", class= "button", href= "../index.pug") Categories 
+    include ./footer.pug
+    

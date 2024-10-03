@@ -1,4 +1,4 @@
-import Dao from "../models/Dao.js";
+import sequelizeDAO from "../models/sequelizeDAO.js";
 import UserService from "./user.service.js";
 import ProductService from "./product.service.js";
 import CategoryService from "./category.service.js";
@@ -12,7 +12,7 @@ import StoreService from "./store.service.js"
 import config from "../config/config.js";
 
 // Crea una nueva instancia Dao utilizando la configuración de conexión a la base de datos.
-const dao = new Dao(config.db);
+const dao = new sequelizeDAO(config.db);
 dao.initialize();
 export const models = dao.models;
 
