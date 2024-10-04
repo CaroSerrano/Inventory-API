@@ -7,7 +7,7 @@ html(lang="en")
                 a(href="../index.pug")
                     img(src="/static/gato-negro.png", alt="Cat-shop logo")
                 h1.titulo Cat-shop
-        a(type="button", class= "button", href= "../index.pug") Upload product
+        a(type="button", class= "button", href= "./create-product") Upload products
         each result in results
             div.product
                 h3#product_name= `${result.name}`

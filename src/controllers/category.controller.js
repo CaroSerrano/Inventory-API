@@ -36,6 +36,16 @@ const getCategoryById = async (req, res, next) => {
   }
 };
 
+const getCategoryByName = async (req, res, next) => {
+  try {
+    const name = req.params.name;
+    const category = await categoryService.getBy({name: name });
+    if (!category) throw new NotFoundError("Error geting category.");
+    response(res, 200, category);
+  } catch (error) {
+    next(error);
+  }
+};
 const updateCategory = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -63,6 +73,7 @@ export default {
   getCategories,
   insertCategory,
   getCategoryById,
+  getCategoryByName,
   deletecategory,
   updateCategory,
 };

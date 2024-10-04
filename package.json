@@ -1,7 +1,7 @@
 {
-  "name": "api-rest-jwt-roles",
+  "name": "cat-shop",
   "version": "1.0.0",
-  "description": "API REST incorporando autenticación y roles",
+  "description": "API incorporando autenticación y roles",
   "main": "index.js",
   "type": "module",
   "scripts": {

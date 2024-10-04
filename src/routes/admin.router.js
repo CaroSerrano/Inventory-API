@@ -13,4 +13,7 @@ router.get(
   productController.showProducts
 );
 
+router.get("/create-product", (req, res) => {
+  res.status(200).render("product-create");
+});
 export default router;

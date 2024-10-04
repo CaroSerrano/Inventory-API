@@ -1,0 +1,26 @@
+doctype html
+html(lang="en")
+    include ./head.pug
+    body 
+        header
+            div.logo
+                a(href="../index.pug")
+                    img(src="/static/gato-negro.png", alt="Cat-shop logo")
+                h1.titulo Cat-shop
+        form#createProductForm(action="/api/products", method ="post") 
+            label(for="nameField") Name
+            input#nameField(type="text", required)
+            label(for="descriptionField") Description
+            input#descriptionField(type="text")
+            label(for="unitPriceField") Unit price
+            input#unitPriceField(type="number", required)
+            label(for="stockField") Units in stock
+            input#stockField(type="number")
+            label(for="categoryField") Category
+            input#categoryField(type="text", required)
+            label(for="supplierField") Supplier
+            input#supplierField(type="text", required)
+            button(type="submit", class= "button") Add product
+        script(src= "/static/product.script.js", type= "module")
+    include ./footer.pug
+    

@@ -28,7 +28,18 @@ const insertSupplier = async (req, res, next) => {
 const getSupplierById = async (req, res, next) => {
   try {
     const id = req.params.id;
-    const supplier = await supplierService.getBy({ id });
+    const supplier = await supplierService.getBy({ id: id });
+    if (!supplier) throw new NotFoundError("Error geting supplier.");
+    response(res, 200, supplier);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getSupplierByName = async (req, res, next) => {
+  try {
+    const name = req.params.name;
+    const supplier = await supplierService.getBy({ name: name });
     if (!supplier) throw new NotFoundError("Error geting supplier.");
     response(res, 200, supplier);
   } catch (error) {
@@ -63,6 +74,7 @@ export default {
   getSuppliers,
   insertSupplier,
   getSupplierById,
+  getSupplierByName,
   deleteSupplier,
   updateSupplier,
 };

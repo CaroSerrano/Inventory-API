@@ -74,8 +74,12 @@ export default class sequelizeDAO {
 
     try {
       let result = await this.models[entity].findOne({ where: options });
-      if (result) return result.dataValues;
-      return null;
+      if (result) {
+        return result.dataValues;
+      }else{
+        return null;
+      }
+      
     } catch (error) {
       console.error("Error finding document:", error);
       throw error;

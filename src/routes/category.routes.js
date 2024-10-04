@@ -8,6 +8,7 @@ const router = express.Router();
 router.get("/", checkPermissions("read:categories"), categoryController.getCategories);
 router.post("/", [checkPermissions("create:categories"), validateCreateSupplierAndCategory()], categoryController.insertCategory);
 router.get("/:id", checkPermissions("read:categories"), categoryController.getCategoryById);
+router.get("/name/:name", checkPermissions("read:categories"), categoryController.getCategoryByName);
 router.patch("/:id", checkPermissions("update:categories"), categoryController.updateCategory);
 router.delete("/:id", checkPermissions("delete:categories"), categoryController.deletecategory);
 
