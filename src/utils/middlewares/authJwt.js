@@ -3,7 +3,7 @@ import config from "../../config/config.js";
 import {AuthorizationError} from "../errors.js";
 
 export const verifytoken = (req, res, next) => {
-  let token = req.headers["x-access-token"];
+  let token = req.cookies.token;
 
   if (!token) {
     throw new AuthorizationError("Token required", 403);

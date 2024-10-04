@@ -1,12 +1,18 @@
 const authService = {
   setToken(token) {
-    localStorage.setItem("authToken", token); // o sessionStorage.setItem, o manejar cookies
+    Cookies.set("token", token, {
+      expires: 1, // en días
+      secure: true,
+      sameSite: "Strict",
+    });
   },
+
   getToken() {
-    return localStorage.getItem("authToken"); // o sessionStorage.getItem, o leer cookies
+    return Cookies.get("token");
   },
+
   removeToken() {
-    localStorage.removeItem("authToken"); // o sessionStorage.removeItem, o eliminar cookies
+    Cookies.remove("token");
   },
 };
 

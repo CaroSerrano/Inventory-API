@@ -2,6 +2,16 @@ import { productService } from "../services/index.js";
 import { response } from "../utils/response.js";
 import { ClientError, NotFoundError } from "../utils/errors.js";
 
+const showProducts = async (req, res, next) => {
+  try {
+    let results = await productService.getAllWithInclude();
+    if (!results) throw new NotFoundError("Error geting products.");
+    res.render('product-admin', {results});
+  } catch (error) {
+    next(error);
+  }
+}
+
 const getProducts = async (req, res, next) => {
   try {
     let results = await productService.getAllWithInclude();
@@ -84,6 +94,7 @@ const deleteManyProducts = async (req, res, next) => {
 
 export default {
   getProducts,
+  showProducts,
   insertProduct,
   getProductById,
   deleteProduct,

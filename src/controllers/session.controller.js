@@ -10,6 +10,7 @@ const signIn = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     const { token, user } = await sessionService.signIn(email, password);
+    res.cookie('token', token, { httpOnly: true, secure: true });
     response(res, 200, { token, user });
   } catch (error) {
     next(error);

@@ -9,6 +9,7 @@ import categoryRouter from "./category.routes.js";
 import permissionRouter from "./permission.routes.js";
 import roleRouter from "./role.router.js";
 import sessionRouter from "./session.router.js";
+import adminRouter from "./admin.router.js";
 import { resErrors } from "../utils/resErrors.js";
 import { verifytoken } from "../utils/middlewares/authJwt.js";
 const app = express();
@@ -27,8 +28,10 @@ const apiRouter = (app) => {
       "Access-Control-Allow-Headers",
       "x-access-token, Origin, Content-Type, Accept"
     );
+    res.setHeader("Content-Security-Policy", "script-src 'self' https://cdn.jsdelivr.net;");
     next();
   })
+  router.use("/api/admins", verifytoken, adminRouter);
   router.use("/api/users", verifytoken, userRouter);
   router.use("/api/employees", verifytoken, employeeRouter);
   router.use("/api/managers", verifytoken, managerRouter);  
@@ -42,6 +45,15 @@ const apiRouter = (app) => {
     res.status(200).render("signin")
   });
   router.use("/api/sessions", sessionRouter);
+  router.use("/api/managers/dashboard", (req, res) => {
+    res.status(200).render("manager")
+  })
+  router.use("/api/employees/dashboard", (req, res) => {
+    res.status(200).render("employee")
+  })
+  router.use("/api/users/dashboard", (req, res) => {
+    res.status(200).render("user")
+  })
 
   router.use("/api", (req, res) => {
     res.status(200).render("index")

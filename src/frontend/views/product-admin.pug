@@ -1,0 +1,20 @@
+doctype html
+html(lang="en")
+    include ./head.pug
+    body 
+        header
+            div.logo
+                a(href="../index.pug")
+                    img(src="/static/gato-negro.png", alt="Cat-shop logo")
+                h1.titulo Cat-shop
+        a(type="button", class= "button", href= "../index.pug") Upload product
+        each result in results
+            div.product
+                h3#product_name= `${result.name}`
+                h4#product_price= `$${result.unit_price}`
+                h4#stock= `Units in stock: ${result.units_in_stock}`
+                a(type="button", class= "button", href= "../index.pug") Update product
+                a(type="button", class= "button", href= "../index.pug") Delete product
+        script(src= "/static/product.script.js", type= "module")
+    include ./footer.pug
+    

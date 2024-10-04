@@ -1,4 +1,4 @@
-# INVENTORY API <!-- omit in toc -->
+# CAT-SHOP 🐱<!-- omit in toc -->
 - [Project description](#project-description)
 - [Used technologies](#used-technologies)
 - [Relational model](#relational-model)
@@ -6,7 +6,9 @@
 
 ## Project description
 
-This is a RESTful API designed to manage store inventory. It allows users to register with different roles (Admin, Manager, Employee, User) and uses JSON Web Tokens (JWT) for authentication.
+This is an API designed to manage a Cat-shop inventory. It allows users to register with different roles (Admin, Manager, Employee, User) and uses JSON Web Tokens (JWT) for authentication.
+
+A basic user interface was developed to facilitate the API test using templating engine.
     
 Depending on the role, you can:
    1. Administrator (Admin):
@@ -26,7 +28,7 @@ Can view and update inventory.
 Can add new products, but cannot delete them.
 Has no access to user management or system settings.
 
-   4. Basic User:
+   4. Basic User (like a client):
 
 Has only permissions to view products in inventory.
 Cannot add, edit, or delete any records.
@@ -42,9 +44,11 @@ Cannot add, edit, or delete any records.
 
 **JWT (JSON Web Tokens):** used for authentication, enabling secure token-based user sessions across the application.
 
+**PUG:** the templating engine used for developing user interface.
+
 ## Relational model
 
-![Relational Model](/src/img/inventory_api_relational_model.png)
+![Relational Model](/src/frontend/public/inventory_api_relational_model.png)
 
 ## Dev information
 

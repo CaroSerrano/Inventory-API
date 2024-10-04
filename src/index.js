@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { resErrors } from '../src/utils/resErrors.js';
 import morgan from 'morgan';
 import helmet from 'helmet';
@@ -27,7 +28,7 @@ app.use(
 app.use(express.json());
 app.use(morgan('dev'));
 app.use(helmet());
-
+app.use(cookieParser());
 // Rutas
 apiRouter(app);
 

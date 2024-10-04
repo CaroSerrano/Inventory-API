@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("password:", password);
 
       // Validar el formulario y autenticar
-      await setTokenAndRelocate(email, password);
+      await setToken(email, password);
     });
 
     function validateEmail(email) {
@@ -31,26 +31,46 @@ document.addEventListener("DOMContentLoaded", () => {
         email: email,
         password: password,
       };
-      console.log("datos: ", data);
+      console.log("data en authenticate() : ", data);
       
       try {
-        const auth = await fetch(`http://localhost:3001/api/sessions/signin`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        });
-
+        const response = await fetch(
+          `http://localhost:3001/api/sessions/signin`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        const auth = await response.json();
+        return auth;
       } catch (error) {
-        console.error("Error en la autenticación:", error);
+        console.error("Authentication error:", error);
         throw error;
       }
     }
 
-    async function setTokenAndRelocate(email, password) {
-      console.log("Validando formulario...");
-
+    function relocate(role) {
+      try {
+        if (role === "admin") {
+          window.location.href = "/api/admins/dashboard";
+        } else if (role === "manager") {
+          window.location.href = "/api/managers/dashboard";
+        } else if (role === "employee") {
+          window.location.href = "/api/employees/dashboard";
+        } else if (role === "basic_user") {
+          window.location.href = "/api/users/dashboard";
+        } else {
+          console.error("Unknown role:", role);
+        }
+      } catch (error) {
+        console.error("recolate error: ", error.message);
+      }
+    }
+    
+    async function setToken(email, password) {
       if (!validateEmail(email)) {
         alert("Please, enter a valid email.");
         return;
@@ -60,13 +80,16 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log(authUser);
       console.log("userEmail: ", authUser.data.user.email);
       authService.setToken(authUser.data.token);
-      if(authUser) alert("Succesfully logged in!")
-      if(email != "superadmin@example.com") {
-        const role = authUser.data.user.role_id.name
+      if (authUser) alert("Succesfully logged in!");
+      let role;
+      if (email != "superadmin@example.com") {
+        role = authUser.data.user.role_id.name;
+      } else {
+        role = "admin";
       }
-
+      relocate(role);
     }
   } else {
-    console.error("No se pudo acceder al formulario");
+    console.error("Formulary access failed");
   }
 });
