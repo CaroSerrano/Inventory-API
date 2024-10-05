@@ -16,4 +16,9 @@ router.get(
 router.get("/create-product", (req, res) => {
   res.status(200).render("product-create");
 });
+
+router.get("/update-product/:id", (req, res) => {
+  const productId = req.params.id;
+  res.status(200).render("product-update", {productId});
+});
 export default router;

@@ -60,8 +60,8 @@ const getProductById = async (req, res, next) => {
 
 const updateProduct = async (req, res, next) => {
   try {
-    const id = req.params.id;
-    const data = req.body;
+    const { id } = req.params;
+    const data = req.body;    
     const product = await productService.updateWithInclude(data, id);
     if (!product) throw new NotFoundError("Error updating product.");
     response(res, 200, product);
@@ -72,7 +72,7 @@ const updateProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
     const result = await productService.delete(id);
     if (!result) throw new NotFoundError("Error deleting product.");
     res.status(204).end();
