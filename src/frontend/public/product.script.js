@@ -56,11 +56,36 @@ document.addEventListener("DOMContentLoaded", () => {
       throw error;
     }
   }
+
+  const deleteProduct = document.getElementById("delete_product");
+  if (deleteProduct) {
+    deleteProduct.addEventListener("click", async function (event) {
+      console.log("EScuchando el submit");
+      event.preventDefault();
+      const productId = deleteProduct.getAttribute("data-product-id");
+      let confirmation = confirm(`Delete product?`);
+      if (confirmation) {
+        try {
+          await fetch(`http://localhost:3001/api/products/${productId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          window.location.href = "/api/admins/products";
+        } catch (error) {
+          console.error("Deleting product error:", error);
+          throw error;
+        }
+      }
+    });
+  }
+
   const form = document.getElementById("createProductForm");
 
   if (form) {
     form.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevenir que el formulario se envíe por defecto
+      event.preventDefault();
       const inputs = form.querySelectorAll("input");
       const productData = {};
       inputs.forEach((input) => {
@@ -125,12 +150,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const updateForm = document.getElementById("updateProductForm"); //document es el html
+  const updateForm = document.getElementById("updateProductForm");
 
   if (updateForm) {
     const productId = updateForm.getAttribute("data-product-id");
     updateForm.addEventListener("submit", async function (event) {
-      event.preventDefault(); // Prevenir que el formulario se envíe por defecto
+      event.preventDefault();
 
       const inputs = updateForm.querySelectorAll("input");
       //Filter empty inputs
@@ -150,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function updateProduct(productData) {
       try {
         if (productData.category) {
-         let categoryId = await validateCategory(productData.category);
+          let categoryId = await validateCategory(productData.category);
 
           if (!categoryId) {
             alert("Category not found");
@@ -167,8 +192,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         let bodyData = {};
-        for(const key in productData){
-          bodyData[key] = productData[key]
+        for (const key in productData) {
+          bodyData[key] = productData[key];
         }
 
         const response = await fetch(
