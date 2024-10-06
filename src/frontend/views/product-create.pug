@@ -7,20 +7,22 @@ html(lang="en")
                 a(href="../index.pug")
                     img(src="/static/gato-negro.png", alt="Cat-shop logo")
                 h1.titulo Cat-shop
-        form#createProductForm(action="/api/products", method ="post") 
-            label(for="nameField") Name
-            input#nameField(type="text", required, name="name")
-            label(for="descriptionField") Description
-            input#descriptionField(type="text", name="description")
-            label(for="unitPriceField") Unit price
-            input#unitPriceField(type="number", required, name="unit_price")
-            label(for="stockField") Units in stock
-            input#stockField(type="number", name="units_in_stock")
-            label(for="categoryField") Category
-            input#categoryField(type="text", required, name="category")
-            label(for="supplierField") Supplier
-            input#supplierField(type="text", required, name="supplier")
-            button(type="submit", class= "button") Add product
+        main
+            div.createProduct-container
+                form#createProductForm(action="/api/products", method ="post") 
+                    label(for="nameField") Name
+                    input#nameField(type="text", required, name="name")
+                    label(for="descriptionField") Description
+                    input#descriptionField(type="text", name="description")
+                    label(for="unitPriceField") Unit price
+                    input#unitPriceField(type="number", required, name="unit_price")
+                    label(for="stockField") Units in stock
+                    input#stockField(type="number", name="units_in_stock")
+                    label(for="categoryField") Category
+                    input#categoryField(type="text", required, name="category")
+                    label(for="supplierField") Supplier
+                    input#supplierField(type="text", required, name="supplier")
+                    button(type="submit", class= "button") Add product
         script(src= "/static/product.script.js", type= "module")
-    include ./footer.pug
+        include ./footer.pug
     

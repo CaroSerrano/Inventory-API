@@ -1,3 +1,47 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    flex: 1;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+/* El contenido principal se expande para ocupar el espacio restante */
+main {
+    flex: 1;
+}
+
+.index {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+}
+
+#signinForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+    
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #545454;
+    color: #fff;
+    padding: 10px 20px;
+}
+
 .logo {
     display: flex;
     align-items: center;
@@ -6,4 +50,91 @@
 .logo img{
     height: 50px;
     margin-right: 10px;
+}
+
+.button {
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.admin-container {
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+}
+
+.createProduct-container {
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+}
+.uploadProduct {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.product {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h3#product_name {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+h4#product_price {
+    font-size: 16px;
+    color: #28a745;
+    margin-bottom: 10px;
+}
+
+h4#stock {
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.product-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+}
+
+a.button, button.button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    /* Para pantallas más pequeñas, ajusta a 2 productos por fila */
+    .product-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    /* Para pantallas muy pequeñas, ajusta a 1 producto por fila */
+    .product-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+footer {
+    background-color: #545454;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    width: 100%;
+    bottom: 0;
 }

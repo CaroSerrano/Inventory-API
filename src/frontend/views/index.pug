@@ -9,4 +9,10 @@ html(lang="en")
                 h1.titulo Cat-shop
             nav
                 a(href="/api/sessions/login" class="button") Sign in
-    include ./footer.pug
+        main 
+            div.index
+                h2 Welcome to Cat-shop!
+                p To test the application, click the sign-in button and use the following credentials to log in as a super administrator: 
+                h5 email: superadmin@example.com
+                h5 password: 1234
+        include ./footer.pug
