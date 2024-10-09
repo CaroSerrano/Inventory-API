@@ -29,8 +29,8 @@ main {
 #signinForm {
     display: flex;
     flex-direction: column;
-    align-items: center;
     padding: 50px;
+    width: 50%;
     
 }
 header {
@@ -52,15 +52,74 @@ header {
     margin-right: 10px;
 }
 
+nav {
+    position: relative;
+    max-width: 100%; /* Evitar que se expanda más allá del ancho de la página */
+}
+
+nav button {
+    margin-right: 10px;
+}
+/* Estilo para el contenedor del menú */
+.dropbtn {
+    border: none;
+    cursor: pointer;
+}
+
+/* Estilo del menú desplegable oculto */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    font-size: 10px;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 0; /* Alinea el menú a la derecha del contenedor */
+    max-width: 100%; /* Evitar que el menú se salga del ancho de la pantalla */
+    overflow-wrap: break-word; /* Forzar el salto de línea si el contenido es muy largo */
+    overflow: hidden;
+}
+
+/* Estilo para los elementos del menú */
+.dropdown-content li a {
+    color: black;
+    padding: 5px 5px;
+    text-decoration: none;
+    display: block;
+}
+
+/* Estilo para mostrar el menú */
+.dropdown-content.show {
+    display: block;
+}
+
+.dropdown-content li a:hover {
+    background-color: #bd71e6;
+}
+
+/* Estilo para el botón cuando el menú está desplegado */
+.dropbtn.active {
+    background-color: #111;
+}
+
+
 .button {
     border-radius: 5px;
     cursor: pointer;
 }
 
+.filter-container {
+    padding: 10px 50px;
+}
+
+.filter-container select {
+    color: #111;
+}
 .admin-container {
     display: flex;
     flex-direction: column;
-    padding: 40px;
+    padding: 60px;
 }
 
 .createProduct-container {

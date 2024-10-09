@@ -44,6 +44,20 @@ export default class ProductService extends GenericQueries {
     }
   };
 
+  getAllWithIncludeOrder = async (filter, order) => {
+    try {
+      let results = await this.dao.models[Product.model].findAll({
+        where: filter,
+        order: order,
+        include: this.include,
+      });
+      let mappedResults = results.map((result) => result.get({ plain: true }));
+      return mappedResults ? mappedResults : null;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   updateWithInclude = async (document, id) => {
     try {
       const [updatedCount] = await this.dao.models[Product.model].update(

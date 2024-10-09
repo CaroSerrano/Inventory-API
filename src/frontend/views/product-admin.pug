@@ -7,17 +7,55 @@ html(lang="en")
                 a(href="../index.pug")
                     img(src="/static/gato-negro.png", alt="Cat-shop logo")
                 h1.titulo Cat-shop
+            nav
+                button.dropbtn Menu
+                    ul.dropdown-content
+                        li
+                            a(href="/api") Home
+                        li
+                            a(href="/products") Users
+                        li
+                            a(href="#", class="dropbtn") Stores
+                        li
+                            a(href="#") Suppliers
+                        li
+                            a(href="#") Categories
+                button#logout Logout
         div.uploadProduct
-            a(type="button", class= "button", href= "./create-product") Upload product
+            a(class= "button", href= "./create-product") Upload product
         main
+            div.filter-container
+                h4 Search by 
+                form(id="filter-form", action="/api/admins/products", method="GET")
+                    label(for="name") Name
+                    input(type="text", name="name", placeholder="Eg: wavy basic corrugate scratcher", value=query.name)
+                    label(for="category") Category 
+                    select#selectCategory(name="category")
+                        option(value="") All
+                        each category in categories
+                            option(value= category.name selected=(query.category === category.name))= category.name
+                    label(for="supplier") Supplier
+                    select#selectSupplier(name="supplier")
+                        option(value="") All
+                        each supplier in suppliers
+                            option(value= supplier.name selected=(query.supplier === supplier.name))= supplier.name
+                    label(for="order") Order by
+                    select(name="order")
+                        option(value="alpha" selected=(query.order === 'alpha')) Alphabetic
+                        option(value="price-asc" selected=(query.order === 'price-asc')) Price: low to high
+                        option(value="price-desc" selected=(query.order === 'price-desc')) Price: high to low
+                        option(value="date-desc" selected=(query.order === 'date-asc')) Date: new to old
+                        option(value="date-desc" selected=(query.order === 'date-desc')) Date: old to new
+                    button(type="submit") Apply filters
             div.product-container
                 each result in results
                     div.product
-                        h3#product_name= `${result.name}`
+                        h3#product_name= result.name
                         h4#product_price= `$${result.unit_price}`
                         h4#stock= `Units in stock: ${result.units_in_stock}`
-                        a(type="button", class= "button", href= `./update-product/${result.id}`) Update product
+                        a(class= "button", href= `./update-product/${result.id}`) Update product
                         button#delete_product(class= "button", data-product-id= result.id) Delete product
-        script(src= "/static/product.script.js", type= "module")
+        script(nonce=nonce, src= "/static/product.script.js", type= "module")
+        script(nonce=nonce, src="/static/admin.script.js", type="module")
         include ./footer.pug
     

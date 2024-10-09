@@ -18,7 +18,7 @@ const signIn = async (req, res, next) => {
 };
 
 export const logout = async (req, res, next) => {
-  const token = req.headers.authorization;
+  const token = req.cookies.token;
   if (token.startsWith("Bearer ")) {
     token = token.split(" ")[1];
   }

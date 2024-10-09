@@ -7,20 +7,37 @@ html(lang="en")
                 a(href="../index.pug")
                     img(src="/static/gato-negro.png", alt="Cat-shop logo")
                 h1.titulo Cat-shop
-        form#updateProductForm(action="/api/products", method ="patch", data-product-id=productId) 
-            label(for="nameField") Name
-            input#nameField(type="text", name="name")
-            label(for="descriptionField") Description
-            input#descriptionField(type="text", name="description")
-            label(for="unitPriceField") Unit price
-            input#unitPriceField(type="number", name="unit_price")
-            label(for="stockField") Units in stock
-            input#stockField(type="number", name= "units_in_stock")
-            label(for="categoryField") Category
-            input#categoryField(type="text", name="category")
-            label(for="supplierField") Supplier
-            input#supplierField(type="text", name="supplier")
-            button(type="submit", class= "button") Update product
+            nav
+                button.dropbtn Menu
+                    ul.dropdown-content
+                        li
+                            a(href="/api") Home
+                        li
+                            a(href="/products") Users
+                        li
+                            a(href="#", class="dropbtn") Stores
+                        li
+                            a(href="#") Suppliers
+                        li
+                            a(href="#") Categories
+                button#logout Logout
+        main
+            div.createProduct-container
+                form#updateProductForm(action="/api/products", method ="patch", data-product-id=productId) 
+                    label(for="nameField") Name
+                    input#nameField(type="text", name="name")
+                    label(for="descriptionField") Description
+                    input#descriptionField(type="text", name="description")
+                    label(for="unitPriceField") Unit price
+                    input#unitPriceField(type="number", name="unit_price")
+                    label(for="stockField") Units in stock
+                    input#stockField(type="number", name= "units_in_stock")
+                    label(for="categoryField") Category
+                    input#categoryField(type="text", name="category")
+                    label(for="supplierField") Supplier
+                    input#supplierField(type="text", name="supplier")
+                    button(type="submit", class= "button") Update product
         script(src= "/static/product.script.js", type= "module")
-    include ./footer.pug
+        script(src="/static/admin.script.js", type="module")
+        include ./footer.pug
     

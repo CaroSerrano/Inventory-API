@@ -78,16 +78,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const authUser = await authenticate(email, password);
       console.log(authUser);
-      console.log("userEmail: ", authUser.data.user.email);
-      authService.setToken(authUser.data.token);
-      if (authUser) alert("Succesfully logged in!");
-      let role;
-      if (email != "superadmin@example.com") {
-        role = authUser.data.user.role_id.name;
+      if(authUser.error===true){
+        alert(authUser.message)
+        window.location.href = "/api/sessions/login"
       } else {
-        role = "admin";
+        authService.setToken(authUser.data.token);      
+        let role;
+        if (email != "superadmin@example.com") {
+          role = authUser.data.user.role_id.name;
+        } else {
+          role = "admin";
+        }
+        alert("Succesfully logged in!")
+        relocate(role);
+        
       }
-      relocate(role);
+
     }
   } else {
     console.error("Formulary access failed");

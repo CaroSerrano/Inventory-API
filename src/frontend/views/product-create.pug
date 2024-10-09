@@ -7,6 +7,20 @@ html(lang="en")
                 a(href="../index.pug")
                     img(src="/static/gato-negro.png", alt="Cat-shop logo")
                 h1.titulo Cat-shop
+            nav
+                button.dropbtn Menu
+                    ul.dropdown-content
+                        li
+                            a(href="/api") Home
+                        li
+                            a(href="/products") Users
+                        li
+                            a(href="#", class="dropbtn") Stores
+                        li
+                            a(href="#") Suppliers
+                        li
+                            a(href="#") Categories
+                button#logout Logout
         main
             div.createProduct-container
                 form#createProductForm(action="/api/products", method ="post") 
@@ -24,5 +38,6 @@ html(lang="en")
                     input#supplierField(type="text", required, name="supplier")
                     button(type="submit", class= "button") Add product
         script(src= "/static/product.script.js", type= "module")
+        script(src="/static/admin.script.js", type="module")
         include ./footer.pug
     

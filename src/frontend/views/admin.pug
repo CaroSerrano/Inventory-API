@@ -7,6 +7,8 @@ html(lang="en")
                 a(href="../index.pug")
                     img(src="/static/gato-negro.png", alt="Cat-shop logo")
                 h1.titulo Cat-shop
+            nav
+                button#logout Logout
         main
             div.admin-container
                 a(type="button", class= "button", href= "./products") Products
@@ -15,4 +17,5 @@ html(lang="en")
                 a(type="button", class= "button", href= "../index.pug") Suppliers
                 a(type="button", class= "button", href= "../index.pug") Categories 
         include ./footer.pug
+        script(src= "/static/admin.script.js", type= "module")
     

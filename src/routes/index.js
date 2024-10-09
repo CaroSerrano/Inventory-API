@@ -12,6 +12,7 @@ import sessionRouter from "./session.router.js";
 import adminRouter from "./admin.router.js";
 import { resErrors } from "../utils/resErrors.js";
 import { verifytoken } from "../utils/middlewares/authJwt.js";
+import crypto from "crypto";
 const app = express();
 app.use(express.json());
 
@@ -24,11 +25,15 @@ const apiRouter = (app) => {
   //  Content-Type: Define el tipo de contenido que se está enviando en el cuerpo de la solicitud, por ejemplo, application/json.
   // Accept: Define los tipos de contenido que el cliente acepta en la respuesta.
   router.use(function(req, res, next) {
+    const nonce = crypto.randomBytes(16).toString('base64');
+    // Guardar el nonce en la respuesta
+    res.locals.nonce = nonce;
+    // Configurar la política CSP
     res.header(
       "Access-Control-Allow-Headers",
       "x-access-token, Origin, Content-Type, Accept"
     );
-    res.setHeader("Content-Security-Policy", "script-src 'self' https://cdn.jsdelivr.net;");
+    res.setHeader("Content-Security-Policy", `script-src 'self' 'nonce-${nonce}' https://cdn.jsdelivr.net;`);
     next();
   })
   router.use("/api/admins", verifytoken, adminRouter);

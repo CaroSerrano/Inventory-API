@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM completamente cargado");
   //auxiliar function to validate that the category exists
-  async function validateCategory(category) {
+  async function getCategory(category) {
     console.log("en validateCategory");
 
     try {
@@ -16,10 +16,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       );
       const CATEGORY = await response.json();
-      console.log("Lo quue devuelve el fetch de category: ", CATEGORY);
 
       if (CATEGORY.error === false) {
-        return CATEGORY.data.id;
+        return CATEGORY;
       } else {
         console.error(CATEGORY.message);
         return null;
@@ -30,9 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   //auxiliar function to validate that the supplier exists
-  async function validateSupplier(supplier) {
-    console.log("en validateSupplier");
-
+  async function getSupplier(supplier) {
     try {
       const supplierName = supplier.toLowerCase().trim();
       const response = await fetch(
@@ -46,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       const SUPPLIER = await response.json();
       if (SUPPLIER.error === false) {
-        return SUPPLIER.data.id;
+        return SUPPLIER;
       } else {
         console.error(SUPPLIER.message);
         return null;
@@ -57,21 +54,51 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const deleteProduct = document.getElementById("delete_product");
-  if (deleteProduct) {
-    deleteProduct.addEventListener("click", async function (event) {
-      console.log("EScuchando el submit");
+  async function deleteProduct(productId) {
+    try {
+      await fetch(`http://localhost:3001/api/products/${productId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (error) {
+      console.error("Deleting product error:", error);
+      throw error;
+    }
+  }
+
+  const filterForm = document.getElementById('filter-form');
+
+  filterForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const productId = deleteProduct.getAttribute("data-product-id");
+      
+      const formData = new FormData(filterForm);
+      const queryString = new URLSearchParams(formData).toString();
+      const response = await fetch(`/api/admins/products?${queryString}`, {
+          method: 'GET',
+          headers: {
+            "X-Requested-With":"XMLHttpRequest"
+          }
+      });
+      if (!response.ok) {
+        // Manejo de errores si la respuesta no es correcta
+        console.error("Error fetching products: ", response.statusText);
+        return;
+    }
+      const html = await response.text();      
+      document.querySelector('.product-container').innerHTML = html;
+  });
+  
+  const delete_product = document.getElementById("delete_product");
+  if (delete_product) {
+    delete_product.addEventListener("click", async function (event) {
+      event.preventDefault();
+      const productId = delete_product.getAttribute("data-product-id");
       let confirmation = confirm(`Delete product?`);
       if (confirmation) {
         try {
-          await fetch(`http://localhost:3001/api/products/${productId}`, {
-            method: "DELETE",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+          await deleteProduct(productId);
           window.location.href = "/api/admins/products";
         } catch (error) {
           console.error("Deleting product error:", error);
@@ -98,14 +125,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function createProduct(productData) {
       try {
-        const category_id = await validateCategory(productData.category);
-        console.log("Cateogory_id en createProduct: ", category_id);
+        const category= await getCategory(productData.category);
+        const category_id = category.data.id;
 
         if (!category_id) {
           alert("Category not found");
           window.location.href = "/api/admins/create-product";
         }
-        const supplier_id = await validateSupplier(productData.supplier);
+        const supplier = await getSupplier(productData.supplier);
+        const supplier_id = supplier.data.id;
         if (!supplier_id) {
           alert("Supplier not found");
           window.location.href = "/api/admins/create-product";
@@ -175,17 +203,17 @@ document.addEventListener("DOMContentLoaded", () => {
     async function updateProduct(productData) {
       try {
         if (productData.category) {
-          let categoryId = await validateCategory(productData.category);
+          let category = await getCategory(productData.category);
 
-          if (!categoryId) {
+          if (!category) {
             alert("Category not found");
             window.location.href = `/api/admins/update-product/${productId}`;
           }
         }
 
         if (productData.supplier) {
-          let supplierId = await validateSupplier(productData.supplier);
-          if (!supplierId) {
+          let supplier = await getSupplier(productData.supplier);
+          if (!supplier) {
             alert("Supplier not found");
             window.location.href = `/api/admins/update-product/${productId}`;
           }
