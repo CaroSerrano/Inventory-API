@@ -1,0 +1,66 @@
+doctype html
+html(lang="en")
+    include ./head.pug
+    body 
+        header
+            div.logo
+                a(href="../index.pug")
+                    img(src="/static/gato-negro.png", alt="Cat-shop logo")
+                h1.titulo Cat-shop
+            nav
+                button.dropbtn Menu
+                    ul.dropdown-content
+                        li
+                            a(href="/api") Home
+                        li
+                            a(href="/admins/products") Products
+                        li
+                            a(href="#") Stores
+                        li
+                            a(href="#") Suppliers
+                        li
+                            a(href="#") Categories
+                button#logout Logout
+        div.uploadUser
+            a(class= "button", href= "./create-user") Create user
+        main
+            div.filter-container
+                h4 Search by 
+                form(id="filter-form", action="/api/admins/users", method="GET")
+                    label(for="firstName") First name
+                    input(type="text", name="firstName", value=query.firstName)
+                    label(for="lastName") Last name
+                    input(type="text", name="lastName", value=query.lastName)
+                    label(for="role") Role
+                    select#selectRole(name="role")
+                        option(value="") All
+                        each role in roles
+                            option(value= role.name selected=(query.role === role.name))= role.name
+                    button(type="submit") Apply filters
+            div.users-container
+                table
+                    thead
+                        tr
+                            th First Name
+                            th Last Name
+                            th Email
+                            th Role
+                            th Actions
+                    tbody
+                        each result in results
+                            tr
+                                td= result.first_name
+                                td= result.last_name
+                                td= result.email
+                                td 
+                                    each role in roles
+                                        if role.id === result.role_id 
+                                            = role.name
+                                td
+                                    a.update_user(href= `./update-user/${result.id}`) Update
+                                    button.delete_user( data-user-id= result.id, data-user-role= result.role_id) Delete
+                                    button.more_info( data-user-id= result.id) More information
+        script(nonce=nonce, src= "/static/user.script.js", type= "module")
+        script(nonce=nonce, src="/static/admin.script.js", type="module")
+        include ./footer.pug
+    

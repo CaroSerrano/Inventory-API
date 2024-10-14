@@ -25,6 +25,18 @@ const getRoleById = async (req, res, next) => {
   }
 };
 
+const getRoleByName = async (req, res, next) => {
+  try {
+    const name = req.params.name;
+    const role = await roleService.getBy({name: name });
+    if (!role) throw new NotFoundError("Error geting role.");
+    response(res, 200, role);
+  } catch (error) {
+    console.error(error.message);
+    next(error);
+  }
+};
+
 const createRole = async (req, res, next) => {
   try {
     const data = req.body;
@@ -65,6 +77,7 @@ const deleteRole = async (req, res, next) => {
 export default {
   getRoles,
   getRoleById,
+  getRoleByName,
   createRole,
   deleteRole,
   updateRole,

@@ -8,11 +8,9 @@ const router = express.Router();
 
 router.post(
   "/",
-  [
-    verifytoken,
-    checkPermissions("create:users"),
-    validateCreateUser(),
-  ],
+  verifytoken,
+  checkPermissions("create:users"),
+  validateCreateUser(),
   managerController.createManager
 );
 router.get(

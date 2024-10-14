@@ -1,7 +1,56 @@
-import { userService } from "../services/index.js";
+import {
+  userService,
+  roleService,
+  employeeService,
+  managerService,
+  storeService,
+} from "../services/index.js";
 import { response } from "../utils/response.js";
 import { ClientError, NotFoundError } from "../utils/errors.js";
 import { createHash } from "../utils/authUtils.js";
+import { Op } from "sequelize";
+
+const showUsers = async (req, res, next) => {
+  try {
+    const { firstName, lastName, role } = req.query;
+    
+    let query = {};
+    let results = [];
+    let roles = await roleService.getAll();
+    // Filters
+    if (firstName) query.first_name = { [Op.like]: `%${firstName}%` };
+    if (lastName) query.last_name = { [Op.like]: `%${lastName}%` };
+    if (role) {
+      if (role === "admin" || role === "basic_user")
+        results = await userService.getAllWithInclude(query);
+      if (role === "manager")
+        results = await managerService.getAllWithInclude(query);
+      if (role === "employee")
+        results = await employeeService.getAllWithInclude(query);
+      query["$role.name$"] = role;
+    } else {
+      const users = await userService.getAllWithInclude(query);
+      const employees = await employeeService.getAllWithInclude(query);
+      const managers = await managerService.getAllWithInclude(query);
+      results = [...users, ...employees, ...managers];
+    }
+    if (!results) throw new NotFoundError("Error geting users.");
+    // Verificar si la solicitud es AJAX
+    if (req.xhr) {
+      res.render("partials/users-list", { results, roles }); // Cambia por el nombre de la vista que solo contiene la lista de usuarios
+    } else {
+      res.render("users", {
+        results,
+        roles,
+        query: req.query,
+        nonce: res.locals.nonce,
+      });
+    }
+  } catch (error) {
+    console.error("Error at users controller: ", error.message);
+    next(error);
+  }
+};
 
 const getUsers = async (req, res, next) => {
   try {
@@ -16,6 +65,19 @@ const getUsers = async (req, res, next) => {
     next(error);
   }
 };
+
+const showCreateUser = async (req, res, next) => {
+  try {
+    const roles = await roleService.getAll();
+    const managers = await managerService.getAll();
+    const stores = await storeService.getAll();  
+    
+    res.status(200).render("user-create", {roles, managers, stores});
+  } catch (error) {
+    console.error("error at showCreateUser: ", error.message);
+    next(error)
+  }
+}
 
 const createUser = async (req, res, next) => {
   try {
@@ -49,6 +111,19 @@ const getUserById = async (req, res, next) => {
   }
 };
 
+const showUpdateUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const roles = await roleService.getAll();
+    const managers = await managerService.getAll();
+    const stores = await storeService.getAll();
+    res.status(200).render("user-update", {userId, roles, managers, stores});
+  } catch (error) {
+    console.error("error at showUpdateUser: ", error.message);
+    next(error)
+  }
+}
+
 const updateUser = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -74,6 +149,9 @@ const deleteUser = async (req, res, next) => {
 };
 
 export default {
+  showUsers,
+  showCreateUser,
+  showUpdateUser,
   getUsers,
   createUser,
   getUserById,

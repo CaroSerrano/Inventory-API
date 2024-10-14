@@ -1,0 +1,23 @@
+div.users-container
+                table
+                    thead
+                        tr
+                            th First Name
+                            th Last Name
+                            th Email
+                            th Role
+                            th Actions
+                    tbody
+                        each result in results
+                            tr
+                                td= result.first_name
+                                td= result.last_name
+                                td= result.email
+                                td 
+                                    each role in roles
+                                        if role.id === result.role_id 
+                                            = role.name
+                                td
+                                    a.update_user(href= `./update-user/${result.id}`) Update
+                                    button.delete_user(data-user-id= result.id, data-user-role= result.role_id) Delete
+                                    button.more_info(data-user-id= result.id) More information

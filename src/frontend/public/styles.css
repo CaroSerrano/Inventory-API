@@ -103,12 +103,6 @@ nav button {
     background-color: #111;
 }
 
-
-.button {
-    border-radius: 5px;
-    cursor: pointer;
-}
-
 .filter-container {
     padding: 10px 50px;
 }
@@ -122,18 +116,18 @@ nav button {
     padding: 60px;
 }
 
-.createProduct-container {
+.createProduct-container, .createUser-container {
     display: flex;
     flex-direction: column;
     padding: 50px;
 }
-.uploadProduct {
+.uploadProduct, .uploadUser {
     display: flex;
     justify-content: center;
     padding: 10px;
 }
 
-.product {
+.product, .user {
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 20px;
@@ -143,35 +137,92 @@ nav button {
     border-radius: 10px;
 }
 
-h3#product_name {
+h3#product_name, #first_name, #last_name {
     font-size: 18px;
     color: #333;
     margin-bottom: 10px;
 }
 
-h4#product_price {
+h4#product_price, #email {
     font-size: 16px;
     color: #28a745;
     margin-bottom: 10px;
 }
 
-h4#stock {
+h4#stock, #role {
     font-size: 14px;
     color: #888;
     margin-bottom: 15px;
 }
 
-.product-container {
+.product-container, .user-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     padding: 20px;
 }
 
-a.button, button.button {
+
+
+
+
+ /************************************ TABLE USERS *********************************************/
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+thead th {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+tbody td {
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+tbody tr:hover {
+    background-color: #eaeaea;
+}
+
+.update_user, .delete_user, .more_info {
+    padding: 10px 20px;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: small;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
     display: block;
     width: 100%;
     margin-bottom: 10px;
+}
+.update_user {
+    background-color: #4c0ba1;
+}
+
+.update_user:hover {
+    background-color: #8a7e9a;
+}
+
+.delete_user {
+    background-color: rgb(224, 42, 42);
+}
+
+.delete_user:hover {
+    background-color: rgb(152, 74, 74);
+}
+
+/***************************************** HIDDEN FIELDS *********************************************/
+.hidden {
+    display: none;
 }
 
 @media (max-width: 768px) {

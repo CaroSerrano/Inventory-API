@@ -1,0 +1,68 @@
+doctype html
+html(lang="en")
+    include ./head.pug
+    body 
+        header
+            div.logo
+                a(href="../index.pug")
+                    img(src="/static/gato-negro.png", alt="Cat-shop logo")
+                h1.titulo Cat-shop
+            nav
+                button.dropbtn Menu
+                    ul.dropdown-content
+                        li
+                            a(href="/api/admins/dashboard") Home
+                        li
+                            a(href="/api/admins/products") Products
+                        li
+                            a(href="#", class="dropbtn") Stores
+                        li
+                            a(href="#") Suppliers
+                        li
+                            a(href="#") Categories
+                button#logout Logout
+        main
+            div.createUser-container
+                form#createUserForm(action="/api/users", method ="post")
+                    label(for="roleField") Select Role
+                    select#roleField(required, name="role_id")
+                        each role in roles 
+                            option(value= role.id)= role.name 
+                    label(for="firstNameField") First name
+                    input#firstNameField(type="text", required, name="first_name")
+                    label(for="lastNameField") Last name
+                    input#lastNameField(type="text", required, name="last_name")
+                    label(for="emailField") Email
+                    input#emailField(type="text", required, name="email")
+                    label(for="passField") Password
+                    input#passField(type="password", required, name="password")
+                    div#managerFields(class="hidden")
+                        label(for="management_level") Management level
+                        select#management_level(name="management_level", disabled)
+                            option(value="Lower-level") Lower-level 
+                            option(value="Middle-level") Middle-level
+                            option(value="Top-level") Top-level
+                        label(for="hireDate") Hire date 
+                        input#managerHireDate(type="date", name="hire_date", disabled)
+                    div#employeeFields(class="hidden")
+                        label(for="position") Position 
+                        input#position(type="text", name="position", disabled)
+                        label(for="hireDate") Hire date 
+                        input#employeeHireDate(type="date", name="hire_date", disabled)
+                        label(for="shiftSchedule") Shift schedule
+                        input#shiftSchedule(type="text", name="shift_schedule", disabled)
+                        label(for="salary") Salary
+                        input#salary(type="number", name="salary", disabled)
+                        label(for="manager") Manager 
+                        select#manager(name="manager_id", disabled)
+                            each manager in managers 
+                                option(value=manager.id)= `${manager.last_name} ${manager.first_name}`
+                        label(for="store") Store
+                        select#store(name="store_id", disabled)
+                            each store in stores 
+                                option(value=store.id)= store.adress  
+                    button(type="submit", class= "button") Add user
+        script(src= "/static/user.script.js", type= "module")
+        script(src="/static/admin.script.js", type="module")
+        include ./footer.pug
+    

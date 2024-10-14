@@ -1,5 +1,6 @@
 import express from "express";
 import productController from "../controllers/product.controller.js";
+import userController from "../controllers/user.controller.js";
 import { checkPermissions } from "../utils/middlewares/checkPermissions.js";
 
 const router = express.Router();
@@ -21,4 +22,21 @@ router.get("/update-product/:id", (req, res) => {
   const productId = req.params.id;
   res.status(200).render("product-update", {productId});
 });
+
+router.get("/users", checkPermissions("read:users"), userController.showUsers);
+
+router.get(
+  "/create-user",
+  checkPermissions("create:users"),
+  userController.showCreateUser
+);
+
+router.get(
+  "/update-user/:id",
+  checkPermissions("update:users"),
+  userController.showUpdateUser
+);
 export default router;
+
+
+

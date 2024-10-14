@@ -28,7 +28,8 @@ const createManager = async (req, res, next) => {
       management_level,
       hire_date,
     } = req.body;
-
+    console.log("userData en controlador: ", req.body);
+    
     const hashedPass = await createHash(password);
     const result = await managerService.insert({
       first_name,
@@ -43,6 +44,7 @@ const createManager = async (req, res, next) => {
     const { password: _, ...userResponse } = result;
     response(res, 201, userResponse);
   } catch (error) {
+    console.error("Error creating manager: ", error.message);
     next(error);
   }
 };
