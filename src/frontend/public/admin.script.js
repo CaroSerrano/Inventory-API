@@ -35,7 +35,6 @@ const adminMenu = document.querySelector(".dropbtn");
   const dropdownContent = document.querySelector(".dropdown-content")
   if(adminMenu){
     adminMenu.addEventListener("click", function (event) {
-      event.preventDefault();
       dropdownContent.classList.toggle("show");
     })
     // Cierra el menú si se hace clic fuera de él
