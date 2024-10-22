@@ -189,7 +189,7 @@ tbody tr:hover {
     background-color: #eaeaea;
 }
 
-.update_user, .delete_user, .more_info {
+.update_user, .delete_user {
     padding: 10px 20px;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
@@ -218,6 +218,42 @@ tbody tr:hover {
 
 .delete_user:hover {
     background-color: rgb(152, 74, 74);
+}
+
+.popup {
+    display: flex;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    position: fixed;
+    top: 50%; /* Centra verticalmente */
+    left: 50%; /* Centra horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta el punto de origen del centrado */
+    background: #fff; 
+    border: 1px solid #ef55da; 
+    padding: 10px;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* Asegúrate de que el popup esté encima de otros elementos */
+}
+
+.popup-content {
+    background-color: white;
+    font-weight: 500;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+}
+
+#user_information {
+    font-weight: 700;
+}
+
+#popup-close {
+    cursor: pointer; 
+    float: right;
 }
 
 /***************************************** HIDDEN FIELDS *********************************************/

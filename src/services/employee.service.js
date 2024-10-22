@@ -11,6 +11,11 @@ export default class EmployeeService extends GenericQueries {
         as: "manager",
         attributes: ["first_name", "last_name"],
       },
+      {
+        model: this.dao.models.Stores,
+        as: "store",
+        attributes: ["address"],
+      }
     ];
   }
 

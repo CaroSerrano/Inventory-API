@@ -21,9 +21,9 @@ export default class Manager extends User {
           defaultValue: "Lower-level",
         },
         hire_date: {
-          type: DataTypes.DATE,
+          type: DataTypes.DATEONLY,
           allowNull: false,
-          defaultValue: new Date(),
+          defaultValue: new Date().toString(),
         },
       },
       {

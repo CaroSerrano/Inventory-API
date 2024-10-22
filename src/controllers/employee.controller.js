@@ -4,6 +4,8 @@ import { ClientError, NotFoundError } from "../utils/errors.js";
 import { createHash } from "../utils/authUtils.js";
 
 const getEmployees = async (req, res, next) => {
+  console.log("en el controlador de employees");
+  
   try {
     let results = await employeeService.getAllWithInclude();
     if (!results) throw new NotFoundError("Error geting employees.");
@@ -13,6 +15,8 @@ const getEmployees = async (req, res, next) => {
     });
     response(res, 200, users);
   } catch (error) {
+    console.error("Error geting employees: ", error.message);
+    
     next(error);
   }
 };

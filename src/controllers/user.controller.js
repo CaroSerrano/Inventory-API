@@ -35,13 +35,18 @@ const showUsers = async (req, res, next) => {
       results = [...users, ...employees, ...managers];
     }
     if (!results) throw new NotFoundError("Error geting users.");
+    
+    //Function to format date fields in .pug view.
+    const formatDate = (date) => date.toLocaleDateString();
+    
     // Verificar si la solicitud es AJAX
     if (req.xhr) {
-      res.render("partials/users-list", { results, roles }); // Cambia por el nombre de la vista que solo contiene la lista de usuarios
+      res.render("partials/users-list", { results, roles, formatDate }); // Cambia por el nombre de la vista que solo contiene la lista de usuarios
     } else {
       res.render("users", {
         results,
         roles,
+        formatDate,
         query: req.query,
         nonce: res.locals.nonce,
       });

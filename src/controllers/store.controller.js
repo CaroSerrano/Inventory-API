@@ -14,10 +14,10 @@ const getStores = async (req, res, next) => {
 
 const createStore = async (req, res, next) => {
   try {
-    const { adress, manager_id } = req.body;
+    const { address, manager_id } = req.body;
 
     const result = await storeService.insert({
-      adress,
+      address,
       manager_id,
     });
     if (!result) throw new ClientError("Check the inserted data");

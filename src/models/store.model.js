@@ -14,7 +14,7 @@ export default class Store {
         autoIncrement: true,
         primaryKey: true,
       },
-      adress: {
+      address: {
         type: DataTypes.STRING,
         allowNull: false,
       },

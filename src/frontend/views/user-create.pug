@@ -60,7 +60,7 @@ html(lang="en")
                         label(for="store") Store
                         select#store(name="store_id", disabled)
                             each store in stores 
-                                option(value=store.id)= store.adress  
+                                option(value=store.id)= store.address  
                     button(type="submit", class= "button") Add user
         script(src= "/static/user.script.js", type= "module")
         script(src="/static/admin.script.js", type="module")

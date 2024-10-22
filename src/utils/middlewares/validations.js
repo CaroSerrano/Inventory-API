@@ -74,7 +74,7 @@ export const validateCreateUser = () => {
       ),
     check("hire_date")
       .optional()
-      .isDate()
+      .isDate({format: "YYYY-MM-DD", delimiters: ["-", "/", "."]})
       .withMessage("hire_date must be in date format"),
     check("position")
       .optional()
@@ -227,10 +227,10 @@ export const validateCreateSupplierAndCategory = () => {
 
 export const validateCreateStore = () => {
   return [
-    check("adress")
+    check("address")
       .exists()
       .notEmpty()
-      .withMessage("'adress' property required.")
+      .withMessage("'address' property required.")
       .bail(),
     check("manager_id")
       .exists()

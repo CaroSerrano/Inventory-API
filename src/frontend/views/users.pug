@@ -58,8 +58,47 @@ html(lang="en")
                                             = role.name
                                 td
                                     a.update_user(href= `./update-user/${result.id}`) Update
-                                    button.delete_user( data-user-id= result.id, data-user-role= result.role_id) Delete
-                                    button.more_info( data-user-id= result.id) More information
+                                    button.delete_user(data-user-id= result.id, data-user-role= result.role_id) Delete
+                                    button#more_info(class="hidden",data-user-id= result.id, data-user-role= result.role_id) More information
+                            div.popup(data-user-id= result.id, data-user-role= result.role_id)
+                                div.popup-content
+                                    span#popup-close ✖
+                                    h5#user_information User information
+                                    each role in roles
+                                        if role.id === result.role_id
+                                            - let roleName = role.name
+                                            if roleName === "manager"
+                                                p
+                                                    strong  Management level: 
+                                                    = result.management_level
+                                                p 
+                                                    strong Hire date: 
+                                                    = formatDate(result.hire_date)
+                                                p 
+                                                    strong Employees: 
+                                                if result.employees.length === 0
+                                                    p No employees registered for this manager.
+                                                - let employeeNames = result.employees.map(employee => `${employee.first_name} ${employee.last_name}`).join(', ')
+                                                    = employeeNames
+                                            else if roleName === "employee"
+                                                p
+                                                    strong Position: 
+                                                    = result.position
+                                                p
+                                                    strong Hire date: 
+                                                    = formatDate(result.hire_date)
+                                                p
+                                                    strong Shift schedule: 
+                                                    = result.shift_schedule  
+                                                p 
+                                                    strong Salary: 
+                                                    = `$${result.salary}`
+                                                p
+                                                    strong Manager: 
+                                                    = `${result.manager.first_name} ${result.manager.last_name}`
+                                                p 
+                                                    strong Store: 
+                                                    = result.store.address
         script(nonce=nonce, src= "/static/user.script.js", type= "module")
         script(nonce=nonce, src="/static/admin.script.js", type="module")
         include ./footer.pug
