@@ -39,6 +39,7 @@ html(lang="en")
                     div#managerFields(class="hidden")
                         label(for="management_level") Management level
                         select#management_level(name="management_level", disabled)
+                            option(selected, disabled) Select an option
                             option(value="Lower-level") Lower-level 
                             option(value="Middle-level") Middle-level
                             option(value="Top-level") Top-level
@@ -55,10 +56,12 @@ html(lang="en")
                         input#salary(type="number", name="salary", disabled)
                         label(for="manager") Manager 
                         select#manager(name="manager_id", disabled)
+                            option(selected, disabled) Select an option
                             each manager in managers 
                                 option(value=manager.id)= `${manager.last_name} ${manager.first_name}`
                         label(for="store") Store
                         select#store(name="store_id", disabled)
+                            option(selected, disabled) Select an option
                             each store in stores 
                                 option(value=store.id)= store.address   
                     button(type="submit", class= "button") Update user

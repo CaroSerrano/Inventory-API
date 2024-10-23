@@ -68,28 +68,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  const filterForm = document.getElementById('filter-form');
-
-  filterForm.addEventListener('submit', async (event) => {
+  const filterForm = document.getElementById("filter-form");
+  if (filterForm) {
+    filterForm.addEventListener("submit", async (event) => {
       event.preventDefault();
-      
+
       const formData = new FormData(filterForm);
       const queryString = new URLSearchParams(formData).toString();
       const response = await fetch(`/api/admins/products?${queryString}`, {
-          method: 'GET',
-          headers: {
-            "X-Requested-With":"XMLHttpRequest"
-          }
+        method: "GET",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
       });
       if (!response.ok) {
         // Manejo de errores si la respuesta no es correcta
         console.error("Error fetching products: ", response.statusText);
         return;
-    }
-      const html = await response.text();      
-      document.querySelector('.product-container').innerHTML = html;
-  });
-  
+      }
+      const html = await response.text();
+      document.querySelector(".product-container").innerHTML = html;
+    });
+  }
+
   const delete_product = document.getElementById("delete_product");
   if (delete_product) {
     delete_product.addEventListener("click", async function (event) {
@@ -125,7 +126,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function createProduct(productData) {
       try {
-        const category= await getCategory(productData.category);
+        const category = await getCategory(productData.category);
         const category_id = category.data.id;
 
         if (!category_id) {

@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
       throw error;
     }
   }
-  // Función para manejar el cierre de popups
+  // Function to handle popup closing
   function handlePopupsClose() {
     const popupsClose = document.querySelectorAll("#popup-close");
     const popups = document.querySelectorAll(".popup");
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Función para mostrar botones de "more info" según el rol
+  // Function to display "more info" buttons according to role
   async function showMoreInfoButtons() {
     const btnsMoreInfo = document.querySelectorAll("#more_info");
     const popups = document.querySelectorAll(".popup");
@@ -156,10 +156,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Configuración del observer: qué mutaciones observar
+    // observer configuration
     const config = { childList: true, subtree: true, characterData: true };
 
-    // Función que se ejecuta en cada cambio detectado
+    // Function that is executed on each detected change
     const handleMutations = async (mutationsList) => {
       for (const mutation of mutationsList) {
         if (mutation.type === "childList") {
@@ -169,7 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     };
 
-    // Crear el observer e iniciar la observación
+    // Create observer and start observation
     const observer = new MutationObserver(handleMutations);
     observer.observe(users_container, config);
   }
@@ -410,7 +410,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   //############################# More info #########################################
 
-  // Cierra la ventana emergente al hacer clic en ✖
+  // Close popup if ✖ clicked
   if (popupsClose) {
     handlePopupsClose()
   }
