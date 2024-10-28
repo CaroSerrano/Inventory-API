@@ -15,7 +15,7 @@ html(lang="en")
                         li
                             a(href="/api/admins/products") Products
                         li
-                            a(href="#") Stores
+                            a(href="/api/admins/stores") Stores
                         li
                             a(href="#") Suppliers
                         li
@@ -26,7 +26,7 @@ html(lang="en")
         main
             div.filter-container
                 h4 Search by 
-                form(id="filter-form", action="/api/admins/users", method="GET")
+                form(id="filter-form", action="/api/admins/users", method="GET", data-origin="users")
                     label(for="firstName") First name
                     input(type="text", name="firstName", value=query.firstName)
                     label(for="lastName") Last name

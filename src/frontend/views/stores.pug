@@ -1,0 +1,67 @@
+doctype html
+html(lang="en")
+    include ./head.pug
+    body 
+        header
+            div.logo
+                a(href="../index.pug")
+                    img(src="/static/gato-negro.png", alt="Cat-shop logo")
+                h1.titulo Cat-shop
+            nav
+                button.dropbtn Menu
+                    ul.dropdown-content
+                        li
+                            a(href="/api/admins/dashboard") Home
+                        li
+                            a(href="/api/admins/products") Products
+                        li
+                            a(href="/api/admins/users") Users
+                        li
+                            a(href="#") Suppliers
+                        li
+                            a(href="#") Categories
+                button#logout Logout
+        div.uploadStore
+            a(class= "button", href= "./create-store") Add new store
+        main
+            div.filter-container
+                h4 Search by 
+                form(id="filter-form", action="/api/admins/stores", method="GET", data-origin="stores")
+                    label(for="selectAddress") Address
+                    select#selectAddress(name="address")
+                        option(value="") All
+                        each result in results
+                            option(value=result.address, selected=(query.store === result.address))= result.address
+                    label(for="selectManager") Manager
+                    select#selectManager(name="manager_id")
+                        option(value="") All
+                        each manager in managers
+                            option(value= manager.id selected=(query.manager === manager.id))= `${manager.last_name} ${manager.first_name}`
+                    button(type="submit") Apply filters
+            div.table-container
+                table
+                    thead.table-header
+                        tr
+                            th Address
+                            th Manager
+                            th Actions
+                    tbody.table-body
+                        each result in results
+                            tr
+                                td= result.address
+                                td= result.manager.last_name + " " + result.manager.first_name
+                                td
+                                    a.update_store(href= `./update-store/${result.id}`) Update
+                                    button.delete_store(data-store-id= result.id) Delete
+                                    button.view-on-map(data-store-address= result.address) View on map
+                            div.popup(data-store-address= result.address)
+                                div.popup-content
+                                    span#popup-close ✖
+                                    h5#store-ubication=`Ubication of store at ${result.address}`
+                                    div.popup-map-container                       
+        script(nonce=nonce, src="/static/store.script.js", type="module")
+        script(nonce=nonce, src= "/static/user.script.js", type= "module")
+        script(nonce=nonce, src="/static/admin.script.js", type="module")
+        script(src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js")
+        include ./footer.pug
+    

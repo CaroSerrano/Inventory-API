@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
@@ -31,8 +32,9 @@ main {
     flex-direction: column;
     padding: 50px;
     width: 50%;
-    
+
 }
+
 header {
     display: flex;
     justify-content: space-between;
@@ -47,19 +49,21 @@ header {
     align-items: center;
 }
 
-.logo img{
+.logo img {
     height: 50px;
     margin-right: 10px;
 }
 
 nav {
     position: relative;
-    max-width: 100%; /* Evitar que se expanda más allá del ancho de la página */
+    max-width: 100%;
+    /* Evitar que se expanda más allá del ancho de la página */
 }
 
 nav button {
     margin-right: 10px;
 }
+
 /* Estilo para el contenedor del menú */
 .dropbtn {
     border: none;
@@ -73,11 +77,14 @@ nav button {
     background-color: #f9f9f9;
     font-size: 10px;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
-    right: 0; /* Alinea el menú a la derecha del contenedor */
-    max-width: 100%; /* Evitar que el menú se salga del ancho de la pantalla */
-    overflow-wrap: break-word; /* Forzar el salto de línea si el contenido es muy largo */
+    right: 0;
+    /* Alinea el menú a la derecha del contenedor */
+    max-width: 100%;
+    /* Evitar que el menú se salga del ancho de la pantalla */
+    overflow-wrap: break-word;
+    /* Forzar el salto de línea si el contenido es muy largo */
     overflow: hidden;
 }
 
@@ -110,24 +117,30 @@ nav button {
 .filter-container select {
     color: #111;
 }
+
 .admin-container {
     display: flex;
     flex-direction: column;
     padding: 60px;
 }
 
-.createProduct-container, .createUser-container {
+.createProduct-container,
+.createUser-container {
     display: flex;
     flex-direction: column;
     padding: 50px;
 }
-.uploadProduct, .uploadUser {
+
+.uploadProduct,
+.uploadUser,
+.uploadStore {
     display: flex;
     justify-content: center;
     padding: 10px;
 }
 
-.product, .user {
+.product,
+.user {
     background-color: #fff;
     border: 1px solid #ddd;
     padding: 20px;
@@ -137,25 +150,29 @@ nav button {
     border-radius: 10px;
 }
 
-h3#product_name, #first_name, #last_name {
+h3#product_name,
+#first_name,
+#last_name {
     font-size: 18px;
     color: #333;
     margin-bottom: 10px;
 }
 
-h4#product_price, #email {
+h4#product_price,
+#email {
     font-size: 16px;
     color: #28a745;
     margin-bottom: 10px;
 }
 
-h4#stock, #role {
+h4#stock,
+#role {
     font-size: 14px;
     color: #888;
     margin-bottom: 15px;
 }
 
-.product-container, .user-container {
+.product-container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
@@ -163,14 +180,13 @@ h4#stock, #role {
 }
 
 
+/************************************ TABLE USERS/STORES *********************************************/
 
-
-
- /************************************ TABLE USERS *********************************************/
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    table-layout: fixed; 
 }
 
 thead th {
@@ -178,6 +194,7 @@ thead th {
     color: white;
     padding: 10px;
     text-align: left;
+    width: 100%;
 }
 
 tbody td {
@@ -189,7 +206,11 @@ tbody tr:hover {
     background-color: #eaeaea;
 }
 
-.update_user, .delete_user {
+.update_user,
+.delete_user,
+.update_store,
+.delete_store,
+.view-on-map {
     padding: 10px 20px;
     color: white;
     font-family: Arial, Helvetica, sans-serif;
@@ -204,19 +225,24 @@ tbody tr:hover {
     width: 100%;
     margin-bottom: 10px;
 }
-.update_user {
+
+.update_user,
+.update_store {
     background-color: #4c0ba1;
 }
 
-.update_user:hover {
+.update_user:hover,
+.update_store:hover {
     background-color: #8a7e9a;
 }
 
-.delete_user {
+.delete_user,
+.delete_store {
     background-color: rgb(224, 42, 42);
 }
 
-.delete_user:hover {
+.delete_user:hover,
+.delete_store:hover {
     background-color: rgb(152, 74, 74);
 }
 
@@ -227,15 +253,19 @@ tbody tr:hover {
     transition: opacity 0.3s;
     pointer-events: none;
     position: fixed;
-    top: 50%; /* Centra verticalmente */
-    left: 50%; /* Centra horizontalmente */
-    transform: translate(-50%, -50%); /* Ajusta el punto de origen del centrado */
-    background: #fff; 
-    border: 1px solid #ef55da; 
+    top: 50%;
+    /* Centra verticalmente */
+    left: 50%;
+    /* Centra horizontalmente */
+    transform: translate(-50%, -50%);
+    /* Ajusta el punto de origen del centrado */
+    background: #fff;
+    border: 1px solid #ef55da;
     padding: 10px;
     align-items: center;
     justify-content: center;
-    z-index: 1000; /* Asegúrate de que el popup esté encima de otros elementos */
+    z-index: 1000;
+    /* Asegúrate de que el popup esté encima de otros elementos */
 }
 
 .popup-content {
@@ -247,12 +277,18 @@ tbody tr:hover {
     text-align: center;
 }
 
-#user_information {
+#user_information, 
+#store-ubication {
     font-weight: 700;
 }
 
+#map {
+    height: 300px;
+    width: 100%;
+  }
+
 #popup-close {
-    cursor: pointer; 
+    cursor: pointer;
     float: right;
 }
 
@@ -262,6 +298,7 @@ tbody tr:hover {
 }
 
 @media (max-width: 768px) {
+
     /* Para pantallas más pequeñas, ajusta a 2 productos por fila */
     .product-container {
         grid-template-columns: repeat(2, 1fr);
@@ -269,6 +306,7 @@ tbody tr:hover {
 }
 
 @media (max-width: 480px) {
+
     /* Para pantallas muy pequeñas, ajusta a 1 producto por fila */
     .product-container {
         grid-template-columns: 1fr;

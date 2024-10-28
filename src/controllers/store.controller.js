@@ -1,6 +1,7 @@
-import { storeService, employeeService } from "../services/index.js";
+import { storeService, employeeService, managerService } from "../services/index.js";
 import { response } from "../utils/response.js";
 import { ClientError, NotFoundError } from "../utils/errors.js";
+import { Op } from "sequelize";
 
 const getStores = async (req, res, next) => {
   try {
@@ -61,10 +62,41 @@ const deleteStore = async (req, res, next) => {
   }
 };
 
+const showStores = async (req, res, next) => {
+  try {
+    const { address, manager_id } = req.query;
+    let query = {};
+    // Filters
+    if (address) query.address = { [Op.like]: `%${address}%` };
+    if (manager_id) query.manager_id = { [Op.like]: `%${manager_id}%` };
+
+    const results = await storeService.getAllWithInclude(query);
+    const managers = await managerService.getAllWithInclude();
+
+    if (!results) throw new NotFoundError("Error geting stores.");
+
+    // Verificar si la solicitud es AJAX
+    if (req.xhr) {
+      res.render("partials/stores-list", { results }); // Changes to the name of the view that only contains the list of stores
+    } else {
+      res.render("stores", {
+        results,
+        managers,
+        query: req.query,
+        nonce: res.locals.nonce,
+      });
+    }
+  } catch (error) {
+    console.error("Error at stores controller: ", error.message);
+    next(error);
+  }
+};
+
 export default {
   getStores,
   createStore,
   getStoreById,
   updateStore,
   deleteStore,
+  showStores,
 };

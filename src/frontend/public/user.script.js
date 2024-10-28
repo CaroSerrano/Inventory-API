@@ -87,7 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const formData = new FormData(filterForm);
       const queryString = new URLSearchParams(formData).toString();
-      const response = await fetch(`/api/admins/users?${queryString}`, {
+      let urlToFetch;
+      const origin = filterForm.getAttribute("data-origin");
+      if (origin === "users") urlToFetch = "/api/admins/users?";
+      if (origin === "stores") urlToFetch = "/api/admins/stores?"
+      const response = await fetch(urlToFetch+queryString, {
         method: "GET",
         headers: {
           "X-Requested-With": "XMLHttpRequest",
@@ -95,11 +99,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       if (!response.ok) {
         // Manejo de errores si la respuesta no es correcta
-        console.error("Error fetching users: ", response.statusText);
+        console.error("Error geting elements: ", response.statusText);
         return;
       }
       const html = await response.text();
-      document.querySelector(".users-container").innerHTML = html;
+      if (origin === "users") document.querySelector(".users-container").innerHTML = html;
+      if(origin === "stores") document.querySelector(".table-container").innerHTML = html;
+      
     });
   }
 

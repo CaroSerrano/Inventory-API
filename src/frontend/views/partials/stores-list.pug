@@ -1,0 +1,21 @@
+div.table-container
+                table
+                    thead.table-header
+                        tr
+                            th Address
+                            th Manager
+                            th Actions
+                    tbody.table-body
+                        each result in results
+                            tr
+                                td= result.address
+                                td= result.manager.last_name + " " + result.manager.first_name
+                                td
+                                    a.update_store(href= `./update-store/${result.id}`) Update
+                                    button.delete_store(data-store-id= result.id) Delete
+                                    button.view-on-map(data-store-address= result.address) View on map
+                            div.popup(data-store-address= result.address)
+                                div.popup-content
+                                    span#popup-close ✖
+                                    h5#store-ubication=`Ubication of store at ${result.address}`
+                                    div.popup-map-container                       

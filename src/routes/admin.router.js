@@ -1,6 +1,7 @@
 import express from "express";
 import productController from "../controllers/product.controller.js";
 import userController from "../controllers/user.controller.js";
+import storeController from "../controllers/store.controller.js";
 import { checkPermissions } from "../utils/middlewares/checkPermissions.js";
 
 const router = express.Router();
@@ -36,6 +37,8 @@ router.get(
   checkPermissions("update:users"),
   userController.showUpdateUser
 );
+
+router.get("/stores", checkPermissions("read:stores"), storeController.showStores);
 export default router;
 
 
