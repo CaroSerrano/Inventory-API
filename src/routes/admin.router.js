@@ -39,6 +39,11 @@ router.get(
 );
 
 router.get("/stores", checkPermissions("read:stores"), storeController.showStores);
+router.get(
+  "/create-store",
+  checkPermissions("create:stores"),
+  storeController.showCreateStore
+);
 export default router;
 
 

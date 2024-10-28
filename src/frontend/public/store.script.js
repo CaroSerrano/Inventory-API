@@ -104,6 +104,44 @@ async function showPopup(clickedBtn) {
   }
 }
 
+async function createStore(storeData) {
+  try {
+    let response = await fetch(`http://localhost:3001/api/stores`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(storeData),
+    });
+    
+    if (response.ok) {
+      const newStore = await response.json();
+      return newStore ? newStore : null;
+    } else {
+      alert("Error creating store: ", response.statusText);
+      console.log("Error creating store: ", response);
+      return;
+    }
+  } catch (error) {
+    console.error("Creating store error:", error);
+    throw error;
+  }
+}
+
+async function relocate(storeData) {
+  try {
+    const store = await createStore(storeData);
+    if (store) {
+      window.location.href = "/api/admins/stores";
+    } else {
+      alert("Error creating store");
+      window.location.href = "/api/admins/create-store";
+    }
+  } catch (error) {
+    console.error("recolate error: ", error.message);
+  }
+}
+
 async function deleteStore(storeId) {
   try {
     await fetch(`http://localhost:3001/api/stores/${storeId}`, {
@@ -145,6 +183,39 @@ document.addEventListener("DOMContentLoaded", () => {
           console.error("error en showPopup o handlePopupClose", error);
         }
       }
+    });
+  }
+
+  //############################# Create Store #########################################
+  const form = document.getElementById("createStoreForm");
+
+  if (form) {
+    form.addEventListener("submit", async function (event) {
+      event.preventDefault();
+      const fields = Array.from(form.querySelectorAll("input, select"))
+      const storeData = {};
+      let number;
+      let street;
+      let city;
+      fields.forEach((field) => {
+        if (field.name === "street") {
+          street = field.value
+          return
+        }
+        if(field.name === "number") {
+          number = field.value;
+          return
+        } 
+        if(field.name === "city") {
+          city = field.value
+          return
+        }
+        storeData[field.name] = field.value.trim();
+      });
+      storeData["address"] = number + " " + street + ", " + city
+      console.log("storeData en createStore: ", storeData);
+      // Relocate invocates createStore() and reloads stores page with the new store in it.
+      relocate(storeData);
     });
   }
 });

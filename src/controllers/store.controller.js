@@ -1,4 +1,4 @@
-import { storeService, employeeService, managerService } from "../services/index.js";
+import { storeService, managerService } from "../services/index.js";
 import { response } from "../utils/response.js";
 import { ClientError, NotFoundError } from "../utils/errors.js";
 import { Op } from "sequelize";
@@ -92,6 +92,16 @@ const showStores = async (req, res, next) => {
   }
 };
 
+const showCreateStore = async (req, res, next) => {
+  try {
+    const managers = await managerService.getAll();
+    res.status(200).render("store-create", {managers});
+  } catch (error) {
+    console.error("error at showCreateStore: ", error.message);
+    next(error)
+  }
+}
+
 export default {
   getStores,
   createStore,
@@ -99,4 +109,5 @@ export default {
   updateStore,
   deleteStore,
   showStores,
+  showCreateStore
 };

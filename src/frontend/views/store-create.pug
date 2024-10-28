@@ -1,0 +1,42 @@
+doctype html
+html(lang="en")
+    include ./head.pug
+    body 
+        header
+            div.logo
+                a(href="../index.pug")
+                    img(src="/static/gato-negro.png", alt="Cat-shop logo")
+                h1.titulo Cat-shop
+            nav
+                button.dropbtn Menu
+                    ul.dropdown-content
+                        li
+                            a(href="/api/admins/dashboard") Home
+                        li
+                            a(href="/api/admins/products") Products
+                        li
+                            a(href="/api/admins/users", class="dropbtn") Users
+                        li
+                            a(href="#") Suppliers
+                        li
+                            a(href="#") Categories
+                button#logout Logout
+        main
+            div.createStore-container
+                form#createStoreForm(action="/api/stores", method ="post")
+                    label(for="street") Street
+                    input#streetField(type="text", name="street", required)
+                    label(for="numberField") Number
+                    input#numberField(type="number", required, name="number")
+                    label(for="cityField") City
+                    input#cityField(type="text", required, name="city")
+                    label(for="managerField") Manager
+                    select#managerField(name="manager_id", required)
+                        each manager in managers 
+                            option(value=manager.id)=manager.last_name + " " + manager.first_name
+                    button(type="submit", class= "button") Add store
+        script(type="module", src="/static/store.script.js") 
+        script(src= "/static/user.script.js", type= "module")
+        script(src="/static/admin.script.js", type="module")
+        include ./footer.pug
+    

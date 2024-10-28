@@ -125,7 +125,8 @@ nav button {
 }
 
 .createProduct-container,
-.createUser-container {
+.createUser-container,
+.createStore-container {
     display: flex;
     flex-direction: column;
     padding: 50px;

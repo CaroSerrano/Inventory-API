@@ -34,7 +34,8 @@ apiRouter(app);
 
 // Manejo de errores con middlewares
 app.use((err, req, res, next) => {
-  const { statusCode, message } = err;
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
   resErrors(res, statusCode, message);
 });
 
