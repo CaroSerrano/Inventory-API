@@ -102,6 +102,17 @@ const showCreateStore = async (req, res, next) => {
   }
 }
 
+const showUpdateStore = async (req, res, next) => {
+  try {
+    const storeId = req.params.id;
+    const store = await storeService.getByWithInclude({id: storeId})
+    const managers = await managerService.getAll();    
+    res.status(200).render("store-update", {storeId, store, managers});
+  } catch (error) {
+    next(error)
+  }
+}
+
 export default {
   getStores,
   createStore,
@@ -109,5 +120,6 @@ export default {
   updateStore,
   deleteStore,
   showStores,
-  showCreateStore
+  showCreateStore,
+  showUpdateStore
 };

@@ -1,0 +1,49 @@
+doctype html
+html(lang="en")
+    include ./head.pug
+    body 
+        header
+            div.logo
+                a(href="../index.pug")
+                    img(src="/static/gato-negro.png", alt="Cat-shop logo")
+                h1.titulo Cat-shop
+            nav
+                button.dropbtn Menu
+                    ul.dropdown-content
+                        li
+                            a(href="/api/admins/dashboard") Home
+                        li
+                            a(href="/api/admins/products") Products
+                        li
+                            a(href="/api/admins/users", class="dropbtn") Users
+                        li
+                            a(href="#") Suppliers
+                        li
+                            a(href="#") Categories
+                button#logout Logout
+        main
+            div.createStore-container
+                form#updateStoreForm(action="/api/stores", method ="patch", data-store-id=storeId)
+                    h5 
+                        strong Current address: 
+                        = store.address
+                    label(for="updateAddress") Update address
+                    input#updateAddress(type="checkbox", name="updateAddress", value=true)
+                    label(for="street") Street
+                    input#streetField(type="text", name="street", required, disabled)
+                    label(for="numberField") Number
+                    input#numberField(type="number", name="number", required, disabled)
+                    label(for="cityField") City
+                    input#cityField(type="text", name="city", required, disabled)
+                    label(for="managerField") Manager
+                    select#managerField(name="manager_id")
+                        option(value=store.manager_id, selected)=store.manager.last_name + " " + store.manager.first_name
+                        each manager in managers 
+                            if manager.id != store.manager_id 
+                                option(value=manager.id)=manager.last_name + " " + manager.first_name
+                    button(type="submit", class= "button") update store
+        script(type="module", src="/static/store.script.js") 
+        script(src= "/static/user.script.js", type= "module")
+        script(src="/static/admin.script.js", type="module")
+        include ./footer.pug
+    

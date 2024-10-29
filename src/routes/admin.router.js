@@ -21,7 +21,7 @@ router.get("/create-product", (req, res) => {
 
 router.get("/update-product/:id", (req, res) => {
   const productId = req.params.id;
-  res.status(200).render("product-update", {productId});
+  res.status(200).render("product-update", { productId });
 });
 
 router.get("/users", checkPermissions("read:users"), userController.showUsers);
@@ -38,13 +38,19 @@ router.get(
   userController.showUpdateUser
 );
 
-router.get("/stores", checkPermissions("read:stores"), storeController.showStores);
+router.get(
+  "/stores",
+  checkPermissions("read:stores"),
+  storeController.showStores
+);
 router.get(
   "/create-store",
   checkPermissions("create:stores"),
   storeController.showCreateStore
 );
+router.get(
+  "/update-store/:id",
+  checkPermissions("update:stores"),
+  storeController.showUpdateStore
+);
 export default router;
-
-
-
