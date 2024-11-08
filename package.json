@@ -24,7 +24,8 @@
     "morgan": "^1.10.0",
     "mysql2": "^3.11.0",
     "pug": "^3.0.3",
-    "sequelize": "^6.37.3"
+    "sequelize": "^6.37.3",
+    "tempo": "^0.2.7"
   },
   "devDependencies": {
     "cross-env": "^7.0.3",

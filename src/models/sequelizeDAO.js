@@ -11,7 +11,7 @@ import Manager from "./manager.model.js";
 import Store from "./store.model.js";
 import setupAssociations from "./associations.js";
 import initialSetup from "../utils/initialSetup.js";
-import { NotFoundError, ValidationError } from "../utils/errors.js";
+import { ValidationError } from "../utils/errors.js";
 
 export default class sequelizeDAO {
   constructor(sequelizeConfig) {
@@ -23,6 +23,10 @@ export default class sequelizeDAO {
       {
         host: sequelizeConfig.DB_HOST,
         dialect: sequelizeConfig.dialect,
+        retry: {
+          max: 5,  // Número máximo de intentos
+          match: [/ETIMEDOUT/, /ECONNREFUSED/],  // Errores que disparan reintentos
+        },
         logging: false,
       }
     );
@@ -61,6 +65,7 @@ export default class sequelizeDAO {
     await this.syncModels(); // Synchronize models
     await initialSetup.initPermissions(this.models); //load permissions in DB
     await initialSetup.initRoles(this.models); //load roles in DB
+    await initialSetup.createSuperAdmin(this.models)//load superadmin user in DB
   };
   // Function to synchronize models
   syncModels = async () => {

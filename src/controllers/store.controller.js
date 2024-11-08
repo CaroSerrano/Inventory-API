@@ -75,7 +75,7 @@ const showStores = async (req, res, next) => {
 
     if (!results) throw new NotFoundError("Error geting stores.");
 
-    // Verificar si la solicitud es AJAX
+    // Verify if AJAX
     if (req.xhr) {
       res.render("partials/stores-list", { results }); // Changes to the name of the view that only contains the list of stores
     } else {

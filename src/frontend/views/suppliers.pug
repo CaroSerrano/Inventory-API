@@ -1,0 +1,56 @@
+doctype html
+html(lang="en")
+    include ./head.pug
+    body 
+        header
+            div.logo
+                a(href="../index.pug")
+                    img(src="/static/gato-negro.png", alt="Cat-shop logo")
+                h1.titulo Cat-shop
+            nav
+                button.dropbtn Menu
+                    ul.dropdown-content
+                        li
+                            a(href="/api/admins/dashboard") Home
+                        li
+                            a(href="/api/admins/products") Products
+                        li
+                            a(href="/api/admins/stores") Stores
+                        li
+                            a(href="/api/admins/users") Users
+                        li
+                            a(href="#") Categories
+                button#logout Logout
+        div.uploadSupplier
+            button.add-supplier(type="submit") Add new supplier
+        main
+            div.filter-container
+                h4 Search by 
+                form(id="filter-form", action="/api/admins/suppliers", method="GET", data-origin="suppliers")
+                    label(for="name") Name
+                    input(type="text", name="name", value=query.name)
+                    button(type="submit") Apply filter
+            div.suppliers-container
+                table
+                    thead
+                        tr
+                            th Name
+                            th Actions
+                    tbody
+                        each result in results
+                            tr
+                                td= result.name
+                                td
+                                    button.update_supplier(data-supplier-id= result.id) Update
+                                    button.delete_supplier(data-supplier-id= result.id) Delete
+                            div.popup(data-user-id= result.id, data-user-role= result.role_id)
+                                div.popup-content
+                                    span#popup-close ✖
+                                    h5 Supplier data
+                                    label(for="name") Name 
+                                    input#name(type="text", name="name")
+                                    button(type="submit") Add/update supplier 
+        script(nonce=nonce, src= "/static/user.script.js", type= "module")
+        script(nonce=nonce, src="/static/admin.script.js", type="module")
+        include ./footer.pug
+    

@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import User from "./user.model.js";
+import { format } from "@formkit/tempo";
 
 export default class Employee extends User {
   constructor(data) {
@@ -22,7 +23,10 @@ export default class Employee extends User {
         hire_date: {
           type: DataTypes.DATE,
           allowNull: false,
-          defaultValues: new Date(),
+          defaultValue: format({
+            date: new Date().toISOString(),
+            format: "YYYY-MM-DD",
+          })
         },
         shift_schedule: {
           type: DataTypes.STRING,

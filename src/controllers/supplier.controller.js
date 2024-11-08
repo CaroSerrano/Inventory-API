@@ -70,6 +70,32 @@ const deleteSupplier = async (req, res, next) => {
   }
 };
 
+const showSuppliers = async (req, res, next) => {
+  try {
+    const { name } = req.query;
+    let query = {};
+    // Filters
+    if (name) query.name = { [Op.like]: `%${name}%` };
+
+    const results = await supplierService.getAll(query);
+
+    if (!results) throw new NotFoundError("Error geting suppliers.");
+
+    // Verify if AJAX
+    if (req.xhr) {
+      res.render("partials/suppliers-list", { results }); // Changes to the name of the view that only contains the list of suppliers
+    } else {
+      res.render("suppliers", {
+        results,
+        query: req.query,
+        nonce: res.locals.nonce,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   getSuppliers,
   insertSupplier,
@@ -77,4 +103,5 @@ export default {
   getSupplierByName,
   deleteSupplier,
   updateSupplier,
+  showSuppliers
 };

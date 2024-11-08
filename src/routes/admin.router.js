@@ -3,6 +3,7 @@ import productController from "../controllers/product.controller.js";
 import userController from "../controllers/user.controller.js";
 import storeController from "../controllers/store.controller.js";
 import { checkPermissions } from "../utils/middlewares/checkPermissions.js";
+import supplierController from "../controllers/supplier.controller.js";
 
 const router = express.Router();
 
@@ -52,5 +53,11 @@ router.get(
   "/update-store/:id",
   checkPermissions("update:stores"),
   storeController.showUpdateStore
+);
+
+router.get(
+  "/suppliers",
+  checkPermissions("read:suppliers"),
+  supplierController.showSuppliers
 );
 export default router;
