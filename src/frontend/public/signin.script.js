@@ -1,4 +1,6 @@
 import authService from "./authService.js";
+const baseURl = 'http://localhost:8080/api/sessions/signin';
+const superAdminEmail = 'superadmin@example.com';
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM completamente cargado");
@@ -35,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       try {
         const response = await fetch(
-          `http://localhost:3001/api/sessions/signin`,
+          baseURl,
           {
             method: "POST",
             headers: {
@@ -84,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         authService.setToken(authUser.data.token);      
         let role;
-        if (email != "superadmin@example.com") {
+        if (email != superAdminEmail) {
           role = authUser.data.user.role_id.name;
         } else {
           role = "admin";

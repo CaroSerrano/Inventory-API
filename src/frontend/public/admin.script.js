@@ -16,7 +16,7 @@ async function logout() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM completamente cargado");
+  console.log("admin DOM completamente cargado");
   const logoutbtn = document.querySelector("#logout");
 
   if (logoutbtn) {

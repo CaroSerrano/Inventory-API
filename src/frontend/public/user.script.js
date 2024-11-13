@@ -1,9 +1,14 @@
 import { format } from "https://cdn.jsdelivr.net/npm/@formkit/tempo@0.1.2/+esm";
+const usersURL = "http://localhost:8080/api/users";
+const managersURL = "http://localhost:8080/api/managers";
+const employeesURL = "http://localhost:8080/api/employees";
+const rolesURL = "http://localhost:8080/api/roles";
+
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM completamente cargado");
   async function getRole(role) {
     try {
-      const response = await fetch(`http://localhost:3001/api/roles/${role}`, {
+      const response = await fetch(`${rolesURL}/${role}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -114,21 +119,21 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       const role = await getRole(userRole);
       if (role.data.name === "admin" || role.data.name === "basic_user") {
-        await fetch(`http://localhost:3001/api/users/${userId}`, {
+        await fetch(`${usersURL}/${userId}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
           },
         });
       } else if (role.data.name === "manager") {
-        await fetch(`http://localhost:3001/api/managers/${userId}`, {
+        await fetch(`${managersURL}/${userId}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
           },
         });
       } else if (role.data.name === "employee") {
-        await fetch(`http://localhost:3001/api/employees/${userId}`, {
+        await fetch(`${employeesURL}/${userId}`, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
@@ -265,7 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (role.data.name === "admin" || role.data.name === "basic_user") {
-          response = await fetch(`http://localhost:3001/api/users`, {
+          response = await fetch(usersURL, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -273,7 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
             body: JSON.stringify(userData),
           });
         } else if (role.data.name === "manager") {
-          response = await fetch(`http://localhost:3001/api/managers`, {
+          response = await fetch(managersURL, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -281,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
             body: JSON.stringify(userData),
           });
         } else if (role.data.name === "employee") {
-          response = await fetch(`http://localhost:3001/api/employees`, {
+          response = await fetch(employeesURL, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -361,7 +366,7 @@ document.addEventListener("DOMContentLoaded", () => {
         let response;
 
         if (role.data.name === "admin" || role.data.name === "basic_user") {
-          response = await fetch(`http://localhost:3001/api/users/${userId}`, {
+          response = await fetch(`${usersURL}/${userId}`, {
             method: "PATCH",
             headers: {
               "Content-Type": "application/json",
@@ -370,7 +375,7 @@ document.addEventListener("DOMContentLoaded", () => {
           });
         } else if (role.data.name === "manager") {
           response = await fetch(
-            `http://localhost:3001/api/managers/${userId}`,
+            `${managersURL}/${userId}`,
             {
               method: "PATCH",
               headers: {
@@ -381,7 +386,7 @@ document.addEventListener("DOMContentLoaded", () => {
           );
         } else if (role.data.name === "employee") {
           response = await fetch(
-            `http://localhost:3001/api/employees/${userId}`,
+            `${employeesURL}/${userId}`,
             {
               method: "PATCH",
               headers: {

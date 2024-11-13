@@ -24,8 +24,8 @@ export default class sequelizeDAO {
         host: sequelizeConfig.DB_HOST,
         dialect: sequelizeConfig.dialect,
         retry: {
-          max: 5,  // Número máximo de intentos
-          match: [/ETIMEDOUT/, /ECONNREFUSED/],  // Errores que disparan reintentos
+          max: 5,  // Maximum attempts
+          match: [/ETIMEDOUT/, /ECONNREFUSED/],  // Errors that trigger retries
         },
         logging: false,
       }

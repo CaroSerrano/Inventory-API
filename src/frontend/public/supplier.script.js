@@ -1,3 +1,5 @@
+const baseUrl = 'http://localhost:8080/api/suppliers';
+
 // Function to handle popup closing
 function handlePopupsClose() {
   const popupsClose = document.querySelectorAll("#popup-close");
@@ -23,6 +25,8 @@ async function showPopup(clickedBtn) {
       popup.getAttribute("data-supplier-id") ===
       clickedBtn.getAttribute("data-supplier-id")
   );
+  console.log("popup; ", popup);
+  
   if (popup) {
     // Show popup
     popup.style.visibility = "visible";
@@ -32,10 +36,27 @@ async function showPopup(clickedBtn) {
     popup.querySelector("#popup-close").focus();
   }
 }
+async function relocate(supplierData) {
+  console.log("En la funcion relocate");
+  
+  try {
+    const supplier = await createSupplier(supplierData);
+    if (supplier) {
+      window.location.href = "/api/admins/suppliers";
+    } else {
+      alert("Error creating supplier");
+      window.location.href = "/api/admins/suppliers";
+    }
+  } catch (error) {
+    console.error("recolate error: ", error.message);
+  }
+}
 
 async function createSupplier(supplierData) {
   try {
-    let response = await fetch(`http://localhost:3001/api/suppliers`, {
+    console.log("baseURl: ", baseUrl);
+    
+    let response = await fetch(baseUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -57,9 +78,44 @@ async function createSupplier(supplierData) {
   }
 }
 
+//############################# Update supplier #########################################
+async function updateSupplier(supplierId , supplierData) {
+    try {
+      let response = await fetch(
+        `${baseUrl}/${supplierId}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(supplierData),
+        }
+      );
+      const updatedSupplier = await response.json();
+      return updatedSupplier ? updatedSupplier : null;
+    } catch (error) {
+      console.error("Updating supplier error:", error);
+      throw error;
+    }
+}
+
+async function updateAndRelocate(supplierId, supplierData) {
+    try {
+      const supplier = await updateSupplier(supplierId, supplierData);
+      if (supplier) {
+        window.location.href = "/api/admins/suppliers";
+      } else {
+        alert("Error updating supplier");
+        window.location.href = "/api/admins/update-supplier";
+      }
+    } catch (error) {
+      console.error("recolate error: ", error.message);
+    }
+}
+
 async function deleteSupplier(supplierId) {
   try {
-    await fetch(`http://localhost:3001/api/suppliers/${supplierId}`, {
+    await fetch(`${baseUrl}/${supplierId}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -72,12 +128,17 @@ async function deleteSupplier(supplierId) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("SupplierDOM completamente cargado");
+  
   const suppliers_container = document.querySelector(".suppliers-container");
   if (suppliers_container) {
     suppliers_container.addEventListener("click", async function (event) {
+      console.log("Escuchando eventos del supplier container");
+      
       if (event.target.classList.contains("delete_supplier")) {
         const supplierID = event.target.getAttribute("data-supplier-id");
-
+        console.log("event.target: ", event.target);
+        
         const confirmation = confirm(`Delete supplier?`);
         if (confirmation) {
           try {
@@ -88,8 +149,10 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       }
-      if (event.target.classList.contains(".update_supplier")) {
-        const clickedbtn = event.target;
+      if (event.target.classList.contains("update_supplier")) {
+        let clickedbtn = event.target;
+        console.log("clickedbtn: ", clickedbtn);
+        
         try {
           await showPopup(clickedbtn);
           handlePopupsClose();
@@ -97,139 +160,50 @@ document.addEventListener("DOMContentLoaded", () => {
           console.error("error en showPopup o handlePopupClose", error);
         }
       }
+      if (event.target.classList.contains("send-data")) {
+        let clickedbtn = event.target;
+        console.log("clickedbtn: ", clickedbtn);
+        let visiblePopup;
+        document.querySelectorAll(".popup").forEach((popup) => {
+          if(popup.style.visibility === 'visible') {
+            visiblePopup = popup;
+          }
+        })
+        const supplierName = visiblePopup.querySelector("#name").value
+        const supplierData = {
+          name: supplierName.trim()
+        };
+        console.log("supplierData: ", supplierData);
+        
+        try {
+          if(clickedbtn.textContent === "Add supplier"){
+            await relocate(supplierData);
+          }
+          if(clickedbtn.textContent === "Update supplier"){
+            const supplierId = visiblePopup.getAttribute("data-supplier-id")
+            await updateAndRelocate(supplierId, supplierData);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }
     });
   }
 
   //############################# Create supplier #########################################
-  const uploadSupplier = document.querySelector(".uploadSupplier");
+  const uploadSupplier = document.querySelector(".add-supplier");
 
   if (uploadSupplier) {
-    uploadSupplier.addEventListener("submit", async function (event) {
-      event.preventDefault();
-      const clickedbtn = event.target;
+    uploadSupplier.addEventListener("click", async function (event) {
+      let clickedbtn = event.target;
+      console.log("Clickedbtn: ", clickedbtn);
+      
       try {
         await showPopup(clickedbtn);
         handlePopupsClose();
       } catch (error) {
         console.error("error en showPopup o handlePopupClose", error);
       }
-      const fields = Array.from(form.querySelectorAll("input, select"));
-      const storeData = {};
-      let number;
-      let street;
-      let city;
-      fields.forEach((field) => {
-        if (field.name === "street") {
-          street = field.value;
-          return;
-        }
-        if (field.name === "number") {
-          number = field.value;
-          return;
-        }
-        if (field.name === "city") {
-          city = field.value;
-          return;
-        }
-        storeData[field.name] = field.value.trim();
-      });
-      storeData["address"] = number + " " + street + ", " + city;
-      console.log("storeData en createStore: ", storeData);
-      // Relocate invocates createSupplier() and reloads suppliers page with the new supplier in it.
-      relocate(storeData);
     });
-  }
-
-  //############################# Update supplier #########################################
-  const updateForm = document.getElementById("updateStoreForm");
-  if (updateForm) {
-    const storeId = updateForm.getAttribute("data-store-id");
-    const updateAddress = document.getElementById("updateAddress");
-    const streetField = document.getElementById("streetField");
-    const numberField = document.getElementById("numberField");
-    const cityField = document.getElementById("cityField");
-
-    updateForm.addEventListener("change", () => {
-      if (updateAddress.checked) {
-        streetField.disabled = false;
-        numberField.disabled = false;
-        cityField.disabled = false;
-      }
-      if (!updateAddress.checked) {
-        streetField.disabled = true;
-        numberField.disabled = true;
-        cityField.disabled = true;
-      }
-    });
-
-    updateForm.addEventListener("submit", async function (event) {
-      event.preventDefault();
-
-      const fields = updateForm.querySelectorAll("input, select");
-      //Filter empty fields
-      const filledFields = Array.from(fields).filter(
-        (field) => field.value.trim() !== ""
-      );
-      // Create object with filled fields
-      const storeData = {};
-      let number;
-      let street;
-      let city;
-      filledFields.forEach((field) => {
-        if (field.name === "street") {
-          street = field.value;
-          return;
-        }
-        if (field.name === "number") {
-          number = field.value;
-          return;
-        }
-        if (field.name === "city") {
-          city = field.value;
-          return;
-        }
-        storeData[field.name] = field.value.trim();
-      });
-      if (number != "" && street != "" && city != "")
-        storeData["address"] = number + " " + street + ", " + city;
-      console.log("storeData: ", storeData);
-
-      //updateAndRelocate invocates updateStore() and reloads user page with the updated store in it.
-      updateAndRelocate(storeData);
-    });
-
-    async function updateStore(storeData) {
-      try {
-        let response = await fetch(
-          `http://localhost:3001/api/stores/${storeId}`,
-          {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(storeData),
-          }
-        );
-        const updatedStore = await response.json();
-        return updatedStore ? updatedStore : null;
-      } catch (error) {
-        console.error("Updating store error:", error);
-        throw error;
-      }
-    }
-
-    async function updateAndRelocate(storeData) {
-      try {
-        const store = await updateStore(storeData);
-        if (store) {
-          window.location.href = "/api/admins/stores";
-        } else {
-          alert("Error updating store");
-          window.location.href = "/api/admins/update-store";
-        }
-      } catch (error) {
-        console.error("recolate error: ", error.message);
-      }
-    }
   }
 });

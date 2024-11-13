@@ -1,5 +1,7 @@
+const baseUrl = 'http://localhost:8080/api/products'
+
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM completamente cargado");
+  console.log("Product DOM completamente cargado");
   //auxiliar function to validate that the category exists
   async function getCategory(category) {
     console.log("en validateCategory");
@@ -149,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
           supplier_id: supplier_id,
         };
 
-        const response = await fetch(`http://localhost:3001/api/products`, {
+        const response = await fetch(baseUrl, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -226,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         const response = await fetch(
-          `http://localhost:3001/api/products/${productId}`,
+          `${baseUrl}/${productId}`,
           {
             method: "PATCH",
             headers: {

@@ -22,7 +22,7 @@ html(lang="en")
                             a(href="#") Categories
                 button#logout Logout
         div.uploadSupplier
-            button.add-supplier(type="submit") Add new supplier
+            button.add-supplier(type="submit", data-supplier-id=null) Add new supplier
         main
             div.filter-container
                 h4 Search by 
@@ -43,14 +43,22 @@ html(lang="en")
                                 td
                                     button.update_supplier(data-supplier-id= result.id) Update
                                     button.delete_supplier(data-supplier-id= result.id) Delete
-                            div.popup(data-user-id= result.id, data-user-role= result.role_id)
+                            div.popup(data-supplier-id= result.id)
                                 div.popup-content
                                     span#popup-close ✖
                                     h5 Supplier data
                                     label(for="name") Name 
                                     input#name(type="text", name="name")
-                                    button(type="submit") Add/update supplier 
+                                    button.send-data(type="submit") Update supplier
+                div.popup(data-supplier-id=null)
+                    div.popup-content
+                        span#popup-close ✖
+                        h5 Supplier data
+                        label(for="name") Name 
+                        input#name(type="text", name="name")
+                        button.send-data(type="submit") Add supplier
         script(nonce=nonce, src= "/static/user.script.js", type= "module")
         script(nonce=nonce, src="/static/admin.script.js", type="module")
+        script(nonce=nonce, src="/static/supplier.script.js", type="module")
         include ./footer.pug
     
