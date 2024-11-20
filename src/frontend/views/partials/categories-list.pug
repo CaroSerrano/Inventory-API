@@ -1,0 +1,27 @@
+div.categories-container
+                table
+                    thead
+                        tr
+                            th Name
+                            th Actions
+                    tbody
+                        each result in results
+                            tr
+                                td= result.name
+                                td
+                                    button.update_category(data-category-id= result.id) Update
+                                    button.delete_category(data-category-id= result.id) Delete
+                            div.popup(data-category-id= result.id)
+                                div.popup-content
+                                    span#popup-close ✖
+                                    h5 Category data
+                                    label(for="name") Name 
+                                    input#name(type="text", name="name")
+                                    button.send-data(type="submit") Update category
+                div.popup(data-category-id=null)
+                    div.popup-content
+                        span#popup-close ✖
+                        h5 Category data
+                        label(for="name") Name 
+                        input#name(type="text", name="name")
+                        button.send-data(type="submit") Add category                   

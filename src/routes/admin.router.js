@@ -4,6 +4,7 @@ import userController from "../controllers/user.controller.js";
 import storeController from "../controllers/store.controller.js";
 import { checkPermissions } from "../utils/middlewares/checkPermissions.js";
 import supplierController from "../controllers/supplier.controller.js";
+import categoryController from "../controllers/category.controller.js";
 
 const router = express.Router();
 
@@ -60,4 +61,11 @@ router.get(
   checkPermissions("read:suppliers"),
   supplierController.showSuppliers
 );
+
+router.get(
+  "/categories",
+  checkPermissions("read:categories"),
+  categoryController.showCategories
+);
+
 export default router;

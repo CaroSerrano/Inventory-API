@@ -19,7 +19,7 @@ html(lang="en")
                         li
                             a(href="/api/admins/suppliers") Suppliers
                         li
-                            a(href="#") Categories
+                            a(href="/api/admins/categories") Categories
                 button#logout Logout
         div.uploadStore
             a(class= "button", href= "./create-store") Add new store
@@ -60,7 +60,6 @@ html(lang="en")
                                     h5#store-ubication=`Ubication of store at ${result.address}`
                                     div.popup-map-container                       
         script(nonce=nonce, src="/static/store.script.js", type="module")
-        script(nonce=nonce, src= "/static/user.script.js", type= "module")
         script(nonce=nonce, src="/static/admin.script.js", type="module")
         script(src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js")
         include ./footer.pug

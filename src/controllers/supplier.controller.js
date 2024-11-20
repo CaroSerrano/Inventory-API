@@ -1,6 +1,7 @@
 import { supplierService } from "../services/index.js";
 import { response } from "../utils/response.js";
 import { ClientError, NotFoundError } from "../utils/errors.js";
+import { Op } from 'sequelize';
 
 const getSuppliers = async (req, res, next) => {
   try {

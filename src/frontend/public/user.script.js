@@ -335,7 +335,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const fields = updateForm.querySelectorAll("input, select");
       //Filter empty fields
       const filledFields = Array.from(fields).filter(
-        (field) => field.value.trim() !== "" && field.disabled == false
+        (field) => field.value.trim() !== "" && field.value.trim() !== "Select an option" && field.disabled == false
       );
       // Create object with filled fields
       const userData = {};

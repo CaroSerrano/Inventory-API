@@ -25,7 +25,6 @@ async function showPopup(clickedBtn) {
       popup.getAttribute("data-supplier-id") ===
       clickedBtn.getAttribute("data-supplier-id")
   );
-  console.log("popup; ", popup);
   
   if (popup) {
     // Show popup
@@ -36,9 +35,7 @@ async function showPopup(clickedBtn) {
     popup.querySelector("#popup-close").focus();
   }
 }
-async function relocate(supplierData) {
-  console.log("En la funcion relocate");
-  
+async function relocate(supplierData) {  
   try {
     const supplier = await createSupplier(supplierData);
     if (supplier) {
@@ -53,9 +50,7 @@ async function relocate(supplierData) {
 }
 
 async function createSupplier(supplierData) {
-  try {
-    console.log("baseURl: ", baseUrl);
-    
+  try {    
     let response = await fetch(baseUrl, {
       method: "POST",
       headers: {
@@ -129,16 +124,33 @@ async function deleteSupplier(supplierId) {
 
 document.addEventListener("DOMContentLoaded", () => {
   console.log("SupplierDOM completamente cargado");
-  
+  const filterForm = document.getElementById("filter-form");
+  if (filterForm) {
+    filterForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      const formData = new FormData(filterForm);
+      const queryString = new URLSearchParams(formData).toString();
+      const response = await fetch(`/api/admins/suppliers?${queryString}`, {
+        method: "GET",
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+      if (!response.ok) {
+        // Manejo de errores si la respuesta no es correcta
+        console.error("Error fetching suppliers: ", response.statusText);
+        return;
+      }
+      const html = await response.text();
+      document.querySelector(".suppliers-container").innerHTML = html;
+    });
+  }
   const suppliers_container = document.querySelector(".suppliers-container");
   if (suppliers_container) {
-    suppliers_container.addEventListener("click", async function (event) {
-      console.log("Escuchando eventos del supplier container");
-      
+    suppliers_container.addEventListener("click", async function (event) {   
       if (event.target.classList.contains("delete_supplier")) {
-        const supplierID = event.target.getAttribute("data-supplier-id");
-        console.log("event.target: ", event.target);
-        
+        const supplierID = event.target.getAttribute("data-supplier-id");        
         const confirmation = confirm(`Delete supplier?`);
         if (confirmation) {
           try {
@@ -150,9 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       if (event.target.classList.contains("update_supplier")) {
-        let clickedbtn = event.target;
-        console.log("clickedbtn: ", clickedbtn);
-        
+        let clickedbtn = event.target;        
         try {
           await showPopup(clickedbtn);
           handlePopupsClose();
@@ -162,7 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       if (event.target.classList.contains("send-data")) {
         let clickedbtn = event.target;
-        console.log("clickedbtn: ", clickedbtn);
         let visiblePopup;
         document.querySelectorAll(".popup").forEach((popup) => {
           if(popup.style.visibility === 'visible') {
@@ -173,7 +182,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const supplierData = {
           name: supplierName.trim()
         };
-        console.log("supplierData: ", supplierData);
         
         try {
           if(clickedbtn.textContent === "Add supplier"){
@@ -195,9 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (uploadSupplier) {
     uploadSupplier.addEventListener("click", async function (event) {
-      let clickedbtn = event.target;
-      console.log("Clickedbtn: ", clickedbtn);
-      
+      let clickedbtn = event.target;      
       try {
         await showPopup(clickedbtn);
         handlePopupsClose();

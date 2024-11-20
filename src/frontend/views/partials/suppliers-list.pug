@@ -1,0 +1,27 @@
+div.suppliers-container
+                table
+                    thead
+                        tr
+                            th Name
+                            th Actions
+                    tbody
+                        each result in results
+                            tr
+                                td= result.name
+                                td
+                                    button.update_supplier(data-supplier-id= result.id) Update
+                                    button.delete_supplier(data-supplier-id= result.id) Delete
+                            div.popup(data-supplier-id= result.id)
+                                div.popup-content
+                                    span#popup-close ✖
+                                    h5 Supplier data
+                                    label(for="name") Name 
+                                    input#name(type="text", name="name")
+                                    button.send-data(type="submit") Update supplier
+                div.popup(data-supplier-id=null)
+                    div.popup-content
+                        span#popup-close ✖
+                        h5 Supplier data
+                        label(for="name") Name 
+                        input#name(type="text", name="name")
+                        button.send-data(type="submit") Add supplier                   

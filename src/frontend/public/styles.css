@@ -135,7 +135,8 @@ nav button {
 .uploadProduct,
 .uploadUser,
 .uploadStore,
-.uploadSupplier {
+.uploadSupplier,
+.uploadCategory {
     display: flex;
     justify-content: center;
     padding: 10px;
@@ -209,8 +210,8 @@ tbody tr:hover {
 }
 
 .update_user,
-.update_store {
-    padding: 10px 20px;
+.update_store,
+.update_category {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: small;
@@ -224,37 +225,46 @@ tbody tr:hover {
     width: 100%;
     margin-bottom: 10px;
 }
-
+.update_store,
+.update_user {
+    padding: 10px 20px;
+}
 .delete_user,
 .delete_store,
 .delete_supplier,
-.view-on-map {
+.delete_category,
+.view-on-map,
+#more_info {
     width: 100%;
 }
 
 .update_user,
 .update_store,
-.update_supplier {
+.update_supplier,
+.update_category {
     background-color: #410a89;
 }
 
 .update_user:hover,
 .update_store:hover,
-.update_supplier:hover  {
+.update_supplier:hover,
+.update_category:hover  {
     background-color: #8a7e9a;
 }
 
 .delete_user,
 .delete_store,
 #delete_product,
-.delete_supplier {
+.delete_supplier,
+.delete_category {
     background-color: rgb(180, 50, 78);
 }
 
 .delete_user:hover,
 .delete_store:hover,
 #delete_product:hover,
-.delete_supplier:hover {
+.delete_supplier:hover,
+.delete_category:hover {
     background-color: rgb(167, 110, 110);
 }
 

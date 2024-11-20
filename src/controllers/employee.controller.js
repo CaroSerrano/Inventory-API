@@ -3,9 +3,7 @@ import { response } from "../utils/response.js";
 import { ClientError, NotFoundError } from "../utils/errors.js";
 import { createHash } from "../utils/authUtils.js";
 
-const getEmployees = async (req, res, next) => {
-  console.log("en el controlador de employees");
-  
+const getEmployees = async (req, res, next) => {  
   try {
     let results = await employeeService.getAllWithInclude();
     if (!results) throw new NotFoundError("Error geting employees.");
@@ -16,7 +14,6 @@ const getEmployees = async (req, res, next) => {
     response(res, 200, users);
   } catch (error) {
     console.error("Error geting employees: ", error.message);
-    
     next(error);
   }
 };
@@ -75,6 +72,8 @@ const updateEmployee = async (req, res, next) => {
   try {
     const id = req.params.id;
     const data = req.body;
+    console.log("body: ", data);
+    
     const result = await employeeService.updateWithInclude(data, id);
     if (!result) throw new NotFoundError("Error updating employee.");
     const { password: _, ...userResponse } = result;

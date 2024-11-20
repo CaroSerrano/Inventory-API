@@ -19,18 +19,18 @@ html(lang="en")
                         li
                             a(href="/api/admins/users") Users
                         li
-                            a(href="/api/admins/categories") Categories
+                            a(href="/api/admins/suppliers") Suppliers
                 button#logout Logout
-        div.uploadSupplier
-            button.add-supplier(type="submit", data-supplier-id=null) Add new supplier
+        div.uploadCategory
+            button.add-category(type="submit", data-category-id=null) Add new category
         main
             div.filter-container
                 h4 Search by 
-                form(id="filter-form", action="/api/admins/suppliers", method="GET", data-origin="suppliers")
+                form(id="filter-form", action="/api/admins/categories", method="GET", data-origin="categories")
                     label(for="name") Name
                     input(type="text", name="name", value=query.name)
                     button(type="submit") Apply filter
-            div.suppliers-container
+            div.categories-container
                 table
                     thead
                         tr
@@ -41,23 +41,23 @@ html(lang="en")
                             tr
                                 td= result.name
                                 td
-                                    button.update_supplier(data-supplier-id= result.id) Update
-                                    button.delete_supplier(data-supplier-id= result.id) Delete
-                            div.popup(data-supplier-id= result.id)
+                                    button.update_category(data-category-id= result.id) Update
+                                    button.delete_category(data-category-id= result.id) Delete
+                            div.popup(data-category-id= result.id)
                                 div.popup-content
                                     span#popup-close ✖
-                                    h5 Supplier data
+                                    h5 Category data
                                     label(for="name") Name 
                                     input#name(type="text", name="name")
-                                    button.send-data(type="submit") Update supplier
-                div.popup(data-supplier-id=null)
+                                    button.send-data(type="submit") Update category
+                div.popup(data-category-id=null)
                     div.popup-content
                         span#popup-close ✖
-                        h5 Supplier data
+                        h5 Category data
                         label(for="name") Name 
                         input#name(type="text", name="name")
-                        button.send-data(type="submit") Add supplier
+                        button.send-data(type="submit") Add category
         script(nonce=nonce, src="/static/admin.script.js", type="module")
-        script(nonce=nonce, src="/static/supplier.script.js", type="module")
+        script(nonce=nonce, src="/static/category.script.js", type="module")
         include ./footer.pug
     

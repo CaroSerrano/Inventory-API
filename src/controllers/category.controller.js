@@ -1,6 +1,7 @@
 import { categoryService } from "../services/index.js";
 import { response } from "../utils/response.js";
 import { ClientError, NotFoundError } from "../utils/errors.js";
+import { Op } from 'sequelize';
 
 const getCategories = async (req, res, next) => {
   try {
@@ -69,6 +70,32 @@ const deletecategory = async (req, res, next) => {
   }
 };
 
+const showCategories = async (req, res, next) => {
+  try {
+    const { name } = req.query;
+    let query = {};
+    // Filters
+    if (name) query.name = { [Op.like]: `%${name}%` };
+    
+    const results = await categoryService.getAll(query);
+    
+    if (!results) throw new NotFoundError("Error geting categories.");
+
+    // Verify if AJAX
+    if (req.xhr) {
+      res.render("partials/categories-list", { results }); // Changes to the name of the view that only contains the list of categories
+    } else {
+      res.render("categories", {
+        results,
+        query: req.query,
+        nonce: res.locals.nonce,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   getCategories,
   insertCategory,
@@ -76,4 +103,5 @@ export default {
   getCategoryByName,
   deletecategory,
   updateCategory,
+  showCategories
 };
