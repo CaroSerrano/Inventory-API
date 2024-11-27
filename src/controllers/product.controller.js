@@ -5,7 +5,7 @@ import {
 } from "../services/index.js";
 import { response } from "../utils/response.js";
 import { ClientError, NotFoundError } from "../utils/errors.js";
-import { Op } from 'sequelize';
+import { Op } from "sequelize";
 
 const showProducts = async (req, res, next) => {
   try {
@@ -13,9 +13,9 @@ const showProducts = async (req, res, next) => {
     let query = {};
     // Filters
     if (name) query.name = { [Op.like]: `%${name}%` };
-    if (category) query['$category.name$'] = category
-    if (supplier) query['$supplier.name$'] = supplier;
-    
+    if (category) query["$category.name$"] = category;
+    if (supplier) query["$supplier.name$"] = supplier;
+
     // Orders
     let orderBy = [];
     if (order === "price-asc") orderBy.push(["unit_price", "ASC"]);
@@ -25,26 +25,54 @@ const showProducts = async (req, res, next) => {
     else if (order === "alpha") orderBy.push(["name", "ASC"]);
     else orderBy = undefined;
 
-    let categories = await categoryService.getAll();    
+    let categories = await categoryService.getAll();
     let suppliers = await supplierService.getAll();
 
     let results = await productService.getAllWithIncludeOrder(query, orderBy);
-    
+
     if (!results) throw new NotFoundError("Error geting products.");
     // Verificar si la solicitud es AJAX
     if (req.xhr) {
       res.render("partials/product-list", { results }); // Cambia por el nombre de la vista que solo contiene la lista de productos
-  } else {
-    res.render("product-admin", {
-      results,
-      categories,
-      suppliers,
-      query: req.query,
-      nonce: res.locals.nonce
-    });
-  }
+    } else {
+      res.render("product-admin", {
+        results,
+        categories,
+        suppliers,
+        query: req.query,
+        nonce: res.locals.nonce,
+      });
+    }
   } catch (error) {
     console.error("Error at product controller: ", error.message);
+    next(error);
+  }
+};
+
+const showCreateProduct = async (req, res, next) => {
+  try {
+    const categories = await categoryService.getAll();
+    const suppliers = await supplierService.getAll();
+    res.status(200).render("product-create", { categories, suppliers });
+  } catch (error) {
+    console.error("error at showCreateProduct: ", error.message);
+    next(error);
+  }
+};
+
+const showUpdateProduct = async (req, res, next) => {
+  try {
+    const productId = req.params.id;
+    const product = await productService.getBy({id: productId});
+    const productSupplier = product.supplier_id;
+    const productCategory = product.category_id;
+    const categories = await categoryService.getAll();
+    const suppliers = await supplierService.getAll();
+    res
+      .status(200)
+      .render("product-update", { productId, productCategory, productSupplier, categories, suppliers });
+  } catch (error) {
+    console.error("error at showUpdateProduct: ", error.message);
     next(error);
   }
 };
@@ -133,6 +161,8 @@ export default {
   getProducts,
   showProducts,
   insertProduct,
+  showCreateProduct,
+  showUpdateProduct,
   getProductById,
   deleteProduct,
   deleteManyProducts,

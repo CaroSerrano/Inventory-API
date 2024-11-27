@@ -32,10 +32,14 @@ html(lang="en")
                     input#unitPriceField(type="number", required, name="unit_price")
                     label(for="stockField") Units in stock
                     input#stockField(type="number", name="units_in_stock")
-                    label(for="categoryField") Category
-                    input#categoryField(type="text", required, name="category")
-                    label(for="supplierField") Supplier
-                    input#supplierField(type="text", required, name="supplier")
+                    label(for="categoryField") Select category
+                    select#categoryField(required, name="category")
+                        each category in categories 
+                            option(value= category.id)= category.name
+                    label(for="supplierField") Select supplier
+                    select#supplierField(required, name="supplier")
+                        each supplier in suppliers 
+                            option(value= supplier.id)= supplier.name
                     button(type="submit", class= "button") Add product
         script(src= "/static/product.script.js", type= "module")
         script(src="/static/admin.script.js", type="module")

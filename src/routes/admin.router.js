@@ -17,14 +17,16 @@ router.get(
   productController.showProducts
 );
 
-router.get("/create-product", (req, res) => {
-  res.status(200).render("product-create");
-});
+router.get(
+  "/create-product",
+  checkPermissions("create:products"),
+  productController.showCreateProduct
+);
 
-router.get("/update-product/:id", (req, res) => {
-  const productId = req.params.id;
-  res.status(200).render("product-update", { productId });
-});
+router.get(
+  "/update-product/:id",
+  checkPermissions("update:products"), productController.showUpdateProduct
+);
 
 router.get("/users", checkPermissions("read:users"), userController.showUsers);
 

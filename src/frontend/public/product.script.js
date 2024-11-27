@@ -116,10 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (form) {
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
-      const inputs = form.querySelectorAll("input");
+      const fields = form.querySelectorAll("input, select");
       const productData = {};
-      inputs.forEach((input) => {
-        productData[input.name] = input.value.trim();
+      fields.forEach((field) => {
+        productData[field.name] = field.value.trim();
       });
 
       // Relocate invocates createProduct() and reloads products page with the new product in it.
@@ -128,27 +128,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function createProduct(productData) {
       try {
-        const category = await getCategory(productData.category);
-        const category_id = category.data.id;
-
-        if (!category_id) {
-          alert("Category not found");
-          window.location.href = "/api/admins/create-product";
-        }
-        const supplier = await getSupplier(productData.supplier);
-        const supplier_id = supplier.data.id;
-        if (!supplier_id) {
-          alert("Supplier not found");
-          window.location.href = "/api/admins/create-product";
-        }
-
         const bodyData = {
           name: productData.name,
           description: productData.description,
           unit_price: productData.unit_price,
           units_in_stock: productData.units_in_stock,
-          category_id: category_id,
-          supplier_id: supplier_id,
+          category_id: productData.category,
+          supplier_id: productData.supplier,
         };
 
         const response = await fetch(baseUrl, {
@@ -205,28 +191,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function updateProduct(productData) {
       try {
-        if (productData.category) {
-          let category = await getCategory(productData.category);
-
-          if (!category) {
-            alert("Category not found");
-            window.location.href = `/api/admins/update-product/${productId}`;
-          }
-        }
-
-        if (productData.supplier) {
-          let supplier = await getSupplier(productData.supplier);
-          if (!supplier) {
-            alert("Supplier not found");
-            window.location.href = `/api/admins/update-product/${productId}`;
-          }
-        }
-
-        let bodyData = {};
-        for (const key in productData) {
-          bodyData[key] = productData[key];
-        }
-
         const response = await fetch(
           `${baseUrl}/${productId}`,
           {
@@ -234,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(bodyData),
+            body: JSON.stringify(productData),
           }
         );
         const updatedProduct = await response.json();
