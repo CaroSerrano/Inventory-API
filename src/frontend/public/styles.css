@@ -175,15 +175,8 @@ h4#stock,
     margin-bottom: 15px;
 }
 
-.product-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-    padding: 20px;
-}
 
-
-/************************************ TABLE USERS/STORES *********************************************/
+/************************************ TABLE USERS/STORES/PRODUCTS *********************************************/
 
 table {
     width: 100%;
@@ -211,7 +204,8 @@ tbody tr:hover {
 
 .update_user,
 .update_store,
-.update_category {
+.update_category,
+.update_product {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: small;
@@ -226,13 +220,15 @@ tbody tr:hover {
     margin-bottom: 10px;
 }
 .update_store,
-.update_user {
+.update_user,
+.update_product {
     padding: 10px 20px;
 }
 .delete_user,
 .delete_store,
 .delete_supplier,
 .delete_category,
+.delete_product,
 .view-on-map,
 #more_info {
     width: 100%;
@@ -241,22 +237,24 @@ tbody tr:hover {
 .update_user,
 .update_store,
 .update_supplier,
-.update_category {
+.update_category,
+.update_product {
     background-color: #410a89;
 }
 
 .update_user:hover,
 .update_store:hover,
 .update_supplier:hover,
-.update_category:hover  {
+.update_category:hover,
+.update_product:hover  {
     background-color: #8a7e9a;
 }
 
 .delete_user,
 .delete_store,
-#delete_product,
 .delete_supplier,
-.delete_category {
+.delete_category,
+.delete_product {
     background-color: rgb(180, 50, 78);
 }
 
@@ -264,7 +262,8 @@ tbody tr:hover {
 .delete_store:hover,
 #delete_product:hover,
 .delete_supplier:hover,
-.delete_category:hover {
+.delete_category:hover,
+.delete_product:hover {
     background-color: rgb(167, 110, 110);
 }
 

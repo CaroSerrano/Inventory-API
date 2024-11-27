@@ -1,8 +1,23 @@
 div.product-container
-    each result in results
-        div.product
-            h3#product_name= result.name
-            h4#product_price= `$${result.unit_price}`
-            h4#stock= `Units in stock: ${result.units_in_stock}`
-            a(class="button", href=`./update-product/${result.id}`) Update product
-            button#delete_product(class="button", data-product-id=result.id) Delete product
+                table
+                    thead 
+                        tr 
+                            th Name 
+                            th Description 
+                            th Category 
+                            th Supplier 
+                            th Unit price 
+                            th Units in stock
+                            th Actions 
+                    tbody 
+                        each result in results
+                            tr 
+                                td= result.name 
+                                td= result.description
+                                td= result.category.name 
+                                td= result.supplier.name
+                                td= result.unit_price 
+                                td= result.units_in_stock 
+                                td 
+                                    a.update_product(href= `./update-product/${result.id}`) Update
+                                    button.delete_product(data-product-id= result.id) Delete
