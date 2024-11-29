@@ -14,7 +14,8 @@ export const verifytoken = (req, res, next) => {
       throw new AuthorizationError("Not authorized", 401);
     }
     req.id = decoded.id;
-    req.role_id = decoded.role_id;    
+    req.role_id = decoded.role_id;
+    req.role = decoded.role;    
   });
   next();
 };

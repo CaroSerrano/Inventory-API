@@ -118,7 +118,8 @@ nav button {
     color: #111;
 }
 
-.admin-container {
+.admin-container, 
+.manager-container {
     display: flex;
     flex-direction: column;
     padding: 60px;
@@ -205,7 +206,8 @@ tbody tr:hover {
 .update_user,
 .update_store,
 .update_category,
-.update_product {
+.update_product,
+.update_supplier {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: small;

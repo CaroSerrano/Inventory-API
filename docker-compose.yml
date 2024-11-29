@@ -17,6 +17,11 @@ services:
       - db
     networks:
       - appnetwork
+    logging:
+      driver: local
+      options:
+        max-size: "20m"
+        max-file: "5"
 
   db:
     image: mysql:8.0

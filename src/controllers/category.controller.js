@@ -72,6 +72,7 @@ const deletecategory = async (req, res, next) => {
 
 const showCategories = async (req, res, next) => {
   try {
+    const role = req.role;
     const { name } = req.query;
     let query = {};
     // Filters
@@ -89,6 +90,7 @@ const showCategories = async (req, res, next) => {
         results,
         query: req.query,
         nonce: res.locals.nonce,
+        role
       });
     }
   } catch (error) {

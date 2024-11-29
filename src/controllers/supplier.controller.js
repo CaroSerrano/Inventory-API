@@ -74,6 +74,7 @@ const deleteSupplier = async (req, res, next) => {
 const showSuppliers = async (req, res, next) => {
   try {
     const { name } = req.query;
+    const role = req.role;
     let query = {};
     // Filters
     if (name) query.name = { [Op.like]: `%${name}%` };
@@ -90,6 +91,7 @@ const showSuppliers = async (req, res, next) => {
         results,
         query: req.query,
         nonce: res.locals.nonce,
+        role
       });
     }
   } catch (error) {

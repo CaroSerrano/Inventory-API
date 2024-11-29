@@ -5,10 +5,15 @@ html(lang="en")
         header
             div.logo
                 a(href="../index.pug")
-                    img(src="/static/gato-negro.png", alt="Cat-shop logo")
-                h1.titulo Cat-shop
-    a(type="button", class= "button", href= "../index.pug") Products
-    a(type="button", class= "button", href= "../index.pug") Suppliers
-    a(type="button", class= "button", href= "../index.pug") Categories 
+                    img(src="/static/gato-negro.png", alt="Inventory-API logo")
+                h1.titulo Inventory-API
+            nav
+                button#logout Logout
+        main 
+            div.manager-container
+                a(type="button", class= "button", href= "../admins/products") Products
+                a(type="button", class= "button", href= "../admins/suppliers") Suppliers
+                a(type="button", class= "button", href= "../admins/categories") Categories 
     include ./footer.pug
+    script(src= "/static/admin.script.js", type= "module")
     

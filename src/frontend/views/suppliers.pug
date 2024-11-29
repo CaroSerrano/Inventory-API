@@ -5,21 +5,29 @@ html(lang="en")
         header
             div.logo
                 a(href="../index.pug")
-                    img(src="/static/gato-negro.png", alt="Cat-shop logo")
-                h1.titulo Cat-shop
+                    img(src="/static/gato-negro.png", alt="Inventory-API logo")
+                h1.titulo Inventory-API
             nav
                 button.dropbtn Menu
                     ul.dropdown-content
-                        li
-                            a(href="/api/admins/dashboard") Home
+                        if role === "admin" || role === "superadmin"
+                            li
+                                a(href="/api/admins/dashboard") Home
+                            li
+                                a(href="/api/admins/stores") Stores
+                            li
+                                a(href="/api/admins/users") Users
+                        if role === "manager"
+                            li 
+                                a(href="/api/managers/dashboard") Home 
+                        if role === "employee"
+                            li 
+                                a(href="/api/employees/dashboard") Home  
                         li
                             a(href="/api/admins/products") Products
-                        li
-                            a(href="/api/admins/stores") Stores
-                        li
-                            a(href="/api/admins/users") Users
-                        li
-                            a(href="/api/admins/categories") Categories
+                        if role === "superadmin" || role === "admin" || role === "manager"
+                            li
+                                a(href="/api/admins/categories") Categories
                 button#logout Logout
         div.uploadSupplier
             button.add-supplier(type="submit", data-supplier-id=null) Add new supplier

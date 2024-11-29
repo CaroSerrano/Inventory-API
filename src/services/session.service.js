@@ -92,13 +92,13 @@ export default class SessionService extends GenericQueries {
 
       //Create token
       const token = jwt.sign(
-        { id: user.id, email: user.email, role_id: user.role_id },
+        { id: user.id, email: user.email, role_id: user.role_id, role: role.name },
         secret,
         {
           expiresIn: 86400, //24 hours
         }
       );
-
+      user.role = role.name;
       // Delete sensitive fields
       const { password: _, ...userResponse } = user;
 

@@ -1,4 +1,4 @@
-# CAT-SHOP 🐱<!-- omit in toc -->
+# Inventory-API 🐱<!-- omit in toc -->
 - [Project description](#project-description)
 - [Used technologies](#used-technologies)
 - [Relational model](#relational-model)
@@ -6,7 +6,7 @@
 
 ## Project description
 
-This is an API designed to manage a Cat-shop inventory. It allows users to register with different roles (Admin, Manager, Employee, User) and uses JSON Web Tokens (JWT) for authentication.
+This is an API designed to manage a shop inventory. It allows users to register with different roles (Admin, Manager, Employee, Basic User) and uses JSON Web Tokens (JWT) for authentication.
 
 A basic user interface was developed to facilitate the API test using templating engine.
     
@@ -19,10 +19,9 @@ Manages users, assigns roles and has control over all data in the system.
    2. Manager:
 
 Has access to all inventory operations, but cannot manage users or modify roles.
-Can view, add, edit, and delete products and manage inventory.
-Can generate inventory reports. 
+Can view, add, edit, and delete products and manage inventory. 
 
-   3. Employee:
+   1. Employee:
 
 Can view and update inventory.
 Can add new products, but cannot delete them.

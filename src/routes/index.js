@@ -50,20 +50,9 @@ const apiRouter = (app) => {
     res.status(200).render("signin")
   });
   router.use("/api/sessions", sessionRouter);
-  router.use("/api/managers/dashboard", (req, res) => {
-    res.status(200).render("manager")
-  })
-  router.use("/api/employees/dashboard", (req, res) => {
-    res.status(200).render("employee")
-  })
-  router.use("/api/users/dashboard", (req, res) => {
-    res.status(200).render("user")
-  })
-
   router.use("/api", (req, res) => {
     res.status(200).render("index")
   });
-
   router.use("*", (req, res) => {
     resErrors(res, 404, "Non-existent route");
   });

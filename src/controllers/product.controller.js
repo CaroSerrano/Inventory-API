@@ -9,6 +9,7 @@ import { Op } from "sequelize";
 
 const showProducts = async (req, res, next) => {
   try {
+    const role = req.role;
     const { name, category, supplier, order } = req.query;
     let query = {};
     // Filters
@@ -39,6 +40,7 @@ const showProducts = async (req, res, next) => {
         results,
         categories,
         suppliers,
+        role,
         query: req.query,
         nonce: res.locals.nonce,
       });

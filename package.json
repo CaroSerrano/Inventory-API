@@ -1,5 +1,5 @@
 {
-  "name": "cat-shop",
+  "name": "Inventory-API",
   "version": "1.0.0",
   "description": "API incorporando autenticación y roles",
   "main": "index.js",

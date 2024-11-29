@@ -87,7 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
         authService.setToken(authUser.data.token);      
         let role;
         if (email != superAdminEmail) {
-          role = authUser.data.user.role_id.name;
+          role = authUser.data.user.role;
+          
         } else {
           role = "admin";
         }

@@ -1,6 +1,7 @@
+const baseURl = 'http://localhost:8080/api/sessions/logout';
 async function logout() {
   try {
-    await fetch("http://localhost:3001/api/sessions/logout", {
+    await fetch(baseURl, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
