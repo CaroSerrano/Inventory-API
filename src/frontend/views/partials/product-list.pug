@@ -8,7 +8,8 @@ div.product-container
                             th Supplier 
                             th Unit price 
                             th Units in stock
-                            th Actions 
+                            if role === "admin" || role === "superadmin" || role === "manager" || role === "employee"
+                                th Actions 
                     tbody 
                         each result in results
                             tr 
@@ -17,7 +18,9 @@ div.product-container
                                 td= result.category.name 
                                 td= result.supplier.name
                                 td= result.unit_price 
-                                td= result.units_in_stock 
-                                td 
-                                    a.update_product(href= `./update-product/${result.id}`) Update
-                                    button.delete_product(data-product-id= result.id) Delete
+                                td= result.units_in_stock
+                                if role === "admin" || role === "superadmin" || role === "manager" || role === "employee"
+                                    td 
+                                        a.update_product(href= `./update-product/${result.id}`) Update
+                                        if role === "admin" || role === "superadmin" || role === "manager" 
+                                            button.delete_product(data-product-id= result.id) Delete

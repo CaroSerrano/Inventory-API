@@ -61,9 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (role === "manager") {
           window.location.href = "/api/managers/dashboard";
         } else if (role === "employee") {
-          window.location.href = "/api/employees/dashboard";
+          window.location.href = "/api/admins/products";
         } else if (role === "basic_user") {
-          window.location.href = "/api/users/dashboard";
+          window.location.href = "/api/admins/products";
         } else {
           console.error("Unknown role:", role);
         }

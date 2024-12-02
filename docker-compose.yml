@@ -36,9 +36,10 @@ services:
       - 3306
     volumes:
       - db_data:/var/lib/mysql
+      # mongo -> /data/db
     networks:
       - appnetwork
-
+#definicion de volumenes y redes
 volumes:
   db_data:
 networks:

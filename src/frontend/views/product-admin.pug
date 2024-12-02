@@ -8,23 +8,27 @@ html(lang="en")
                     img(src="/static/gato-negro.png", alt="Inventory-API logo")
                 h1.titulo Inventory-API
             nav
-                button.dropbtn Menu
-                    ul.dropdown-content
-                        li
-                            a(href="/api/admins/dashboard") Home
-                        if role === "admin" || role === "superadmin"
+                if role === "admin" || role === "superadmin" || role === "manager"
+                    button.dropbtn Menu
+                        ul.dropdown-content
+                            if role === "admin" || role === "superadmin"
+                                li
+                                    a(href="/api/admins/dashboard") Home
+                                li
+                                    a(href="/api/admins/users") Users
+                                li
+                                    a(href="/api/admins/stores") Stores
+                            if role === "manager"
+                                li
+                                    a(href="/api/managers/dashboard") Home
                             li
-                                a(href="/api/admins/users") Users
-                        if role === "admin" || role === "superadmin"
+                                a(href="/api/admins/suppliers") Suppliers
                             li
-                                a(href="/api/admins/stores") Stores
-                        li
-                            a(href="/api/admins/suppliers") Suppliers
-                        li
-                            a(href="/api/admins/categories") Categories
+                                a(href="/api/admins/categories") Categories
                 button#logout Logout
-        div.uploadProduct
-            a(class= "button", href= "./create-product") Upload product
+        if role === "admin" || role === "superadmin" || role === "manager" || role === "employee"
+            div.uploadProduct
+                a(class= "button", href= "./create-product") Upload product
         main
             div.filter-container
                 h4 Search by 
@@ -59,7 +63,8 @@ html(lang="en")
                             th Supplier 
                             th Unit price 
                             th Units in stock
-                            th Actions 
+                            if role === "admin" || role === "superadmin" || role === "manager" || role === "employee"
+                                th Actions 
                     tbody 
                         each result in results
                             tr 
@@ -68,10 +73,12 @@ html(lang="en")
                                 td= result.category.name 
                                 td= result.supplier.name
                                 td= result.unit_price 
-                                td= result.units_in_stock 
-                                td 
-                                    a.update_product(href= `./update-product/${result.id}`) Update
-                                    button.delete_product(data-product-id= result.id) Delete
+                                td= result.units_in_stock
+                                if role === "admin" || role === "superadmin" || role === "manager" || role === "employee"
+                                    td 
+                                        a.update_product(href= `./update-product/${result.id}`) Update
+                                        if role === "admin" || role === "superadmin" || role === "manager" 
+                                            button.delete_product(data-product-id= result.id) Delete
         script(nonce=nonce, src= "/static/product.script.js", type= "module")
         script(nonce=nonce, src="/static/admin.script.js", type="module")
         include ./footer.pug

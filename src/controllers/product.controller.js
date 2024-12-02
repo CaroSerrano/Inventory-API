@@ -34,7 +34,7 @@ const showProducts = async (req, res, next) => {
     if (!results) throw new NotFoundError("Error geting products.");
     // Verificar si la solicitud es AJAX
     if (req.xhr) {
-      res.render("partials/product-list", { results }); // Cambia por el nombre de la vista que solo contiene la lista de productos
+      res.render("partials/product-list", { results, role }); // Cambia por el nombre de la vista que solo contiene la lista de productos
     } else {
       res.render("product-admin", {
         results,

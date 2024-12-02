@@ -8,18 +8,23 @@ html(lang="en")
                     img(src="/static/gato-negro.png", alt="Inventory-API logo")
                 h1.titulo Inventory-API
             nav
-                button.dropbtn Menu
-                    ul.dropdown-content
-                        li
-                            a(href="/api/admins/dashboard") Home
-                        li
-                            a(href="/api/admins/users") Users
-                        li
-                            a(href="/api/admins/stores") Stores
-                        li
-                            a(href="/api/admins/suppliers") Suppliers
-                        li
-                            a(href="/api/admins/categories") Categories
+                if role === "admin" || role === "superadmin" || role === "manager"
+                    button.dropbtn Menu
+                        ul.dropdown-content
+                            if role === "admin" || role === "superadmin"
+                                li
+                                    a(href="/api/admins/dashboard") Home
+                                li
+                                    a(href="/api/admins/users") Users
+                                li
+                                    a(href="/api/admins/stores") Stores
+                            if role === "manager"
+                                li
+                                    a(href="/api/managers/dashboard") Home
+                            li
+                                a(href="/api/admins/suppliers") Suppliers
+                            li
+                                a(href="/api/admins/categories") Categories
                 button#logout Logout
         main
             div.createProduct-container
