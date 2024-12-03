@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import User from "./user.model.js";
 import { format } from "@formkit/tempo";
 
-export default class Manager extends User {
+export default class Manager {
   constructor(data) {
     super(data);
     this.data = data;
