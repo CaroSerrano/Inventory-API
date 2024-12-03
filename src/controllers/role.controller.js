@@ -27,7 +27,7 @@ const getRoleById = async (req, res, next) => {
 
 const getRoleByName = async (req, res, next) => {
   try {
-    const name = req.params.name;
+    const name = req.query.name;    
     const role = await roleService.getBy({name: name });
     if (!role) throw new NotFoundError("Error geting role.");
     response(res, 200, role);

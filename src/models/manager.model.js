@@ -4,7 +4,6 @@ import { format } from "@formkit/tempo";
 
 export default class Manager {
   constructor(data) {
-    super(data);
     this.data = data;
   }
   static get model() {

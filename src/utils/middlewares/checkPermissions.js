@@ -13,7 +13,7 @@ export const checkPermissions = (permissions) => async (req, res, next) => {
 
     if (!rolePermissions.includes(permissions)) {
       throw new AuthorizationError(
-        "You don't have enaugh permissions to access this resource."
+        "You don't have enough permissions to access this resource."
       );
     }
     next();

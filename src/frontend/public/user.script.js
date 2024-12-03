@@ -4,29 +4,51 @@ const managersURL = "http://localhost:8080/api/managers";
 const employeesURL = "http://localhost:8080/api/employees";
 const rolesURL = "http://localhost:8080/api/roles";
 
+async function getRole(role) {
+  try {
+    const response = await fetch(`${rolesURL}/${role}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const ROLE = await response.json();
+
+    if (ROLE.error === false) {
+      return ROLE;
+    } else {
+      console.error(ROLE.message);
+      return null;
+    }
+  } catch (error) {
+    console.error("Get role error:", error);
+    throw error;
+  }
+}
+
+async function getRolebyName(roleName) {
+  try {
+    const response = await fetch(`${rolesURL}/name?name=${roleName}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const ROLE = await response.json();
+
+    if (ROLE.error === false) {
+      return ROLE;
+    } else {
+      console.error(ROLE.message);
+      return null;
+    }
+  } catch (error) {
+    console.error("Get role error:", error);
+    throw error;
+  }
+}
 document.addEventListener("DOMContentLoaded", () => {
   console.log("DOM completamente cargado");
-  async function getRole(role) {
-    try {
-      const response = await fetch(`${rolesURL}/${role}`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const ROLE = await response.json();
-
-      if (ROLE.error === false) {
-        return ROLE;
-      } else {
-        console.error(ROLE.message);
-        return null;
-      }
-    } catch (error) {
-      console.error("Get role error:", error);
-      throw error;
-    }
-  }
   // Function to handle popup closing
   function handlePopupsClose() {
     const popupsClose = document.querySelectorAll("#popup-close");
@@ -48,13 +70,13 @@ document.addEventListener("DOMContentLoaded", () => {
   async function showMoreInfoButtons() {
     const btnsMoreInfo = document.querySelectorAll("#more_info");
     const popups = document.querySelectorAll(".popup");
+    const roleManager = await getRolebyName("manager");
+    const roleEmployee = await getRolebyName("employee");
 
     for (const button of btnsMoreInfo) {
       const roleId = button.getAttribute("data-user-role");
-
       try {
-        const role = await getRole(roleId);
-        if (["manager", "employee"].includes(role.data.name)) {
+        if (roleId == roleManager.data.id || roleId == roleEmployee.data.id) {
           button.classList.remove("hidden");
         }
       } catch (error) {

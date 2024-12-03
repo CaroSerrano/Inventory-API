@@ -5,7 +5,6 @@ import storeController from "../controllers/store.controller.js";
 import { checkPermissions } from "../utils/middlewares/checkPermissions.js";
 import supplierController from "../controllers/supplier.controller.js";
 import categoryController from "../controllers/category.controller.js";
-import { verifytoken } from "../utils/middlewares/authJwt.js";
 
 const router = express.Router();
 
@@ -14,7 +13,6 @@ router.get("/dashboard", (req, res) => {
 });
 router.get(
   "/products",
-  verifytoken,
   checkPermissions("read:products"),
   productController.showProducts
 );
